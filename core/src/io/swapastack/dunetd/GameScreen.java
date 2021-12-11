@@ -35,6 +35,8 @@ import java.util.Locale;
 public class GameScreen implements Screen {
 
     private final DuneTD parent;
+    private Infantry infantry;
+
 
     // GDX GLTF
     private SceneManager sceneManager;
@@ -58,6 +60,7 @@ public class GameScreen implements Screen {
     // Grid Specifications
     private int rows = 5;
     private int cols = 5;
+   // float x;
 
     // Animation Controllers
     AnimationController bossCharacterAnimationController;
@@ -68,6 +71,10 @@ public class GameScreen implements Screen {
     public ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
     public ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
     long windowHandle;
+
+    //Custom
+    MouseForCollision mouseForCollision;
+    Scene beam;
 
     public GameScreen(DuneTD parent) {
         this.parent = parent;
@@ -127,6 +134,8 @@ public class GameScreen implements Screen {
         // Set Input Processor
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(cameraInputController);
+        mouseForCollision = new MouseForCollision(this);
+        inputMultiplexer.addProcessor(mouseForCollision);
         // TODO: add further input processors if needed
         Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -183,6 +192,9 @@ public class GameScreen implements Screen {
         sceneManager.update(delta);
         sceneManager.render();
 
+        Vector3 v = new Vector3(1270, 660f, 0.f);
+        v = camera.unproject(v);
+
         ImGui.begin("Performance", ImGuiWindowFlags.AlwaysAutoResize);
         ImGui.text(String.format(Locale.US,"deltaTime: %1.6f", delta));
         ImGui.end();
@@ -191,11 +203,22 @@ public class GameScreen implements Screen {
         if (ImGui.button("Back to menu")) {
             parent.changeScreen(ScreenEnum.MENU);
         }
+
+
+        ImGui.text(String.format(Locale.US,"test: "));
+
+
+        infantry.move(0.001f, 0, 0);
         ImGui.end();
 
         // SpaiR/imgui-java
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
+
+        Vector3 vec = beam.modelInstance.transform.getTranslation(new Vector3(0.f,0.f,0.f));
+        //Speed of falling
+        beam.modelInstance.transform.setToTranslation(vec.add(calculateClickDirection().setLength(0.01f)));
+
     }
 
     @Override
@@ -238,6 +261,7 @@ public class GameScreen implements Screen {
                 Scene gridTile = new Scene(sceneAssetHashMap.get("tile_dirt.glb").scene);
                 // Create a new BoundingBox, this is useful to check collisions or to get the model dimensions
                 BoundingBox boundingBox = new BoundingBox();
+
                 // Calculate the BoundingBox from the given ModelInstance
                 gridTile.modelInstance.calculateBoundingBox(boundingBox);
                 // Create Vector3 to store the ModelInstance dimensions
@@ -248,21 +272,25 @@ public class GameScreen implements Screen {
                 groundTileDimensions.set(modelDimensions);
                 // Set the ModelInstance to the respective row and cell of the map
                 gridTile.modelInstance.transform.setToTranslation(k * modelDimensions.x, 0.0f, i * modelDimensions.z);
+              //  gridTile.modelInstance.transform.setToTranslation( 10* modelDimensions.x, 0.0f,  5*modelDimensions.z);
                 // Add the Scene object to the SceneManager for rendering
                 sceneManager.addScene(gridTile);
+
+             //   System.out.printf("Breite: %f \n", boundingBox.	getHeight() );
                 // it could be useful to store the Scene object reference outside this method
             }
         }
-
         // place example sonicTower
         Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
         sonicTower.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 0.0f);
         sceneManager.addScene(sonicTower);
 
+
         // place example canonTower
         Scene canonTower = new Scene(sceneAssetHashMap.get("weapon_cannon.glb").scene);
         canonTower.modelInstance.transform.setToTranslation(1.0f, groundTileDimensions.y, 0.0f);
         sceneManager.addScene(canonTower);
+
 
         // place example bombTower
         Scene bombTower = new Scene(sceneAssetHashMap.get("weapon_blaster.glb").scene);
@@ -270,9 +298,14 @@ public class GameScreen implements Screen {
         sceneManager.addScene(bombTower);
 
         // place boss character
-        Scene bossCharacter = new Scene(sceneAssetHashMap.get("faceted_character/scene.gltf").scene);
+      // Scene bossCharacter = new Scene(sceneAssetHashMap.get("faceted_character/scene.gltf").scene);
+        infantry = new Infantry().init();
+        Scene bossCharacter = infantry.createScene(sceneAssetHashMap);
         bossCharacter.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 2.0f).scale(0.005f, 0.005f, 0.005f);
         sceneManager.addScene(bossCharacter);
+
+
+        bossCharacter.modelInstance.calculateTransforms();
 
         bossCharacterAnimationController = new AnimationController(bossCharacter.modelInstance);
         bossCharacterAnimationController.setAnimation("Armature|Run", -1);
@@ -296,6 +329,9 @@ public class GameScreen implements Screen {
         spaceshipAnimationController = new AnimationController(spaceshipCharacter.modelInstance);
         spaceshipAnimationController.setAnimation("Action", -1);
 
+        beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
+        resetBeamPos();
+        sceneManager.addScene(beam);
     }
 
     @Override
@@ -305,8 +341,18 @@ public class GameScreen implements Screen {
         environmentCubemap.dispose();
         diffuseCubemap.dispose();
         specularCubemap.dispose();
+
         brdfLUT.dispose();
         skybox.dispose();
+    }
+
+    public void resetBeamPos() {
+        beam.modelInstance.transform.setToTranslation(camera.position);
+    }
+
+    private Vector3 calculateClickDirection() {
+        Vector3 vecMousePos = new Vector3(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0.f)));
+        return vecMousePos.sub(camera.position).setLength(1f);
     }
 
 }
