@@ -229,8 +229,10 @@ public class GameScreen implements Screen {
 
        // infantry.move(0.0005f, 0, -0.001f);
         infantryTwo.move(0, 0, 0.005f);
-        bossUnit.move(0.0008f, 0, -0.000f);
+        bossUnit.move(0.001f, 0, -0.000f);
         canonTower.fire(attackers);
+        bombTower.fire(attackers);
+        sonicTower.fire(attackers);
         ImGui.end();
 
         // SpaiR/imgui-java
@@ -438,7 +440,7 @@ public class GameScreen implements Screen {
       //  sceneManager.addScene(bossUnit.createScene(sceneAssetHashMap));
       //  bossUnit.setToTranslation(1.0f, groundTileDimensions.y, 2.0f)
        //         .scale(0.005f, 0.005f, 0.005f);
-        bossUnit.init(sceneManager, sceneAssetHashMap, 1.0f, groundTileDimensions.y, 2.0f);
+        bossUnit.init(sceneManager, sceneAssetHashMap, -3.0f, groundTileDimensions.y, 1.0f);
 
         //bossCharacterAnimationController = bossUnit.getAnimationController();
         //bossUnit.setAnimation("Armature|Run", -1);
@@ -459,11 +461,11 @@ public class GameScreen implements Screen {
         infantryTwo.init(sceneManager, sceneAssetHashMap, 2.0f, 0.25f, 4.0f);
         infantryTwo.setAnimation("RIDING", -1);
 
-        attackers.add(infantry);
+
         attackers.add(bossUnit);
         attackers.add(harvestMachine);
         attackers.add(infantryTwo);
-
+        attackers.add(infantry);
 
         wave = new Wave();
 

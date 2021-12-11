@@ -35,7 +35,7 @@ public class CanonTower extends Tower {
                 boolean fire = rotateTowardsVectorSmooth(enemy.getCoords());
                 //Beeing able to shoot
                     if(fire) {
-
+                     //   System.out.println("fire");
                     }
                 return;
                 // }

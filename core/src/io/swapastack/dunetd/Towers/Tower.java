@@ -21,7 +21,7 @@ public abstract class Tower implements MapIterable {
     private int length = Integer.MAX_VALUE, color = 0;
 
     public abstract void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers,float x, float y, float z);
-    public abstract void fire(ArrayList<Enemy> enemys);
+    public abstract void fire(ArrayList<Enemy> enemiesList);
 
 
 

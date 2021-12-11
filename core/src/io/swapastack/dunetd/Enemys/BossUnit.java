@@ -10,6 +10,7 @@ import java.util.HashMap;
 public class BossUnit extends Enemy{
 
     public BossUnit() {
+        name = "BossUnit";
         graphics = "faceted_character/scene.gltf";
         type = 2;
 

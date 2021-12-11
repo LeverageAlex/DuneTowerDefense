@@ -11,6 +11,7 @@ public class SonicTower extends Tower{
     public SonicTower() {
         graphics = "towerRound_crystals.glb";
         type = 1;
+        range = 1.7;
     }
 
     @Override
@@ -21,8 +22,14 @@ public class SonicTower extends Tower{
         towers[Math.round(x)][Math.round(z)] = this;
     }
 
+    //Take care of HarvestMachine gaining less Damage than other Enemys
     @Override
-    public void fire(ArrayList<Enemy> enemys) {
-
+    public void fire(ArrayList<Enemy> enemiesList) {
+        for (Enemy enemy : enemiesList) {
+            if (isInRange(enemy.getCoords())) {
+                //to fire
+                System.out.println("SonicTower shooting at: " + enemy.name );
+            }
+        }
     }
 }
