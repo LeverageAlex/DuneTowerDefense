@@ -20,6 +20,7 @@ import io.swapastack.dunetd.Enemys.HarvestMachine;
 import io.swapastack.dunetd.Towers.BombTower;
 import io.swapastack.dunetd.Towers.CanonTower;
 import io.swapastack.dunetd.Towers.SonicTower;
+import jdk.javadoc.internal.tool.Start;
 import net.mgsx.gltf.scene3d.attributes.PBRCubemapAttribute;
 import net.mgsx.gltf.scene3d.attributes.PBRTextureAttribute;
 import net.mgsx.gltf.scene3d.lights.DirectionalLightEx;
@@ -88,6 +89,7 @@ public class GameScreen implements Screen {
     Scene beam;
     Scene[][] mapTiles;
     BoundingBox[][] mapBoxes;
+    Player player;
 
     public GameScreen(DuneTD parent) {
         this.parent = parent;
@@ -449,6 +451,9 @@ public class GameScreen implements Screen {
         infantryTwo = new Infantry();
         infantryTwo.init(sceneManager, sceneAssetHashMap, 2.0f, 0.25f, 4.0f);
         infantryTwo.setAnimation("RIDING", -1);
+
+        Startportal startportal = new Startportal(sceneManager, sceneAssetHashMap, 1.0f, groundTileDimensions.y, 3.0f);
+        Endportal endportal = new Endportal(sceneManager, sceneAssetHashMap, 2.0f, groundTileDimensions.y, 3.0f);
 
         beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
         resetBeamPos();
