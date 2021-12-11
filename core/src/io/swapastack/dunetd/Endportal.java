@@ -10,12 +10,15 @@ import java.util.HashMap;
 public class Endportal {
     public String graphics = "towerSquare_topB.glb";
     private Scene scene;
-
+    private float x, y, z;
 
     public Endportal(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, float x, float y, float z) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
         this.scene.modelInstance.transform.setToTranslation(x, y, z).scale(1.f, 0.1f, 1.f);
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public void setPos(Vector3 pos) {
@@ -26,4 +29,17 @@ public class Endportal {
         this.scene = new Scene(m.get(graphics).scene);
         return scene;
     }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
 }

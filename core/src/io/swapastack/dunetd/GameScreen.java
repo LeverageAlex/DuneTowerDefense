@@ -14,10 +14,7 @@ import imgui.ImGui;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
-import io.swapastack.dunetd.Enemys.BossUnit;
-import io.swapastack.dunetd.Enemys.Infantry;
-import io.swapastack.dunetd.Enemys.HarvestMachine;
-import io.swapastack.dunetd.Enemys.Wave;
+import io.swapastack.dunetd.Enemys.*;
 import io.swapastack.dunetd.Towers.BombTower;
 import io.swapastack.dunetd.Towers.CanonTower;
 import io.swapastack.dunetd.Towers.SonicTower;
@@ -32,6 +29,7 @@ import net.mgsx.gltf.scene3d.scene.SceneSkybox;
 import net.mgsx.gltf.scene3d.utils.IBLBuilder;
 import org.lwjgl.system.CallbackI;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -49,6 +47,7 @@ public class GameScreen implements Screen {
 
     private Infantry infantryTwo;
 
+    private ArrayList<Enemy> attackers;
 
     //Towers
     private CanonTower canonTower;
@@ -91,6 +90,8 @@ public class GameScreen implements Screen {
     Scene[][] mapTiles;
     BoundingBox[][] mapBoxes;
     Player player;
+    Startportal startPortal;
+    Endportal endPortal;
 
     public GameScreen(DuneTD parent) {
         this.parent = parent;
@@ -363,6 +364,7 @@ public class GameScreen implements Screen {
         Vector3 groundTileDimensions = new Vector3();
         mapTiles = new Scene[rows][cols];
         mapBoxes = new BoundingBox[rows][cols];
+        attackers = new ArrayList<Enemy>();
 
         // Simple way to generate the example map
         for (int i = 0; i < rows; i++) {
@@ -453,8 +455,8 @@ public class GameScreen implements Screen {
         infantryTwo.init(sceneManager, sceneAssetHashMap, 2.0f, 0.25f, 4.0f);
         infantryTwo.setAnimation("RIDING", -1);
 
-        Startportal startportal = new Startportal(sceneManager, sceneAssetHashMap, 1.0f, groundTileDimensions.y, 3.0f);
-        Endportal endportal = new Endportal(sceneManager, sceneAssetHashMap, 2.0f, groundTileDimensions.y, 3.0f);
+        startPortal = new Startportal(sceneManager, sceneAssetHashMap, 1.0f, groundTileDimensions.y, 3.0f);
+        endPortal = new Endportal(sceneManager, sceneAssetHashMap, 2.0f, groundTileDimensions.y, 3.0f);
 
         Wave wave = new Wave();
 
