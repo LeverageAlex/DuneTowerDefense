@@ -1,23 +1,20 @@
-package io.swapastack.dunetd;
+package io.swapastack.dunetd.Enemys;
 
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import net.mgsx.gltf.scene3d.scene.Scene;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
+import net.mgsx.gltf.scene3d.scene.SceneManager;
 
 
 import java.util.HashMap;
 
-public class Infantry extends Enemy{
+public class Infantry extends Enemy {
 
-    public Infantry init() {
-        graphics = "faceted_character/scene.gltf";
-        return this;
-    }
-
-    public Scene createScene(HashMap<String, SceneAsset> m) {
-        scene = new Scene(m.get(graphics).scene);
-        return scene;
+    public Infantry() {
+        graphics = /*"faceted_character/scene.gltf";*/ "cute_cyborg/scene.gltf";
     }
 
     @Override
@@ -27,10 +24,13 @@ public class Infantry extends Enemy{
         this.scene.modelInstance.transform.setTranslation(pos.x + x, pos.y + y, pos.z + z);
     }
 
-    @Override
-    public void setPos(Vector3 pos) {
-        this.scene.modelInstance.transform.setTranslation(pos);
+    public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, float x, float y, float z) {
+        this.scene = createScene(sceneAssetHashMap);
+        sceneManager.addScene(scene);
+        this.setToTranslation(x, y, z)
+                .scale(0.02f, 0.04f, 0.03f).rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
     }
+
 
     @Override
     public void destroyDamage() {
@@ -42,16 +42,11 @@ public class Infantry extends Enemy{
 
     }
 
-    public void printCoords() {
-
-        Vector3 pos = scene.modelInstance.transform.getTranslation(new Vector3());
-        System.out.printf("Infantry grid: x: %f, y:%f, z:%f\n", pos.x, pos.y, pos.z);
-
-    }
 
     public boolean collides(float x, float y, float z, Camera cam) {
         printCoords();
-
         return false;
     }
+
+
 }

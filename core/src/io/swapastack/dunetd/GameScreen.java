@@ -15,6 +15,9 @@ import imgui.ImGui;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
+import io.swapastack.dunetd.Enemys.BossUnit;
+import io.swapastack.dunetd.Enemys.Infantry;
+import io.swapastack.dunetd.Enemys.HarvestMachine;
 import net.mgsx.gltf.scene3d.attributes.PBRCubemapAttribute;
 import net.mgsx.gltf.scene3d.attributes.PBRTextureAttribute;
 import net.mgsx.gltf.scene3d.lights.DirectionalLightEx;
@@ -24,7 +27,6 @@ import net.mgsx.gltf.scene3d.scene.SceneManager;
 import net.mgsx.gltf.scene3d.scene.SceneSkybox;
 import net.mgsx.gltf.scene3d.utils.IBLBuilder;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -37,6 +39,10 @@ public class GameScreen implements Screen {
 
     private final DuneTD parent;
     private Infantry infantry;
+    private BossUnit bossUnit;
+    private HarvestMachine harvestMachine;
+
+    private Infantry infantryTwo;
 
 
     // GDX GLTF
@@ -184,9 +190,10 @@ public class GameScreen implements Screen {
         // OpenGL - clear color and depth buffer
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        bossCharacterAnimationController.update(delta);
-        enemyCharacterAnimationController.update(delta);
-        spaceshipAnimationController.update(delta);
+        bossUnit.getAnimationController().update(delta);
+        infantry.getAnimationController().update(delta);
+        harvestMachine.getAnimationController().update(delta);
+        infantryTwo.getAnimationController().update(delta);
 
         // SpaiR/imgui-java
         imGuiGlfw.newFrame();
@@ -216,6 +223,7 @@ public class GameScreen implements Screen {
 
 
         infantry.move(0.001f, 0, 0);
+        infantryTwo.move(0, 0, 0.005f);
         ImGui.end();
 
         // SpaiR/imgui-java
@@ -226,10 +234,6 @@ public class GameScreen implements Screen {
        /* if(inRangeofField(vec)) {
             mapTiles[Math.round(vec.z)][Math.round(vec.x)].modelInstance.transform.rotate(new Vector3(0.f, 1.f, 0.f), 0.3f);
         }*/
-
-      //  Vector3 vec = beam.modelInstance.transform.getTranslation(new Vector3(0.f,0.f,0.f));
-        //Speed of falling
-       // beam.modelInstance.transform.setToTranslation(vec.add(calculateClickDirection().setLength(0.01f)));
 
     }
 
@@ -262,7 +266,7 @@ public class GameScreen implements Screen {
      *
      * @param sceneManager
      */
-    private void createMapExample(SceneManager sceneManager) {
+   /* private void createMapExample(SceneManager sceneManager) {
 
         Vector3 groundTileDimensions = new Vector3();
 
@@ -344,7 +348,7 @@ public class GameScreen implements Screen {
         beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
         resetBeamPos();
         sceneManager.addScene(beam);
-    }
+    }*/
 
     private void createMap(SceneManager sceneManager) {
 
@@ -397,37 +401,43 @@ public class GameScreen implements Screen {
         bombTower.modelInstance.transform.setToTranslation(2.0f, groundTileDimensions.y, 0.0f);
         sceneManager.addScene(bombTower);
 
-        // place boss character
-        // Scene bossCharacter = new Scene(sceneAssetHashMap.get("faceted_character/scene.gltf").scene);
-        infantry = new Infantry().init();
-        Scene bossCharacter = infantry.createScene(sceneAssetHashMap);
-        bossCharacter.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 2.0f).scale(0.005f, 0.005f, 0.005f);
-        sceneManager.addScene(bossCharacter);
-
-
-        bossCharacter.modelInstance.calculateTransforms();
-
-        bossCharacterAnimationController = new AnimationController(bossCharacter.modelInstance);
-        bossCharacterAnimationController.setAnimation("Armature|Run", -1);
-
         // place enemy character
-        Scene enemyCharacter = new Scene(sceneAssetHashMap.get("cute_cyborg/scene.gltf").scene);
-        enemyCharacter.modelInstance.transform.setToTranslation(1.0f, groundTileDimensions.y, 2.0f)
-                .scale(0.02f, 0.04f, 0.03f)
-                .rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
-        sceneManager.addScene(enemyCharacter);
+        infantry = new Infantry();
 
-        enemyCharacterAnimationController = new AnimationController(enemyCharacter.modelInstance);
-        enemyCharacterAnimationController.setAnimation("RUN", -1);
+        //infantry.setToTranslation(0.0f, groundTileDimensions.y, 2.0f)/*Boss Data.scale(0.005f, 0.005f, 0.005f)*/.scale(0.02f, 0.04f, 0.03f).rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
+        infantry.init(sceneManager, sceneAssetHashMap, 0.0f, groundTileDimensions.y, 2.0f);
+      //  sceneManager.addScene(enemyCharacter);
+
+        infantry.getScene().modelInstance.calculateTransforms();
+       // enemyCharacterAnimationController = infantry.getAnimationController();
+       // infantry.setAnimation("RUN", -1);
+        infantry.setAnimation("RUN", -1);
+
+        // place boss Unit character
+        bossUnit = new BossUnit();
+      //  sceneManager.addScene(bossUnit.createScene(sceneAssetHashMap));
+      //  bossUnit.setToTranslation(1.0f, groundTileDimensions.y, 2.0f)
+       //         .scale(0.005f, 0.005f, 0.005f);
+        bossUnit.init(sceneManager, sceneAssetHashMap, 1.0f, groundTileDimensions.y, 2.0f);
+
+        //bossCharacterAnimationController = bossUnit.getAnimationController();
+        //bossUnit.setAnimation("Armature|Run", -1);
+        bossUnit.setAnimation("Armature|Run", -1);
 
         // place spaceship character
-        Scene spaceshipCharacter = new Scene(sceneAssetHashMap.get("spaceship_orion/scene.gltf").scene);
-        spaceshipCharacter.modelInstance.transform.setToTranslation(2.0f, 0.25f, 2.0f)
-                .scale(0.2f, 0.2f, 0.2f);
-        sceneManager.addScene(spaceshipCharacter);
+        harvestMachine = new HarvestMachine();
+        harvestMachine.init(sceneManager, sceneAssetHashMap, 2.0f, 0.25f, 2.0f);
+        //Scene spaceshipCharacter = harvestMachine.getScene();
+        //spaceshipCharacter.modelInstance.transform.setToTranslation(2.0f, 0.25f, 2.0f)
+         //       .scale(0.2f, 0.2f, 0.2f);
+        //sceneManager.addScene(spaceshipCharacter);
+        /*spaceshipAnimationController = harvestMachine.getAnimationController();
+        spaceshipAnimationController.setAnimation("Action", -1);*/
+        harvestMachine.setAnimation("Action", -1);
 
-        spaceshipAnimationController = new AnimationController(spaceshipCharacter.modelInstance);
-        spaceshipAnimationController.setAnimation("Action", -1);
+        infantryTwo = new Infantry();
+        infantryTwo.init(sceneManager, sceneAssetHashMap, 2.0f, 0.25f, 4.0f);
+        infantryTwo.setAnimation("RIDING", -1);
 
         beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
         resetBeamPos();
