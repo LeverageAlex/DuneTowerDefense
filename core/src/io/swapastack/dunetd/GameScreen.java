@@ -15,10 +15,7 @@ import imgui.flag.ImGuiWindowFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import io.swapastack.dunetd.Enemys.*;
-import io.swapastack.dunetd.Towers.BombTower;
-import io.swapastack.dunetd.Towers.CanonTower;
-import io.swapastack.dunetd.Towers.SonicTower;
-import jdk.javadoc.internal.tool.Start;
+import io.swapastack.dunetd.Towers.*;
 import net.mgsx.gltf.scene3d.attributes.PBRCubemapAttribute;
 import net.mgsx.gltf.scene3d.attributes.PBRTextureAttribute;
 import net.mgsx.gltf.scene3d.lights.DirectionalLightEx;
@@ -27,7 +24,6 @@ import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 import net.mgsx.gltf.scene3d.scene.SceneSkybox;
 import net.mgsx.gltf.scene3d.utils.IBLBuilder;
-import org.lwjgl.system.CallbackI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,6 +88,8 @@ public class GameScreen implements Screen {
     Player player;
     Startportal startPortal;
     Endportal endPortal;
+    Wave wave;
+    MapIterable[][] mapTowers;
 
     public GameScreen(DuneTD parent) {
         this.parent = parent;
@@ -212,8 +210,6 @@ public class GameScreen implements Screen {
         sceneManager.update(delta);
         sceneManager.render();
 
-        Vector3 v = new Vector3(1270, 660f, 0.f);
-        v = camera.unproject(v);
 
         ImGui.begin("Performance", ImGuiWindowFlags.AlwaysAutoResize);
         ImGui.text(String.format(Locale.US,"deltaTime: %1.6f", delta));
@@ -365,6 +361,7 @@ public class GameScreen implements Screen {
         mapTiles = new Scene[rows][cols];
         mapBoxes = new BoundingBox[rows][cols];
         attackers = new ArrayList<Enemy>();
+        mapTowers = new MapIterable[rows][cols];
 
         // Simple way to generate the example map
         for (int i = 0; i < rows; i++) {
@@ -398,16 +395,21 @@ public class GameScreen implements Screen {
         //Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
         // sonicTower.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 0.0f);
         // sceneManager.addScene(sonicTower);
-        sonicTower = new SonicTower();
-        sonicTower.init(sceneManager, sceneAssetHashMap, 0.0f, groundTileDimensions.y, 0.0f);
 
+        startPortal = new Startportal(sceneManager, sceneAssetHashMap, mapTowers,1.0f, groundTileDimensions.y, 3.0f);
+        endPortal = new Endportal(sceneManager, sceneAssetHashMap, mapTowers,2.0f, groundTileDimensions.y, 3.0f);
+
+        if(Tower.isEligibleToPlace(mapTowers, Math.round(0.0f), Math.round(0.0f))) {
+            sonicTower = new SonicTower();
+            sonicTower.init(sceneManager, sceneAssetHashMap, mapTowers, 0.0f, groundTileDimensions.y, 0.0f);
+        }
 
 
         // place example canonTower
        // Scene canonTower = new Scene(sceneAssetHashMap.get("weapon_cannon.glb").scene);
         canonTower = new CanonTower();
 
-        canonTower.init(sceneManager, sceneAssetHashMap,1.0f, groundTileDimensions.y, 0.0f);
+        canonTower.init(sceneManager, sceneAssetHashMap,mapTowers,1.0f, groundTileDimensions.y, 0.0f);
      //   sceneManager.addScene(canonTower);
 
 
@@ -415,7 +417,7 @@ public class GameScreen implements Screen {
        // Scene bombTower = new Scene(sceneAssetHashMap.get("weapon_blaster.glb").scene);
        // bombTower.modelInstance.transform.setToTranslation(2.0f, groundTileDimensions.y, 0.0f);
         bombTower = new BombTower();
-        bombTower.init(sceneManager, sceneAssetHashMap, 2.0f, groundTileDimensions.y, 0.0f);
+        bombTower.init(sceneManager, sceneAssetHashMap, mapTowers,2.0f, groundTileDimensions.y, 0.0f);
 
         // place enemy character
         infantry = new Infantry();
@@ -442,7 +444,7 @@ public class GameScreen implements Screen {
 
         // place spaceship character
         harvestMachine = new HarvestMachine();
-        harvestMachine.init(sceneManager, sceneAssetHashMap, 2.0f, 0.25f, 2.0f);
+        harvestMachine.init(sceneManager, sceneAssetHashMap, startPortal.getX(), startPortal.getY()+0.25f, startPortal.getZ());
         //Scene spaceshipCharacter = harvestMachine.getScene();
         //spaceshipCharacter.modelInstance.transform.setToTranslation(2.0f, 0.25f, 2.0f)
          //       .scale(0.2f, 0.2f, 0.2f);
@@ -455,10 +457,9 @@ public class GameScreen implements Screen {
         infantryTwo.init(sceneManager, sceneAssetHashMap, 2.0f, 0.25f, 4.0f);
         infantryTwo.setAnimation("RIDING", -1);
 
-        startPortal = new Startportal(sceneManager, sceneAssetHashMap, 1.0f, groundTileDimensions.y, 3.0f);
-        endPortal = new Endportal(sceneManager, sceneAssetHashMap, 2.0f, groundTileDimensions.y, 3.0f);
 
-        Wave wave = new Wave();
+
+        wave = new Wave();
 
         beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
         resetBeamPos();
