@@ -7,7 +7,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
@@ -18,6 +17,9 @@ import imgui.glfw.ImGuiImplGlfw;
 import io.swapastack.dunetd.Enemys.BossUnit;
 import io.swapastack.dunetd.Enemys.Infantry;
 import io.swapastack.dunetd.Enemys.HarvestMachine;
+import io.swapastack.dunetd.Towers.BombTower;
+import io.swapastack.dunetd.Towers.CanonTower;
+import io.swapastack.dunetd.Towers.SonicTower;
 import net.mgsx.gltf.scene3d.attributes.PBRCubemapAttribute;
 import net.mgsx.gltf.scene3d.attributes.PBRTextureAttribute;
 import net.mgsx.gltf.scene3d.lights.DirectionalLightEx;
@@ -26,6 +28,7 @@ import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 import net.mgsx.gltf.scene3d.scene.SceneSkybox;
 import net.mgsx.gltf.scene3d.utils.IBLBuilder;
+import org.lwjgl.system.CallbackI;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -44,6 +47,11 @@ public class GameScreen implements Screen {
 
     private Infantry infantryTwo;
 
+
+    //Towers
+    private CanonTower canonTower;
+    private BombTower bombTower;
+    private SonicTower sonicTower;
 
     // GDX GLTF
     private SceneManager sceneManager;
@@ -69,10 +77,6 @@ public class GameScreen implements Screen {
     private int cols = 5;
 
 
-    // Animation Controllers
-    AnimationController bossCharacterAnimationController;
-    AnimationController enemyCharacterAnimationController;
-    AnimationController spaceshipAnimationController;
 
     // SpaiR/imgui-java
     public ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
@@ -194,6 +198,7 @@ public class GameScreen implements Screen {
         infantry.getAnimationController().update(delta);
         harvestMachine.getAnimationController().update(delta);
         infantryTwo.getAnimationController().update(delta);
+    //    canonTower.getAnimationController().update(delta);
 
         // SpaiR/imgui-java
         imGuiGlfw.newFrame();
@@ -385,21 +390,27 @@ public class GameScreen implements Screen {
             }
         }
         // place example sonicTower
-        Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
-        sonicTower.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 0.0f);
-        sceneManager.addScene(sonicTower);
+        //Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
+        // sonicTower.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 0.0f);
+        // sceneManager.addScene(sonicTower);
+        sonicTower = new SonicTower();
+        sonicTower.init(sceneManager, sceneAssetHashMap, 0.0f, groundTileDimensions.y, 0.0f);
+
 
 
         // place example canonTower
-        Scene canonTower = new Scene(sceneAssetHashMap.get("weapon_cannon.glb").scene);
-        canonTower.modelInstance.transform.setToTranslation(1.0f, groundTileDimensions.y, 0.0f);
-        sceneManager.addScene(canonTower);
+       // Scene canonTower = new Scene(sceneAssetHashMap.get("weapon_cannon.glb").scene);
+        canonTower = new CanonTower();
+
+        canonTower.init(sceneManager, sceneAssetHashMap,1.0f, groundTileDimensions.y, 0.0f);
+     //   sceneManager.addScene(canonTower);
 
 
         // place example bombTower
-        Scene bombTower = new Scene(sceneAssetHashMap.get("weapon_blaster.glb").scene);
-        bombTower.modelInstance.transform.setToTranslation(2.0f, groundTileDimensions.y, 0.0f);
-        sceneManager.addScene(bombTower);
+       // Scene bombTower = new Scene(sceneAssetHashMap.get("weapon_blaster.glb").scene);
+       // bombTower.modelInstance.transform.setToTranslation(2.0f, groundTileDimensions.y, 0.0f);
+        bombTower = new BombTower();
+        bombTower.init(sceneManager, sceneAssetHashMap, 2.0f, groundTileDimensions.y, 0.0f);
 
         // place enemy character
         infantry = new Infantry();
