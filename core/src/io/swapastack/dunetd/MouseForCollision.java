@@ -1,5 +1,6 @@
 package io.swapastack.dunetd;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
 public class MouseForCollision implements InputProcessor {
@@ -17,6 +18,9 @@ public class MouseForCollision implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
+        if(Input.Keys.SPACE == keycode) {
+            gameScreen.resetBeamPos();
+        }
         return false;
     }
 
@@ -33,7 +37,7 @@ public class MouseForCollision implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        gameScreen.resetBeamPos();
+
 
         return false;
     }

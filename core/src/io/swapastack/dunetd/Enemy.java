@@ -1,5 +1,6 @@
 package io.swapastack.dunetd;
 
+import com.badlogic.gdx.math.Vector3;
 import net.mgsx.gltf.scene3d.scene.Scene;
 
 public abstract class Enemy {
@@ -15,6 +16,7 @@ public abstract class Enemy {
     public Scene scene;
 
     public abstract void  move(float x, float y, float z);
+    public abstract void setPos(Vector3 pos);
     public abstract void destroyDamage();
     public abstract void onKill();
   //  public abstract void gainDamage();

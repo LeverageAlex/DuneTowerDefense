@@ -28,6 +28,11 @@ public class Infantry extends Enemy{
     }
 
     @Override
+    public void setPos(Vector3 pos) {
+        this.scene.modelInstance.transform.setTranslation(pos);
+    }
+
+    @Override
     public void destroyDamage() {
 
     }

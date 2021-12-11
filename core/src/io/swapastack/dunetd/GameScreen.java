@@ -23,6 +23,7 @@ import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 import net.mgsx.gltf.scene3d.scene.SceneSkybox;
 import net.mgsx.gltf.scene3d.utils.IBLBuilder;
+import org.lwjgl.system.CallbackI;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -60,7 +61,7 @@ public class GameScreen implements Screen {
     // Grid Specifications
     private int rows = 5;
     private int cols = 5;
-   // float x;
+
 
     // Animation Controllers
     AnimationController bossCharacterAnimationController;
@@ -205,7 +206,7 @@ public class GameScreen implements Screen {
         }
 
 
-        ImGui.text(String.format(Locale.US,"test: "));
+        ImGui.text(String.format(Locale.US,"Lambda" + findYCutLambda(calculateClickDirection())));
 
 
         infantry.move(0.001f, 0, 0);
@@ -217,7 +218,7 @@ public class GameScreen implements Screen {
 
         Vector3 vec = beam.modelInstance.transform.getTranslation(new Vector3(0.f,0.f,0.f));
         //Speed of falling
-        beam.modelInstance.transform.setToTranslation(vec.add(calculateClickDirection().setLength(0.01f)));
+       // beam.modelInstance.transform.setToTranslation(vec.add(calculateClickDirection().setLength(0.01f)));
 
     }
 
@@ -346,13 +347,42 @@ public class GameScreen implements Screen {
         skybox.dispose();
     }
 
+    /**
+     * Places our Beam at the position of the mouse on the gameMap
+     */
     public void resetBeamPos() {
-        beam.modelInstance.transform.setToTranslation(camera.position);
+      //  beam.modelInstance.transform.setToTranslation(camera.position);
+        Vector3 camPos = new Vector3(camera.position);
+       // System.out.println("startPos: " + camPos.toString());
+        Vector3 clickDir = calculateClickDirection();
+        float lambda = findYCutLambda(clickDir);
+        clickDir.x *= lambda;
+        clickDir.y *= lambda;
+        clickDir.z *= lambda;
+        camPos = camPos.sub(clickDir);
+        camPos.y = 0.f;
+        beam.modelInstance.transform.setToTranslation(camPos);
+     //   System.out.println("camPos: " + camPos.toString());
     }
 
+    /**
+     * Calculates the directionVector based on the MousePosition to the map
+     * @return directionVector with unit length (1)
+     */
     private Vector3 calculateClickDirection() {
         Vector3 vecMousePos = new Vector3(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0.f)));
         return vecMousePos.sub(camera.position).setLength(1f);
+    }
+
+    /**
+     *
+     * @param direction (a Vector3 who points towards a direction)
+     * @return lambda of our direction-Vector which is needed to set y = 0 (x-z plane) where the gameMap is allocated at
+     */
+    private float findYCutLambda(Vector3 direction) {
+        Vector3 v = new Vector3(camera.position);
+        direction.y =  v.y /direction.y;
+        return direction.y;
     }
 
 }
