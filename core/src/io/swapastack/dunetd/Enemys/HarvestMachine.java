@@ -10,6 +10,7 @@ import java.util.HashMap;
 public class HarvestMachine extends Enemy{
     public HarvestMachine() {
         graphics = "spaceship_orion/scene.gltf";
+        type = 1;
     }
 
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, float x, float y, float z) {

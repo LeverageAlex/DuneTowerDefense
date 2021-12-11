@@ -11,6 +11,7 @@ public class BossUnit extends Enemy{
 
     public BossUnit() {
         graphics = "faceted_character/scene.gltf";
+        type = 2;
 
     }
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, float x, float y, float z) {

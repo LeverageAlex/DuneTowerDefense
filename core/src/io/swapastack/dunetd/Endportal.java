@@ -1,5 +1,6 @@
 package io.swapastack.dunetd;
 
+import com.badlogic.gdx.math.Vector3;
 import net.mgsx.gltf.scene3d.scene.Scene;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
@@ -7,7 +8,6 @@ import net.mgsx.gltf.scene3d.scene.SceneManager;
 import java.util.HashMap;
 
 public class Endportal {
-    private int x, y;
     public String graphics = "towerSquare_topB.glb";
     private Scene scene;
 
@@ -18,13 +18,10 @@ public class Endportal {
         this.scene.modelInstance.transform.setToTranslation(x, y, z).scale(1.f, 0.1f, 1.f);
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setPos(Vector3 pos) {
+        this.scene.modelInstance.transform.setTranslation(pos);
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
     public Scene createScene(HashMap<String, SceneAsset> m) {
         this.scene = new Scene(m.get(graphics).scene);
         return scene;

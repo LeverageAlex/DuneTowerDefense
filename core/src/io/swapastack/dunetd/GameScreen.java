@@ -17,6 +17,7 @@ import imgui.glfw.ImGuiImplGlfw;
 import io.swapastack.dunetd.Enemys.BossUnit;
 import io.swapastack.dunetd.Enemys.Infantry;
 import io.swapastack.dunetd.Enemys.HarvestMachine;
+import io.swapastack.dunetd.Enemys.Wave;
 import io.swapastack.dunetd.Towers.BombTower;
 import io.swapastack.dunetd.Towers.CanonTower;
 import io.swapastack.dunetd.Towers.SonicTower;
@@ -454,6 +455,8 @@ public class GameScreen implements Screen {
 
         Startportal startportal = new Startportal(sceneManager, sceneAssetHashMap, 1.0f, groundTileDimensions.y, 3.0f);
         Endportal endportal = new Endportal(sceneManager, sceneAssetHashMap, 2.0f, groundTileDimensions.y, 3.0f);
+
+        Wave wave = new Wave();
 
         beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
         resetBeamPos();

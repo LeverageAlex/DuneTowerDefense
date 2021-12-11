@@ -16,6 +16,7 @@ public abstract class Enemy {
     protected int health;
     protected double movementSpeed;
     public String graphics;
+    protected int type;
     protected Scene scene;
     protected AnimationController animController;
 
@@ -71,5 +72,7 @@ public abstract class Enemy {
         System.out.printf(this.getClass().getName() + " grid: x: %f, y:%f, z:%f\n", pos.x, pos.y, pos.z);
     }
 
-
+    public int getType() {
+        return type;
+    }
 }

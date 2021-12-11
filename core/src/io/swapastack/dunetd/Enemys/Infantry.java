@@ -15,6 +15,7 @@ public class Infantry extends Enemy {
 
     public Infantry() {
         graphics = /*"faceted_character/scene.gltf";*/ "cute_cyborg/scene.gltf";
+        type = 0;
     }
 
     @Override
