@@ -23,8 +23,8 @@ import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 import net.mgsx.gltf.scene3d.scene.SceneSkybox;
 import net.mgsx.gltf.scene3d.utils.IBLBuilder;
-import org.lwjgl.system.CallbackI;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -76,6 +76,8 @@ public class GameScreen implements Screen {
     //Custom
     MouseForCollision mouseForCollision;
     Scene beam;
+    Scene[][] mapTiles;
+    BoundingBox[][] mapBoxes;
 
     public GameScreen(DuneTD parent) {
         this.parent = parent;
@@ -166,7 +168,8 @@ public class GameScreen implements Screen {
         SceneAsset harvesterCharacter = parent.assetManager.get("spaceship_orion/scene.gltf");
         sceneAssetHashMap.put("spaceship_orion/scene.gltf", harvesterCharacter);
 
-        createMapExample(sceneManager);
+      //   createMapExample(sceneManager);
+        createMap(sceneManager);
 
     }
 
@@ -206,7 +209,10 @@ public class GameScreen implements Screen {
         }
 
 
-        ImGui.text(String.format(Locale.US,"Lambda" + findYCutLambda(calculateClickDirection())));
+        ImGui.text("Mouse Map: " + getClickOnField().toString());
+        Vector3 vec = getClickOnField();
+
+        ImGui.text("Mouse Map Rounded X: " + Math.round(vec.x) + ", Y: " + vec.y + ", Z: " + Math.round(vec.z));
 
 
         infantry.move(0.001f, 0, 0);
@@ -216,7 +222,12 @@ public class GameScreen implements Screen {
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
 
-        Vector3 vec = beam.modelInstance.transform.getTranslation(new Vector3(0.f,0.f,0.f));
+        //Rotation-Fun
+       /* if(inRangeofField(vec)) {
+            mapTiles[Math.round(vec.z)][Math.round(vec.x)].modelInstance.transform.rotate(new Vector3(0.f, 1.f, 0.f), 0.3f);
+        }*/
+
+      //  Vector3 vec = beam.modelInstance.transform.getTranslation(new Vector3(0.f,0.f,0.f));
         //Speed of falling
        // beam.modelInstance.transform.setToTranslation(vec.add(calculateClickDirection().setLength(0.01f)));
 
@@ -335,6 +346,95 @@ public class GameScreen implements Screen {
         sceneManager.addScene(beam);
     }
 
+    private void createMap(SceneManager sceneManager) {
+
+        Vector3 groundTileDimensions = new Vector3();
+        mapTiles = new Scene[rows][cols];
+        mapBoxes = new BoundingBox[rows][cols];
+
+        // Simple way to generate the example map
+        for (int i = 0; i < rows; i++) {
+            for (int k = 0; k < cols; k++) {
+                // Create a new Scene object from the tile_dirt gltf model
+                Scene gridTile = new Scene(sceneAssetHashMap.get("tile_dirt.glb").scene);
+                // Create a new BoundingBox, this is useful to check collisions or to get the model dimensions
+                BoundingBox boundingBox = new BoundingBox();
+
+                // Calculate the BoundingBox from the given ModelInstance
+                gridTile.modelInstance.calculateBoundingBox(boundingBox);
+                // Create Vector3 to store the ModelInstance dimensions
+                Vector3 modelDimensions = new Vector3();
+                // Read the ModelInstance BoundingBox dimensions
+                boundingBox.getDimensions(modelDimensions);
+                // TODO: refactor this if needed, e.g. if ground tiles are not all the same size
+                groundTileDimensions.set(modelDimensions);
+                // Set the ModelInstance to the respective row and cell of the map
+                gridTile.modelInstance.transform.setToTranslation(k * modelDimensions.x, 0.0f, i * modelDimensions.z);
+                //  gridTile.modelInstance.transform.setToTranslation( 10* modelDimensions.x, 0.0f,  5*modelDimensions.z);
+                // Add the Scene object to the SceneManager for rendering
+                sceneManager.addScene(gridTile);
+                mapTiles[i][k] = gridTile;
+                mapBoxes[i][k] = boundingBox;
+
+                //   System.out.printf("Breite: %f \n", boundingBox.	getHeight() );
+                // it could be useful to store the Scene object reference outside this method
+            }
+        }
+        // place example sonicTower
+        Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
+        sonicTower.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 0.0f);
+        sceneManager.addScene(sonicTower);
+
+
+        // place example canonTower
+        Scene canonTower = new Scene(sceneAssetHashMap.get("weapon_cannon.glb").scene);
+        canonTower.modelInstance.transform.setToTranslation(1.0f, groundTileDimensions.y, 0.0f);
+        sceneManager.addScene(canonTower);
+
+
+        // place example bombTower
+        Scene bombTower = new Scene(sceneAssetHashMap.get("weapon_blaster.glb").scene);
+        bombTower.modelInstance.transform.setToTranslation(2.0f, groundTileDimensions.y, 0.0f);
+        sceneManager.addScene(bombTower);
+
+        // place boss character
+        // Scene bossCharacter = new Scene(sceneAssetHashMap.get("faceted_character/scene.gltf").scene);
+        infantry = new Infantry().init();
+        Scene bossCharacter = infantry.createScene(sceneAssetHashMap);
+        bossCharacter.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 2.0f).scale(0.005f, 0.005f, 0.005f);
+        sceneManager.addScene(bossCharacter);
+
+
+        bossCharacter.modelInstance.calculateTransforms();
+
+        bossCharacterAnimationController = new AnimationController(bossCharacter.modelInstance);
+        bossCharacterAnimationController.setAnimation("Armature|Run", -1);
+
+        // place enemy character
+        Scene enemyCharacter = new Scene(sceneAssetHashMap.get("cute_cyborg/scene.gltf").scene);
+        enemyCharacter.modelInstance.transform.setToTranslation(1.0f, groundTileDimensions.y, 2.0f)
+                .scale(0.02f, 0.04f, 0.03f)
+                .rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
+        sceneManager.addScene(enemyCharacter);
+
+        enemyCharacterAnimationController = new AnimationController(enemyCharacter.modelInstance);
+        enemyCharacterAnimationController.setAnimation("RUN", -1);
+
+        // place spaceship character
+        Scene spaceshipCharacter = new Scene(sceneAssetHashMap.get("spaceship_orion/scene.gltf").scene);
+        spaceshipCharacter.modelInstance.transform.setToTranslation(2.0f, 0.25f, 2.0f)
+                .scale(0.2f, 0.2f, 0.2f);
+        sceneManager.addScene(spaceshipCharacter);
+
+        spaceshipAnimationController = new AnimationController(spaceshipCharacter.modelInstance);
+        spaceshipAnimationController.setAnimation("Action", -1);
+
+        beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
+        resetBeamPos();
+        sceneManager.addScene(beam);
+    }
+
+
     @Override
     public void dispose() {
         // GDX GLTF - dispose resources
@@ -351,18 +451,19 @@ public class GameScreen implements Screen {
      * Places our Beam at the position of the mouse on the gameMap
      */
     public void resetBeamPos() {
-      //  beam.modelInstance.transform.setToTranslation(camera.position);
+
+        beam.modelInstance.transform.setToTranslation(getClickOnField());
+
+
+     }
+
+    public Vector3 getClickOnField() {
         Vector3 camPos = new Vector3(camera.position);
-       // System.out.println("startPos: " + camPos.toString());
         Vector3 clickDir = calculateClickDirection();
         float lambda = findYCutLambda(clickDir);
-        clickDir.x *= lambda;
-        clickDir.y *= lambda;
-        clickDir.z *= lambda;
-        camPos = camPos.sub(clickDir);
-        camPos.y = 0.f;
-        beam.modelInstance.transform.setToTranslation(camPos);
-     //   System.out.println("camPos: " + camPos.toString());
+
+        camPos = new Vector3(camPos.x - clickDir.x*lambda, 0.f, camPos.z - clickDir.z*lambda);
+        return camPos;
     }
 
     /**
@@ -381,8 +482,17 @@ public class GameScreen implements Screen {
      */
     private float findYCutLambda(Vector3 direction) {
         Vector3 v = new Vector3(camera.position);
-        direction.y =  v.y /direction.y;
-        return direction.y;
+        return v.y /direction.y;
+
+    }
+    public boolean inRangeofField(Vector3 vec) {
+        int x = Math.round(vec.x);
+     //   int y = 0;
+        int z = Math.round(vec.z);
+        if(x >= 0 && x < rows && z >= 0 && z < cols) {
+            return true;
+        }
+        return false;
     }
 
 }
