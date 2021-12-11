@@ -227,8 +227,10 @@ public class GameScreen implements Screen {
         ImGui.text("Mouse Map Rounded X: " + Math.round(vec.x) + ", Y: " + vec.y + ", Z: " + Math.round(vec.z));
 
 
-        infantry.move(0.001f, 0, 0);
+       // infantry.move(0.0005f, 0, -0.001f);
         infantryTwo.move(0, 0, 0.005f);
+        bossUnit.move(0.0008f, 0, -0.000f);
+        canonTower.fire(attackers);
         ImGui.end();
 
         // SpaiR/imgui-java
@@ -409,7 +411,7 @@ public class GameScreen implements Screen {
        // Scene canonTower = new Scene(sceneAssetHashMap.get("weapon_cannon.glb").scene);
         canonTower = new CanonTower();
 
-        canonTower.init(sceneManager, sceneAssetHashMap,mapTowers,1.0f, groundTileDimensions.y, 0.0f);
+        canonTower.init(sceneManager, sceneAssetHashMap,mapTowers,4.0f, groundTileDimensions.y, 0.0f);
      //   sceneManager.addScene(canonTower);
 
 
@@ -423,7 +425,7 @@ public class GameScreen implements Screen {
         infantry = new Infantry();
 
         //infantry.setToTranslation(0.0f, groundTileDimensions.y, 2.0f)/*Boss Data.scale(0.005f, 0.005f, 0.005f)*/.scale(0.02f, 0.04f, 0.03f).rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
-        infantry.init(sceneManager, sceneAssetHashMap, 0.0f, groundTileDimensions.y, 2.0f);
+        infantry.init(sceneManager, sceneAssetHashMap, 2.0f, groundTileDimensions.y, 2.0f);
       //  sceneManager.addScene(enemyCharacter);
 
         infantry.getScene().modelInstance.calculateTransforms();
@@ -457,6 +459,10 @@ public class GameScreen implements Screen {
         infantryTwo.init(sceneManager, sceneAssetHashMap, 2.0f, 0.25f, 4.0f);
         infantryTwo.setAnimation("RIDING", -1);
 
+        attackers.add(infantry);
+        attackers.add(bossUnit);
+        attackers.add(harvestMachine);
+        attackers.add(infantryTwo);
 
 
         wave = new Wave();

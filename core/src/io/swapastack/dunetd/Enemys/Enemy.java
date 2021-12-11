@@ -75,4 +75,9 @@ public abstract class Enemy {
     public int getType() {
         return type;
     }
+
+    public Vector3 getCoords() {
+        Vector3 pos = scene.modelInstance.transform.getTranslation(new Vector3());
+        return pos;
+    }
 }

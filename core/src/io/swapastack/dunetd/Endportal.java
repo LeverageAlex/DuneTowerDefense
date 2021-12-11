@@ -22,7 +22,7 @@ public class Endportal implements MapIterable{
         this.y = y;
         this.z = z;
         map[Math.round(x)][Math.round(z)] = this;
-    }
+        }
 
     public void setPos(Vector3 pos) {
         this.scene.modelInstance.transform.setTranslation(pos);

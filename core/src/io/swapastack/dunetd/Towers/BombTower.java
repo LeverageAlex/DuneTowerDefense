@@ -1,8 +1,10 @@
 package io.swapastack.dunetd.Towers;
 
+import io.swapastack.dunetd.Enemys.Enemy;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BombTower extends Tower{
@@ -19,5 +21,10 @@ public class BombTower extends Tower{
         if(isEligibleToPlace(towers, Math.round(x), Math.round(z))) {
             towers[Math.round(x)][Math.round(z)] = this;
         }
+    }
+
+    @Override
+    public void fire(ArrayList<Enemy> enemys) {
+
     }
 }

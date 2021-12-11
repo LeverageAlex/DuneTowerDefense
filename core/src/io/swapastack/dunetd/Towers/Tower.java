@@ -3,10 +3,12 @@ package io.swapastack.dunetd.Towers;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import io.swapastack.dunetd.Enemys.Enemy;
 import net.mgsx.gltf.scene3d.scene.Scene;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Tower implements MapIterable {
@@ -19,7 +21,7 @@ public abstract class Tower implements MapIterable {
     private int length = Integer.MAX_VALUE, color = 0;
 
     public abstract void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers,float x, float y, float z);
-
+    public abstract void fire(ArrayList<Enemy> enemys);
 
 
 
@@ -29,6 +31,7 @@ public abstract class Tower implements MapIterable {
         this.scene = new Scene(m.get(graphics).scene);
         return scene;
     }
+
 
 
     public Matrix4 setToTranslation(Vector3 vector) {
@@ -92,5 +95,10 @@ public abstract class Tower implements MapIterable {
         else {
             return false;
         }
+    }
+
+    public boolean isInRange(Vector3 pos) {
+        Vector3 towerPos = getScene().modelInstance.transform.getTranslation(new Vector3());
+        return ((pos.x-towerPos.x)*(pos.x-towerPos.x) + (pos.z-towerPos.z) <= range*range );
     }
 }
