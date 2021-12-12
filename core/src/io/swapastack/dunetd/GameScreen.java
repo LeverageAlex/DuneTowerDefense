@@ -25,9 +25,7 @@ import net.mgsx.gltf.scene3d.scene.SceneManager;
 import net.mgsx.gltf.scene3d.scene.SceneSkybox;
 import net.mgsx.gltf.scene3d.utils.IBLBuilder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * The GameScreen class.
@@ -73,8 +71,6 @@ public class GameScreen implements Screen {
     private int rows = 5;
     private int cols = 5;
 
-
-
     // SpaiR/imgui-java
     public ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
     public ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
@@ -90,6 +86,7 @@ public class GameScreen implements Screen {
     Endportal endPortal;
     Wave wave;
     MapIterable[][] mapTowers;
+    private int[][] shortestPath;
 
     public GameScreen(DuneTD parent) {
         this.parent = parent;
@@ -165,6 +162,7 @@ public class GameScreen implements Screen {
         parent.assetManager.load("faceted_character/scene.gltf", SceneAsset.class);
         parent.assetManager.load("cute_cyborg/scene.gltf", SceneAsset.class);
         parent.assetManager.load("spaceship_orion/scene.gltf", SceneAsset.class);
+        parent.assetManager.load("bullet_9_mm/scene.gltf", SceneAsset.class);
         DuneTD.assetManager.finishLoading();
 
         // Create scene assets for all loaded models
@@ -179,6 +177,8 @@ public class GameScreen implements Screen {
         sceneAssetHashMap.put("cute_cyborg/scene.gltf", enemyCharacter);
         SceneAsset harvesterCharacter = parent.assetManager.get("spaceship_orion/scene.gltf");
         sceneAssetHashMap.put("spaceship_orion/scene.gltf", harvesterCharacter);
+        SceneAsset bullet9mm = parent.assetManager.get("bullet_9_mm/scene.gltf");
+        sceneAssetHashMap.put("bullet_9_mm/scene.gltf", bullet9mm);
 
       //   createMapExample(sceneManager);
         createMap(sceneManager);
@@ -207,8 +207,10 @@ public class GameScreen implements Screen {
         ImGui.newFrame();
 
         // GDX GLTF - update scene manager and render scene
+
         sceneManager.update(delta);
         sceneManager.render();
+
 
 
         ImGui.begin("Performance", ImGuiWindowFlags.AlwaysAutoResize);
@@ -238,7 +240,6 @@ public class GameScreen implements Screen {
         // SpaiR/imgui-java
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
-
         //Rotation-Fun
        /* if(inRangeofField(vec)) {
             mapTiles[Math.round(vec.z)][Math.round(vec.x)].modelInstance.transform.rotate(new Vector3(0.f, 1.f, 0.f), 0.3f);
@@ -267,97 +268,6 @@ public class GameScreen implements Screen {
         // TODO: implement hide logic if needed
     }
 
-    /**
-     * This function acts as a starting point.
-     * It generate a simple rectangular map with towers placed on it.
-     * It doesn't provide any functionality, but it uses some common ModelInstance specific functions.
-     * Feel free to modify the values and check the results.
-     *
-     * @param sceneManager
-     */
-   /* private void createMapExample(SceneManager sceneManager) {
-
-        Vector3 groundTileDimensions = new Vector3();
-
-        // Simple way to generate the example map
-        for (int i = 0; i < rows; i++) {
-            for (int k = 0; k < cols; k++) {
-                // Create a new Scene object from the tile_dirt gltf model
-                Scene gridTile = new Scene(sceneAssetHashMap.get("tile_dirt.glb").scene);
-                // Create a new BoundingBox, this is useful to check collisions or to get the model dimensions
-                BoundingBox boundingBox = new BoundingBox();
-
-                // Calculate the BoundingBox from the given ModelInstance
-                gridTile.modelInstance.calculateBoundingBox(boundingBox);
-                // Create Vector3 to store the ModelInstance dimensions
-                Vector3 modelDimensions = new Vector3();
-                // Read the ModelInstance BoundingBox dimensions
-                boundingBox.getDimensions(modelDimensions);
-                // TODO: refactor this if needed, e.g. if ground tiles are not all the same size
-                groundTileDimensions.set(modelDimensions);
-                // Set the ModelInstance to the respective row and cell of the map
-                gridTile.modelInstance.transform.setToTranslation(k * modelDimensions.x, 0.0f, i * modelDimensions.z);
-              //  gridTile.modelInstance.transform.setToTranslation( 10* modelDimensions.x, 0.0f,  5*modelDimensions.z);
-                // Add the Scene object to the SceneManager for rendering
-                sceneManager.addScene(gridTile);
-
-             //   System.out.printf("Breite: %f \n", boundingBox.	getHeight() );
-                // it could be useful to store the Scene object reference outside this method
-            }
-        }
-        // place example sonicTower
-        Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
-        sonicTower.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 0.0f);
-        sceneManager.addScene(sonicTower);
-
-
-        // place example canonTower
-        Scene canonTower = new Scene(sceneAssetHashMap.get("weapon_cannon.glb").scene);
-        canonTower.modelInstance.transform.setToTranslation(1.0f, groundTileDimensions.y, 0.0f);
-        sceneManager.addScene(canonTower);
-
-
-        // place example bombTower
-        Scene bombTower = new Scene(sceneAssetHashMap.get("weapon_blaster.glb").scene);
-        bombTower.modelInstance.transform.setToTranslation(2.0f, groundTileDimensions.y, 0.0f);
-        sceneManager.addScene(bombTower);
-
-        // place boss character
-      // Scene bossCharacter = new Scene(sceneAssetHashMap.get("faceted_character/scene.gltf").scene);
-        infantry = new Infantry().init();
-        Scene bossCharacter = infantry.createScene(sceneAssetHashMap);
-        bossCharacter.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 2.0f).scale(0.005f, 0.005f, 0.005f);
-        sceneManager.addScene(bossCharacter);
-
-
-        bossCharacter.modelInstance.calculateTransforms();
-
-        bossCharacterAnimationController = new AnimationController(bossCharacter.modelInstance);
-        bossCharacterAnimationController.setAnimation("Armature|Run", -1);
-
-        // place enemy character
-        Scene enemyCharacter = new Scene(sceneAssetHashMap.get("cute_cyborg/scene.gltf").scene);
-        enemyCharacter.modelInstance.transform.setToTranslation(1.0f, groundTileDimensions.y, 2.0f)
-                .scale(0.02f, 0.04f, 0.03f)
-                .rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
-        sceneManager.addScene(enemyCharacter);
-
-        enemyCharacterAnimationController = new AnimationController(enemyCharacter.modelInstance);
-        enemyCharacterAnimationController.setAnimation("RUN", -1);
-
-        // place spaceship character
-        Scene spaceshipCharacter = new Scene(sceneAssetHashMap.get("spaceship_orion/scene.gltf").scene);
-        spaceshipCharacter.modelInstance.transform.setToTranslation(2.0f, 0.25f, 2.0f)
-                .scale(0.2f, 0.2f, 0.2f);
-        sceneManager.addScene(spaceshipCharacter);
-
-        spaceshipAnimationController = new AnimationController(spaceshipCharacter.modelInstance);
-        spaceshipAnimationController.setAnimation("Action", -1);
-
-        beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
-        resetBeamPos();
-        sceneManager.addScene(beam);
-    }*/
 
     private void createMap(SceneManager sceneManager) {
 
@@ -366,6 +276,14 @@ public class GameScreen implements Screen {
         mapBoxes = new BoundingBox[rows][cols];
         attackers = new ArrayList<Enemy>();
         mapTowers = new MapIterable[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+              //  if(mapTowers[i][j] == null) {
+                    mapTowers[i][j] = new IterableOverMap();
+              //  }
+            }
+        }
 
         // Simple way to generate the example map
         for (int i = 0; i < rows; i++) {
@@ -396,70 +314,46 @@ public class GameScreen implements Screen {
             }
         }
         // place example sonicTower
-        //Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
-        // sonicTower.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 0.0f);
-        // sceneManager.addScene(sonicTower);
-
-        startPortal = new Startportal(sceneManager, sceneAssetHashMap, mapTowers,1.0f, groundTileDimensions.y, 3.0f);
-        endPortal = new Endportal(sceneManager, sceneAssetHashMap, mapTowers,2.0f, groundTileDimensions.y, 3.0f);
+        startPortal = new Startportal(sceneManager, sceneAssetHashMap, mapTowers,3.0f, groundTileDimensions.y, 3.0f);
+        endPortal = new Endportal(sceneManager, sceneAssetHashMap, mapTowers,1.0f, groundTileDimensions.y, 1.0f);
 
         if(Tower.isEligibleToPlace(mapTowers, Math.round(0.0f), Math.round(0.0f))) {
             sonicTower = new SonicTower();
-            sonicTower.init(sceneManager, sceneAssetHashMap, mapTowers, 0.0f, groundTileDimensions.y, 0.0f);
+            sonicTower.init(sceneManager, sceneAssetHashMap, mapTowers, 0.0f, groundTileDimensions.y, 1.0f);
         }
 
 
         // place example canonTower
-       // Scene canonTower = new Scene(sceneAssetHashMap.get("weapon_cannon.glb").scene);
         canonTower = new CanonTower();
-
-        canonTower.init(sceneManager, sceneAssetHashMap,mapTowers,4.0f, groundTileDimensions.y, 0.0f);
-     //   sceneManager.addScene(canonTower);
+        canonTower.init(sceneManager, sceneAssetHashMap,mapTowers,1.0f, groundTileDimensions.y, 2.0f);
 
 
         // place example bombTower
-       // Scene bombTower = new Scene(sceneAssetHashMap.get("weapon_blaster.glb").scene);
-       // bombTower.modelInstance.transform.setToTranslation(2.0f, groundTileDimensions.y, 0.0f);
         bombTower = new BombTower();
-        bombTower.init(sceneManager, sceneAssetHashMap, mapTowers,2.0f, groundTileDimensions.y, 0.0f);
+        bombTower.init(sceneManager, sceneAssetHashMap, mapTowers,2.0f, groundTileDimensions.y, 1.0f);
 
         // place enemy character
         infantry = new Infantry();
-
-        //infantry.setToTranslation(0.0f, groundTileDimensions.y, 2.0f)/*Boss Data.scale(0.005f, 0.005f, 0.005f)*/.scale(0.02f, 0.04f, 0.03f).rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
         infantry.init(sceneManager, sceneAssetHashMap, 2.0f, groundTileDimensions.y, 2.0f);
-      //  sceneManager.addScene(enemyCharacter);
-
         infantry.getScene().modelInstance.calculateTransforms();
-       // enemyCharacterAnimationController = infantry.getAnimationController();
-       // infantry.setAnimation("RUN", -1);
         infantry.setAnimation("RUN", -1);
 
         // place boss Unit character
         bossUnit = new BossUnit();
-      //  sceneManager.addScene(bossUnit.createScene(sceneAssetHashMap));
-      //  bossUnit.setToTranslation(1.0f, groundTileDimensions.y, 2.0f)
-       //         .scale(0.005f, 0.005f, 0.005f);
         bossUnit.init(sceneManager, sceneAssetHashMap, -3.0f, groundTileDimensions.y, 1.0f);
-
-        //bossCharacterAnimationController = bossUnit.getAnimationController();
-        //bossUnit.setAnimation("Armature|Run", -1);
         bossUnit.setAnimation("Armature|Run", -1);
 
         // place spaceship character
         harvestMachine = new HarvestMachine();
         harvestMachine.init(sceneManager, sceneAssetHashMap, startPortal.getX(), startPortal.getY()+0.25f, startPortal.getZ());
-        //Scene spaceshipCharacter = harvestMachine.getScene();
-        //spaceshipCharacter.modelInstance.transform.setToTranslation(2.0f, 0.25f, 2.0f)
-         //       .scale(0.2f, 0.2f, 0.2f);
-        //sceneManager.addScene(spaceshipCharacter);
-        /*spaceshipAnimationController = harvestMachine.getAnimationController();
-        spaceshipAnimationController.setAnimation("Action", -1);*/
         harvestMachine.setAnimation("Action", -1);
 
         infantryTwo = new Infantry();
         infantryTwo.init(sceneManager, sceneAssetHashMap, 2.0f, 0.25f, 4.0f);
         infantryTwo.setAnimation("RIDING", -1);
+
+        Bullet9mm bullet = new Bullet9mm();
+        bullet.init(sceneManager, sceneAssetHashMap, -1.F, 0.F, -1.F);
 
 
         attackers.add(bossUnit);
@@ -472,6 +366,8 @@ public class GameScreen implements Screen {
         beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
         resetBeamPos();
         sceneManager.addScene(beam);
+
+        PathFinder();
     }
 
 
@@ -491,16 +387,17 @@ public class GameScreen implements Screen {
      * Places our Beam at the position of the mouse on the gameMap
      */
     public void resetBeamPos() {
-
         beam.modelInstance.transform.setToTranslation(getClickOnField());
-
-
      }
 
+    /** Converts MouseClick to Coordinate on the x-z plane (y=0)
+     * lambda of our direction-Vector which is needed to set y = 0 (x-z plane) where the gameMap is allocated at
+     * @return
+     */
     public Vector3 getClickOnField() {
         Vector3 camPos = new Vector3(camera.position);
         Vector3 clickDir = calculateClickDirection();
-        float lambda = findYCutLambda(clickDir);
+        float lambda = new Vector3(camera.position).y / clickDir.y;
 
         camPos = new Vector3(camPos.x - clickDir.x*lambda, 0.f, camPos.z - clickDir.z*lambda);
         return camPos;
@@ -534,5 +431,92 @@ public class GameScreen implements Screen {
         }
         return false;
     }
+
+
+    /**
+     * Modified Dijkstras Algorithm
+     * Chooses always the shortest Path. If there are more than one shortest Path it choses by the order: x+1, x-1, z-1, z+1
+     * @return returns the shortest Path-Coordinates as two-Dimensional Integer-Array[fieldNbr][choose x or z]
+     */
+    public int[][] PathFinder() {
+        //mapTowers
+        //Reset all params
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if(mapTowers[i][j].getPathColor() != 130) {
+                    mapTowers[i][j].setPathLength(Integer.MAX_VALUE);
+                    mapTowers[i][j].setPathColor(0);
+                }
+            }
+        }
+
+        //Setup startPortal as start-Vertice
+        startPortal.setPathLength(0);
+        ArrayList<IterableOverMap> q = new ArrayList<IterableOverMap>();
+        startPortal.setPathColor(1);
+        q.add(startPortal);
+        while(!q.isEmpty()) {
+            IterableOverMap vertice = q.get(0);
+            int[] coords = vertice.getPosition();
+            int currentX = coords[0];
+            int currentZ = coords[1];
+            if(inRangeofField(new Vector3(currentX+1, 0.F, currentZ)) && mapTowers[currentX+1][currentZ].getPathColor() == 0) {
+                mapTowers[currentX+1][currentZ].setPathColor(1);
+                mapTowers[currentX+1][currentZ].setPathLength(vertice.getPathLength()+1);
+                ((IterableOverMap)mapTowers[currentX+1][currentZ]).setVorgaenger(currentX, currentZ);
+                ((IterableOverMap)mapTowers[currentX+1][currentZ]).setPosition(currentX+1, currentZ);
+                q.add((IterableOverMap) mapTowers[currentX+1][currentZ]);
+            }
+            if(inRangeofField(new Vector3(currentX-1, 0.F, currentZ)) && mapTowers[currentX-1][currentZ].getPathColor() == 0) {
+                mapTowers[currentX-1][currentZ].setPathColor(1);
+                mapTowers[currentX-1][currentZ].setPathLength(vertice.getPathLength()+1);
+                ((IterableOverMap)mapTowers[currentX-1][currentZ]).setVorgaenger(currentX, currentZ);
+                ((IterableOverMap)mapTowers[currentX-1][currentZ]).setPosition(currentX-1, currentZ);
+                q.add((IterableOverMap) mapTowers[currentX-1][currentZ]);
+            }
+            if(inRangeofField(new Vector3(currentX, 0.F, currentZ-1)) && mapTowers[currentX][currentZ-1].getPathColor() == 0) {
+                mapTowers[currentX][currentZ-1].setPathColor(1);
+                mapTowers[currentX][currentZ-1].setPathLength(vertice.getPathLength()+1);
+                ((IterableOverMap)mapTowers[currentX][currentZ-1]).setVorgaenger(currentX, currentZ);
+                ((IterableOverMap)mapTowers[currentX][currentZ-1]).setPosition(currentX, currentZ-1);
+                q.add((IterableOverMap) mapTowers[currentX][currentZ-1]);
+            }
+            if(inRangeofField(new Vector3(currentX, 0.F, currentZ+1)) && mapTowers[currentX][currentZ+1].getPathColor() == 0) {
+                mapTowers[currentX][currentZ+1].setPathColor(1);
+                mapTowers[currentX][currentZ+1].setPathLength(vertice.getPathLength()+1);
+                ((IterableOverMap)mapTowers[currentX][currentZ+1]).setVorgaenger(currentX, currentZ);
+                ((IterableOverMap)mapTowers[currentX][currentZ+1]).setPosition(currentX, currentZ+1);
+                q.add((IterableOverMap) mapTowers[currentX][currentZ+1]);
+
+            }
+            q.remove(vertice);
+        }
+
+        if(endPortal.getPathLength() != Integer.MAX_VALUE) {
+            int[] pos = endPortal.getPosition();
+            int[][] walkWay = new int[endPortal.getPathLength()+1][2];
+            // IterableOverMap[] arr = new IterableOverMap[endPortal.getPathLength() + 1];
+
+            for (int i = walkWay.length - 1; i >= 0; i--) {
+              //  arr[i] = (IterableOverMap) mapTowers[pos[0]][pos[1]];
+                walkWay[i] = ((IterableOverMap) mapTowers[pos[0]][pos[1]]).getPosition();
+                pos = ((IterableOverMap) mapTowers[pos[0]][pos[1]]).getVorgaenger();
+            }
+
+         //   System.out.println(Arrays.toString(arr));
+            System.out.println("Numbered Dijkstra: " + Arrays.deepToString(walkWay));
+            shortestPath = walkWay;
+            return walkWay;
+        }
+        else {
+            System.out.println("Dijkstra found no way out!");
+            shortestPath = null;
+            return null;
+        }
+
+    }
+
+
+
 
 }
