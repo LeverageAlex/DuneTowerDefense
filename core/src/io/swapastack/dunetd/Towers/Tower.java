@@ -101,4 +101,11 @@ public abstract class Tower implements MapIterable {
         Vector3 towerPos = getScene().modelInstance.transform.getTranslation(new Vector3());
         return ((pos.x-towerPos.x)*(pos.x-towerPos.x) + (pos.z-towerPos.z) <= range*range );
     }
+
+    public void removeTower(SceneManager sceneManager, MapIterable[][] mapTowers) {
+        Vector3 pos = scene.modelInstance.transform.getTranslation(new Vector3());
+        mapTowers[Math.round(pos.x)][Math.round(pos.z)] = new IterableOverMap();
+        sceneManager.removeScene(this.getScene());
+
+    }
 }

@@ -352,8 +352,8 @@ public class GameScreen implements Screen {
         infantryTwo.init(sceneManager, sceneAssetHashMap, 2.0f, 0.25f, 4.0f);
         infantryTwo.setAnimation("RIDING", -1);
 
-        Bullet9mm bullet = new Bullet9mm();
-        bullet.init(sceneManager, sceneAssetHashMap, -1.F, 0.F, -1.F);
+        // Bullet9mm bullet = new Bullet9mm();
+        // bullet.init(sceneManager, sceneAssetHashMap, -1.F, 0.F, -1.F);
 
 
         attackers.add(bossUnit);
@@ -367,7 +367,8 @@ public class GameScreen implements Screen {
         resetBeamPos();
         sceneManager.addScene(beam);
 
-        PathFinder();
+        pathFinder();
+
     }
 
 
@@ -438,7 +439,7 @@ public class GameScreen implements Screen {
      * Chooses always the shortest Path. If there are more than one shortest Path it choses by the order: x+1, x-1, z-1, z+1
      * @return returns the shortest Path-Coordinates as two-Dimensional Integer-Array[fieldNbr][choose x or z]
      */
-    public int[][] PathFinder() {
+    public int[][] pathFinder() {
         //mapTowers
         //Reset all params
         for (int i = 0; i < rows; i++) {
