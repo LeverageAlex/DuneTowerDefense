@@ -317,20 +317,28 @@ public class GameScreen implements Screen {
         startPortal = new Startportal(sceneManager, sceneAssetHashMap, mapTowers,3.0f, groundTileDimensions.y, 3.0f);
         endPortal = new Endportal(sceneManager, sceneAssetHashMap, mapTowers,1.0f, groundTileDimensions.y, 1.0f);
 
-        if(Tower.isEligibleToPlace(mapTowers, Math.round(0.0f), Math.round(0.0f))) {
-            sonicTower = new SonicTower();
+        if(Tower.isEligibleToPlace(mapTowers, this,Math.round(0.0f), Math.round(0.0f))) {
+            sonicTower = new SonicTower(this);
             sonicTower.init(sceneManager, sceneAssetHashMap, mapTowers, 0.0f, groundTileDimensions.y, 1.0f);
         }
 
 
         // place example canonTower
-        canonTower = new CanonTower();
+        canonTower = new CanonTower(this);
         canonTower.init(sceneManager, sceneAssetHashMap,mapTowers,1.0f, groundTileDimensions.y, 2.0f);
 
 
         // place example bombTower
-        bombTower = new BombTower();
+        bombTower = new BombTower(this);
         bombTower.init(sceneManager, sceneAssetHashMap, mapTowers,2.0f, groundTileDimensions.y, 1.0f);
+
+      /*  if(Tower.isEligibleToPlace(mapTowers, this,Math.round(3.0f), Math.round(0.0f))) {
+            CanonTower canonTower2 = new CanonTower(this);
+            canonTower2.init(sceneManager, sceneAssetHashMap,mapTowers,3.0f, groundTileDimensions.y, 0.0f);
+        }
+        else {
+            System.out.println("Tower isn't allowed to be place here!");
+        }*/
 
         // place enemy character
         infantry = new Infantry();
@@ -433,6 +441,9 @@ public class GameScreen implements Screen {
         return false;
     }
 
+    public int[][] getShortestPath() {
+        return shortestPath;
+    }
 
     /**
      * Modified Dijkstras Algorithm
@@ -442,14 +453,7 @@ public class GameScreen implements Screen {
     public int[][] pathFinder() {
         //mapTowers
         //Reset all params
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if(mapTowers[i][j].getPathColor() != 130) {
-                    mapTowers[i][j].setPathLength(Integer.MAX_VALUE);
-                    mapTowers[i][j].setPathColor(0);
-                }
-            }
-        }
+
 
         //Setup startPortal as start-Vertice
         startPortal.setPathLength(0);
@@ -493,9 +497,11 @@ public class GameScreen implements Screen {
             q.remove(vertice);
         }
 
+
+        int[][] walkWay;
         if(endPortal.getPathLength() != Integer.MAX_VALUE) {
             int[] pos = endPortal.getPosition();
-            int[][] walkWay = new int[endPortal.getPathLength()+1][2];
+            walkWay = new int[endPortal.getPathLength()+1][2];
             // IterableOverMap[] arr = new IterableOverMap[endPortal.getPathLength() + 1];
 
             for (int i = walkWay.length - 1; i >= 0; i--) {
@@ -507,13 +513,22 @@ public class GameScreen implements Screen {
          //   System.out.println(Arrays.toString(arr));
             System.out.println("Numbered Dijkstra: " + Arrays.deepToString(walkWay));
             shortestPath = walkWay;
-            return walkWay;
         }
         else {
             System.out.println("Dijkstra found no way out!");
-            shortestPath = null;
-            return null;
+            walkWay = null;
         }
+
+        //CleanUp
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if(mapTowers[i][j].getPathColor() != 130) {
+                    mapTowers[i][j].setPathLength(Integer.MAX_VALUE);
+                    mapTowers[i][j].setPathColor(0);
+                }
+            }
+        }
+        return walkWay;
 
     }
 

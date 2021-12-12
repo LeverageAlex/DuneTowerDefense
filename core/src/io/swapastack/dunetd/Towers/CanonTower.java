@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import io.swapastack.dunetd.Enemys.Enemy;
+import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 
@@ -14,10 +15,11 @@ public class CanonTower extends Tower {
     float currentAngle = (float) (Math.PI / 2);
     float rotationSpeed = (float) Math.PI / 256;
 
-    public CanonTower() {
+    public CanonTower(GameScreen screen) {
         graphics = "weapon_cannon.glb";
         type = 2;
         range = 2;
+        gameScreen = screen;
     }
 
     @Override

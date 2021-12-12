@@ -1,6 +1,7 @@
 package io.swapastack.dunetd.Towers;
 
 import io.swapastack.dunetd.Enemys.Enemy;
+import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 
@@ -8,10 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SonicTower extends Tower{
-    public SonicTower() {
+    public SonicTower(GameScreen screen) {
         graphics = "towerRound_crystals.glb";
         type = 1;
         range = 1.7;
+        gameScreen = screen;
     }
 
     @Override

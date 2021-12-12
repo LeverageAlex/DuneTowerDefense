@@ -2,6 +2,7 @@ package io.swapastack.dunetd.Towers;
 
 import com.badlogic.gdx.math.Vector3;
 import io.swapastack.dunetd.Enemys.Enemy;
+import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 
@@ -12,10 +13,11 @@ public class BombTower extends Tower{
     float currentAngle = (float) (Math.PI/2);
     float rotationSpeed = (float) Math.PI/256;
 
-    public BombTower() {
+    public BombTower(GameScreen screen) {
         graphics = "weapon_blaster.glb";
         type = 0;
         range = 1.3;
+        gameScreen = screen;
     }
 
     @Override
@@ -24,9 +26,9 @@ public class BombTower extends Tower{
         sceneManager.addScene(scene);
         this.setToTranslation(x, y, z);
        // this.scene.modelInstance.mate
-        if(isEligibleToPlace(towers, Math.round(x), Math.round(z))) {
+       // if(isEligibleToPlace(towers, gameScreen,Math.round(x), Math.round(z))) {
             towers[Math.round(x)][Math.round(z)] = this;
-        }
+       // }
     }
 
     @Override

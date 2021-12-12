@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import io.swapastack.dunetd.Enemys.Enemy;
+import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.Scene;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
@@ -19,6 +20,7 @@ public abstract class Tower implements MapIterable {
     protected Scene scene;
     protected AnimationController animController;
     private int length = Integer.MAX_VALUE, color = 130;
+    protected GameScreen gameScreen;
 
     public abstract void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers,float x, float y, float z);
     public abstract void fire(ArrayList<Enemy> enemiesList);
@@ -88,9 +90,20 @@ public abstract class Tower implements MapIterable {
     }
 
     //Checks whether tile is free or a way to the Endportal continues to exist
-    public static boolean isEligibleToPlace(MapIterable[][] map, int x, int z) {
-        if(map[x][z] == null || map[x][z].getPathColor() == 0) {
-            return true;
+    public static boolean isEligibleToPlace(MapIterable[][] mapTowers , GameScreen gameScreen, int x, int z) {
+        //No Tower Placed
+        if(/*map[x][z] == null || */ mapTowers[x][z].getPathColor() == 0 ) {
+            //Check if a Path is after placing still available
+            int previousColor = mapTowers[x][z].getPathColor();
+            mapTowers[x][z].setPathColor(130);
+            if(gameScreen.pathFinder() == null) {
+                mapTowers[x][z].setPathColor(previousColor);
+                return false;
+            }
+            else {
+                mapTowers[x][z].setPathColor(previousColor);
+                return true;
+            }
         }
         else {
             return false;
