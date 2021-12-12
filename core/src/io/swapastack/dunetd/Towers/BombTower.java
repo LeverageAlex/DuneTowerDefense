@@ -23,6 +23,7 @@ public class BombTower extends Tower{
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
         this.setToTranslation(x, y, z);
+       // this.scene.modelInstance.mate
         if(isEligibleToPlace(towers, Math.round(x), Math.round(z))) {
             towers[Math.round(x)][Math.round(z)] = this;
         }

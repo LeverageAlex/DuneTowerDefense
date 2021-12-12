@@ -18,7 +18,7 @@ public abstract class Tower implements MapIterable {
     public String graphics;
     protected Scene scene;
     protected AnimationController animController;
-    private int length = Integer.MAX_VALUE, color = 0;
+    private int length = Integer.MAX_VALUE, color = 130;
 
     public abstract void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers,float x, float y, float z);
     public abstract void fire(ArrayList<Enemy> enemiesList);
@@ -70,26 +70,26 @@ public abstract class Tower implements MapIterable {
         return type;
     }
 
-    public void setLength(int length) {
+    public void setPathLength(int length) {
         this.length = length;
     }
 
-    public int getLength() {
+    public int getPathLength() {
         return length;
     }
 
     @Override
-    public int getColor() {
+    public int getPathColor() {
         return color;
     }
 
-    public void setColor(int color) {
+    public void setPathColor(int color) {
         this.color = color;
     }
 
     //Checks whether tile is free or a way to the Endportal continues to exist
     public static boolean isEligibleToPlace(MapIterable[][] map, int x, int z) {
-        if(map[x][z] == null) {
+        if(map[x][z] == null || map[x][z].getPathColor() == 0) {
             return true;
         }
         else {

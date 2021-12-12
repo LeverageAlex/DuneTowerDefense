@@ -2,12 +2,13 @@ package io.swapastack.dunetd.Towers;
 
 public interface MapIterable {
 
-    public int getType();
+ //   public int getType();
 
-    public int getLength();
-    public void setLength(int length);
+    public int getPathLength();
+    public void setPathLength(int length);
 
-    public int getColor();
-    public void setColor(int color);
+    public int getPathColor();
+    public void setPathColor(int color);
+
 
 }
