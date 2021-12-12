@@ -332,13 +332,13 @@ public class GameScreen implements Screen {
         bombTower = new BombTower(this);
         bombTower.init(sceneManager, sceneAssetHashMap, mapTowers,2.0f, groundTileDimensions.y, 1.0f);
 
-        if(Tower.isEligibleToPlace(mapTowers, this,Math.round(4.0f), Math.round(0.0f))) {
+      /*  if(Tower.isEligibleToPlace(mapTowers, this,Math.round(1.0f), Math.round(0.0f))) {
             CanonTower canonTower2 = new CanonTower(this);
-            canonTower2.init(sceneManager, sceneAssetHashMap,mapTowers,4.0f, groundTileDimensions.y, 0.0f);
+            canonTower2.init(sceneManager, sceneAssetHashMap,mapTowers,1.0f, groundTileDimensions.y, 0.0f);
         }
         else {
             System.out.println("Tower isn't allowed to be place here!");
-        }
+        }*/
 
         // place enemy character
         infantry = new Infantry();
