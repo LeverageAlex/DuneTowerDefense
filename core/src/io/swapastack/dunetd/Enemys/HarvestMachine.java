@@ -11,13 +11,17 @@ public class HarvestMachine extends Enemy{
     public HarvestMachine() {
         graphics = "spaceship_orion/scene.gltf";
         type = 1;
+        currentAngle = -(float) Math.PI/2.f;
+        rotationSpeed = (float) Math.PI / 128.f;
+        movementSpeed = 0.002f;
     }
 
-    public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, float x, float y, float z) {
+    public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath,float x, float y, float z) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
         this.setToTranslation(x, y, z)
                 .scale(0.2f, 0.2f, 0.2f);
+        this.shortestPath = shortestPath;
 
     }
 

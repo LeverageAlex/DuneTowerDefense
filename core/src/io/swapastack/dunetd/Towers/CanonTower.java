@@ -26,7 +26,7 @@ public class CanonTower extends Tower {
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers, float x, float y, float z) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
-        this.setToTranslation(x, y, z);
+        this.setTranslation(x, y, z);
         towers[Math.round(x)][Math.round(z)] = this;
     }
 
@@ -66,6 +66,16 @@ public class CanonTower extends Tower {
             notClamped = false;
         } else {
             toRotate = rotation - currentAngle;
+        }
+
+        if(currentAngle - 0.05f < -Math.PI && rotation + 0.05f > Math.PI) {
+            toRotate = (float) (rotation + Math.PI -0.06f);
+            System.out.println("Critical code in CanonTower triggered. Check for interferences!");
+        }
+        //This might be odd
+        if(currentAngle + 0.05f > Math.PI && rotation - 0.05f < -Math.PI) {
+            toRotate = (float) (rotation + Math.PI+0.06f);
+            System.out.println("Critical code in CanonTower triggered. Check for interferences!");
         }
 
         // float toRotate = (float) MathUtils.clamp(rotation-currentAngle, -rotationSpeed, rotationSpeed);

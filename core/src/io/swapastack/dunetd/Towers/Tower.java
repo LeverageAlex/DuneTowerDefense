@@ -36,12 +36,12 @@ public abstract class Tower implements MapIterable {
 
 
 
-    public Matrix4 setToTranslation(Vector3 vector) {
-        return scene.modelInstance.transform.setToTranslation(vector);
+    public Matrix4 setTranslation(Vector3 vector) {
+        return scene.modelInstance.transform.setTranslation(vector);
     }
 
-    public Matrix4 setToTranslation(float x, float y, float z) {
-        return scene.modelInstance.transform.setToTranslation(x, y, z);
+    public Matrix4 setTranslation(float x, float y, float z) {
+        return scene.modelInstance.transform.setTranslation(x, y, z);
     }
 
     public void setAnimation(String id, int loopCnt) {
@@ -112,7 +112,7 @@ public abstract class Tower implements MapIterable {
 
     public boolean isInRange(Vector3 pos) {
         Vector3 towerPos = getScene().modelInstance.transform.getTranslation(new Vector3());
-        return ((pos.x-towerPos.x)*(pos.x-towerPos.x) + (pos.z-towerPos.z) <= range*range );
+        return ((pos.x-towerPos.x)*(pos.x-towerPos.x) + (pos.z-towerPos.z)*(pos.z-towerPos.z) <= range*range );
     }
 
     public void removeTower(SceneManager sceneManager, MapIterable[][] mapTowers) {

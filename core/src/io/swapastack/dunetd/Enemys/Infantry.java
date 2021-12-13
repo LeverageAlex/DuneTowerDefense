@@ -13,6 +13,10 @@ public class Infantry extends Enemy {
     public Infantry() {
         graphics = /*"faceted_character/scene.gltf";*/ "cute_cyborg/scene.gltf";
         type = 0;
+        currentAngle = -(float) Math.PI/2.f;
+        rotationSpeed = (float) Math.PI / 256.f;
+        movementSpeed = 0.001f;
+       // target = new int[]{3, 1};
     }
 
     @Override
@@ -22,11 +26,12 @@ public class Infantry extends Enemy {
         this.scene.modelInstance.transform.setTranslation(pos.x + x, pos.y + y, pos.z + z);
     }
 
-    public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, float x, float y, float z) {
+    public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath ,float x, float y, float z) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
         this.setToTranslation(x, y, z)
                 .scale(0.02f, 0.04f, 0.03f).rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
+        this.shortestPath = shortestPath;
     }
 
 

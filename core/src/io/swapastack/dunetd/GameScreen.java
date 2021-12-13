@@ -212,7 +212,6 @@ public class GameScreen implements Screen {
         sceneManager.render();
 
 
-
         ImGui.begin("Performance", ImGuiWindowFlags.AlwaysAutoResize);
         ImGui.text(String.format(Locale.US,"deltaTime: %1.6f", delta));
         ImGui.end();
@@ -229,9 +228,15 @@ public class GameScreen implements Screen {
         ImGui.text("Mouse Map Rounded X: " + Math.round(vec.x) + ", Y: " + vec.y + ", Z: " + Math.round(vec.z));
 
 
-       // infantry.move(0.0005f, 0, -0.001f);
-        infantryTwo.move(0, 0, 0.005f);
-        bossUnit.move(0.001f, 0, -0.000f);
+        //infantry.move(0.0000f, 0, -0.002f);
+       // infantryTwo.move(0, 0, 0.005f);
+      //  bossUnit.move(0.001f, 0, -0.000f);
+        harvestMachine.movingAlongShortestPath();
+       // int[] toRotate = {2, 3};
+       // harvestMachine.rotateTowardsPointSmooth(toRotate);
+        infantry.movingAlongShortestPath();
+        bossUnit.movingAlongShortestPath();
+
         canonTower.fire(attackers);
         bombTower.fire(attackers);
         sonicTower.fire(attackers);
@@ -325,12 +330,12 @@ public class GameScreen implements Screen {
 
         // place example canonTower
         canonTower = new CanonTower(this);
-        canonTower.init(sceneManager, sceneAssetHashMap,mapTowers,1.0f, groundTileDimensions.y, 2.0f);
+        canonTower.init(sceneManager, sceneAssetHashMap,mapTowers,2.0f, groundTileDimensions.y, 1.0f);
 
 
         // place example bombTower
         bombTower = new BombTower(this);
-        bombTower.init(sceneManager, sceneAssetHashMap, mapTowers,2.0f, groundTileDimensions.y, 1.0f);
+        bombTower.init(sceneManager, sceneAssetHashMap, mapTowers,1.0f, groundTileDimensions.y, 2.0f);
 
       /*  if(Tower.isEligibleToPlace(mapTowers, this,Math.round(1.0f), Math.round(0.0f))) {
             CanonTower canonTower2 = new CanonTower(this);
@@ -340,24 +345,30 @@ public class GameScreen implements Screen {
             System.out.println("Tower isn't allowed to be place here!");
         }*/
 
+        pathFinder();
+
+
+
         // place enemy character
         infantry = new Infantry();
-        infantry.init(sceneManager, sceneAssetHashMap, 2.0f, groundTileDimensions.y, 2.0f);
+  //      infantry.init(sceneManager, sceneAssetHashMap, shortestPath,2.0f, groundTileDimensions.y, 2.0f);
+        infantry.init(sceneManager, sceneAssetHashMap, shortestPath,startPortal.getX(), groundTileDimensions.y, startPortal.getZ());
         infantry.getScene().modelInstance.calculateTransforms();
         infantry.setAnimation("RUN", -1);
 
         // place boss Unit character
         bossUnit = new BossUnit();
-        bossUnit.init(sceneManager, sceneAssetHashMap, -3.0f, groundTileDimensions.y, 1.0f);
+        bossUnit.init(sceneManager, sceneAssetHashMap, shortestPath,0.0f, groundTileDimensions.y, 2.0f);
         bossUnit.setAnimation("Armature|Run", -1);
 
         // place spaceship character
         harvestMachine = new HarvestMachine();
-        harvestMachine.init(sceneManager, sceneAssetHashMap, startPortal.getX(), startPortal.getY()+0.25f, startPortal.getZ());
+        harvestMachine.init(sceneManager, sceneAssetHashMap, shortestPath, startPortal.getX(), startPortal.getY()+0.25f, startPortal.getZ());
         harvestMachine.setAnimation("Action", -1);
 
+
         infantryTwo = new Infantry();
-        infantryTwo.init(sceneManager, sceneAssetHashMap, 2.0f, 0.25f, 4.0f);
+        infantryTwo.init(sceneManager, sceneAssetHashMap, shortestPath,2.0f, 0.25f, 4.0f);
         infantryTwo.setAnimation("RIDING", -1);
 
         // Bullet9mm bullet = new Bullet9mm();
@@ -375,8 +386,10 @@ public class GameScreen implements Screen {
         resetBeamPos();
         sceneManager.addScene(beam);
 
-        pathFinder();
-
+       // bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
+       //  bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
+       // bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
+       // bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
     }
 
 

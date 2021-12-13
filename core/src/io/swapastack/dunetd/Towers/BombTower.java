@@ -6,6 +6,7 @@ import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 
+import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,7 +17,7 @@ public class BombTower extends Tower{
     public BombTower(GameScreen screen) {
         graphics = "weapon_blaster.glb";
         type = 0;
-        range = 1.3;
+        range = 3;
         gameScreen = screen;
     }
 
@@ -24,7 +25,7 @@ public class BombTower extends Tower{
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers, float x, float y, float z) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
-        this.setToTranslation(x, y, z);
+        this.setTranslation(x, y, z);
        // this.scene.modelInstance.mate
        // if(isEligibleToPlace(towers, gameScreen,Math.round(x), Math.round(z))) {
             towers[Math.round(x)][Math.round(z)] = this;
@@ -34,7 +35,9 @@ public class BombTower extends Tower{
     @Override
     public void fire(ArrayList<Enemy> enemiesList) {
         for (Enemy enemy : enemiesList) {
+
             if (isInRange(enemy.getCoords())) {
+             //   System.out.println("Die Koord: " + enemy.getCoords());
                 boolean fire = rotateTowardsVectorSmooth(enemy.getCoords());
                 //Beeing able to shoot
                 if (fire) {
@@ -62,7 +65,17 @@ public class BombTower extends Tower{
         } else {
             toRotate = rotation - currentAngle;
         }
+        if(currentAngle - 0.05f < -Math.PI && rotation + 0.05f > Math.PI) {
+            toRotate = (float) (rotation + Math.PI);
+            System.out.println("Critical code in BombTower triggered. Check for interferences!");
+        }
+        //This might be odd
+        if(currentAngle + 0.05f > Math.PI && rotation - 0.05f < -Math.PI) {
+            toRotate = (float) (rotation + Math.PI+0.06f);
+            System.out.println("Critical code in BombTower triggered. Check for interferences!");
+        }
 
+     //   System.out.println("Angle: " + currentAngle + " || wanted: " +rotation);
         // float toRotate = (float) MathUtils.clamp(rotation-currentAngle, -rotationSpeed, rotationSpeed);
         this.getScene().modelInstance.transform.rotateRad(0.f, 1.F, 0.F, toRotate * -1);
         currentAngle = currentAngle + toRotate;

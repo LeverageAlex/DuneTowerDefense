@@ -20,7 +20,7 @@ public class SonicTower extends Tower{
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers, float x, float y, float z) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
-        this.setToTranslation(x, y, z);
+        this.setTranslation(x, y, z);
         towers[Math.round(x)][Math.round(z)] = this;
     }
 
