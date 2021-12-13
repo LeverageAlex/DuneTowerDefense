@@ -2,7 +2,6 @@ package io.swapastack.dunetd.Enemys;
 
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import net.mgsx.gltf.scene3d.scene.Scene;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
@@ -42,14 +41,14 @@ public abstract class Enemy {
     }
 
     public Matrix4 setToTranslation(Vector3 vector) {
-        Vector3 scaler = scene.modelInstance.transform.getScale(new Vector3());
-        return scene.modelInstance.transform.setToTranslation(vector).scale(scaler.x, scaler.y, scaler.z);
+       // Vector3 scaler = scene.modelInstance.transform.getScale(new Vector3());
+        return scene.modelInstance.transform.setTranslation(vector);
     }
 
     public Matrix4 setToTranslation(float x, float y, float z) {
-        Vector3 scaler = scene.modelInstance.transform.getScale(new Vector3());
+       // Vector3 scaler = scene.modelInstance.transform.getScale(new Vector3());
      //   Quaternion rotation = scene.modelInstance.transform.getRotation(new Quaternion());
-        return scene.modelInstance.transform.setToTranslation(x, y, z).scale(scaler.x, scaler.y, scaler.z)/*.rotate(rotation)*/;
+        return scene.modelInstance.transform.setTranslation(x, y, z)/*.scale(scaler.x, scaler.y, scaler.z)/*.rotate(rotation)*/;
     }
 
     public void setAnimation(String id, int loopCnt) {
@@ -92,7 +91,7 @@ public abstract class Enemy {
     }
 
     /**
-     * Walks towards the in 'target' specified point. walkTowardsX is needed to be correctly to make this function work.
+     * Walks towards the in 'target' specified point.
      * @return whether there are steps left to the target (false) or it has been arrived (true)
      */
     public boolean walk() {
@@ -138,7 +137,8 @@ public abstract class Enemy {
 
 
     /**
-     *
+     * Controls the walk from startPortal to endPortal. On every step towards the target, it checks if a rotation of
+     * the model is needed and then sets the next interim goal
      */
     public void movingAlongShortestPath() {
         //checks if Unit is on a field and ready to get next target point.
@@ -160,7 +160,11 @@ public abstract class Enemy {
             System.out.println("Arrived @ endportal!");
         }
     }
-
+    /**
+     * rotates smoothly towards a given point.  Returns true if the rotation is slower than max rotation speed
+     * @param pointToRotate
+     * @return if rotation is slower than maxRotationSpeed
+     */
     @SuppressWarnings("DuplicatedCode")
     public boolean rotateTowardsPointSmooth(int[] pointToRotate) {
         Vector3 enemyCoords = this.scene.modelInstance.transform.getTranslation(new Vector3());

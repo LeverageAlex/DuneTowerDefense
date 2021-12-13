@@ -91,7 +91,7 @@ public abstract class Tower implements MapIterable {
 
     //Checks whether tile is free or a way to the Endportal continues to exist
     public static boolean isEligibleToPlace(MapIterable[][] mapTowers , GameScreen gameScreen, int x, int z) {
-        //No Tower Placed
+        //check for no Tower Placed
         if(/*map[x][z] == null || */ /*mapTowers[x][z].getPathColor() == 0 */ mapTowers[x][z] instanceof IterableOverMap) {
             //Check if a Path is after placing still available
             int previousColor = mapTowers[x][z].getPathColor();
@@ -110,6 +110,7 @@ public abstract class Tower implements MapIterable {
         }
     }
 
+    //Pythagoras to see if point is in range of the Range circle
     public boolean isInRange(Vector3 pos) {
         Vector3 towerPos = getScene().modelInstance.transform.getTranslation(new Vector3());
         return ((pos.x-towerPos.x)*(pos.x-towerPos.x) + (pos.z-towerPos.z)*(pos.z-towerPos.z) <= range*range );
