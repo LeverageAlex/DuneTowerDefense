@@ -2,19 +2,22 @@ package io.swapastack.dunetd.Enemys;
 
 import com.badlogic.gdx.utils.Timer;
 import io.swapastack.dunetd.GameScreen;
+import io.swapastack.dunetd.Player;
 
 import java.util.LinkedList;
 
 
 public class Wave {
-    private int enemyCounter, alive;
+    private int enemyCounter, alive, killed, arrivedPortal;
     private LinkedList<Enemy> enemys;
     Timer timer;
     private float delaySeconds = 5.f, intervalSeconds = 1.5f;
     private GameScreen gameScreen;
+    private Player player;
 
-    public Wave(GameScreen gameScreen) {
+    public Wave(GameScreen gameScreen, Player player) {
         this.gameScreen = gameScreen;
+        this.player = player;
     }
     //Activate waveSpawner
     public void startWave() {
@@ -37,26 +40,34 @@ public class Wave {
 
             } else {
                 enemys.remove(0);
-                System.out.println("No enemy spawned this tick!");
+             //   System.out.println("No enemy spawned this tick!");
             }
         }
 
-        System.out.println("Wave Timer triggered");
+      //  System.out.println("Wave Timer triggered");
     }
 
-    public int enemysLeft() {
-        return -1;
+    public int enemiesLeft() {
+        return enemyCounter -killed - arrivedPortal;
     }
 
     public boolean waveKilled() {
-        return false;
+        return enemiesLeft() == 0;
     }
 
     public void initEnemys(LinkedList<Enemy> enemys) {
         this.enemys = enemys;
     }
 
-    public void enemyKilled() {
+    public void enemyKilled(Enemy e) {
+        player.increaseHighscore(e.getHighscorePoints());
         alive--;
+        killed++;
+    }
+
+    public void arrivedAtEndPortal(Enemy e) {
+        player.reduceHealth(e.arrivedAtEndPortal());
+        alive--;
+        arrivedPortal++;
     }
 }

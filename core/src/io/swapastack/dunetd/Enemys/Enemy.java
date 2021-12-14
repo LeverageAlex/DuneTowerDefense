@@ -16,6 +16,8 @@ public abstract class Enemy {
     protected int level;
     public String name;
     protected int storedSpice;
+    protected int highscorePoints;
+    protected int damageOnEndPortal;
     protected float health;
     protected float movementSpeed;
     public String graphics;
@@ -31,7 +33,7 @@ public abstract class Enemy {
 
     public abstract void destroyDamage();
 
-    public abstract void onKill();
+    public abstract float arrivedAtEndPortal();
 
     public abstract void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath, float x, float y, float z);
 
@@ -157,7 +159,7 @@ public abstract class Enemy {
      * Controls the walk from startPortal to endPortal. On every step towards the target, it checks if a rotation of
      * the model is needed and then sets the next interim goal
      */
-    public void movingAlongShortestPath() {
+    public boolean movingAlongShortestPath() {
         //checks if Unit is on a field and ready to get next target point.
         //if(target == null) {
             target = shortestPath[numberOnArrayField];
@@ -171,10 +173,12 @@ public abstract class Enemy {
                 //target = shortestPath[numberOnArrayField];
 
             } else if (numberOnArrayField + 1 >= shortestPath.length) {
+                return true;
                 //Endportal arrived
                 //System.out.println("Arrived @ endportal!");
             }
         }
+        return false;
     }
     /**
      * rotates smoothly towards a given point.  Returns true if the rotation is slower than max rotation speed
@@ -217,4 +221,7 @@ public abstract class Enemy {
         currentAngle = rotation;
     }
 
+    public int getHighscorePoints() {
+        return highscorePoints;
+    }
 }

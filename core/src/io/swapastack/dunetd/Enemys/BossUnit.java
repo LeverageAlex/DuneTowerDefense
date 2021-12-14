@@ -17,6 +17,7 @@ public class BossUnit extends Enemy{
         rotationSpeed = (float) Math.PI / 256.f;
         movementSpeed = 0.006f;
         health = 120.f;
+        damageOnEndPortal = 50;
 
     }
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath, float x, float y, float z) {
@@ -40,10 +41,9 @@ public class BossUnit extends Enemy{
     }
 
     @Override
-    public void onKill() {
-
+    public float arrivedAtEndPortal() {
+        return damageOnEndPortal;
     }
-
 
 
 }

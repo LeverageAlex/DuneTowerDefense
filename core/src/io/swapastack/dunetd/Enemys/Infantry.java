@@ -18,6 +18,7 @@ public class Infantry extends Enemy {
         movementSpeed = 0.0028f;
         health = 20.f;
        // target = new int[]{3, 1};
+        damageOnEndPortal = 4;
     }
 
     @Override
@@ -47,8 +48,8 @@ public class Infantry extends Enemy {
     }
 
     @Override
-    public void onKill() {
-
+    public float arrivedAtEndPortal() {
+        return damageOnEndPortal;
     }
 
 

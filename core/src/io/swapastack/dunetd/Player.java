@@ -1,25 +1,29 @@
 package io.swapastack.dunetd;
 
 public class Player {
-    private int health, highscore, spice;
+    private float health, highscore, spice;
     private String name;
 
-    public int getHealth() {
+    public float getHealth() {
         return health;
     }
 
-    public int getHighscore() {
+    public void reduceHealth(float toReduce) {
+        health -= toReduce;
+    }
+
+    public float getHighscore() {
         return highscore;
     }
     public void increaseHighscore(int increase) {
         highscore += increase;
     }
 
-    public int getSpice() {
+    public float getSpice() {
         return spice;
     }
 
-    public void addSpice(int inc) {
+    public void addSpice(float inc) {
         spice += inc;
     }
     public boolean isGameWon() {

@@ -244,11 +244,18 @@ public class GameScreen implements Screen {
         for (int i = 0; i < attackers.size(); i++ ) {
            // System.out.println("stil availaible");
             if(attackers.get(i).isAlive()) {
-                attackers.get(i).movingAlongShortestPath();
+
+               if( attackers.get(i).movingAlongShortestPath()) {
+                   //EndPortal arrived
+                   wave.arrivedAtEndPortal(attackers.get(i));
+                    attackers.get(i).removeEnemy(sceneManager, attackers);
+
+               }
             }
             else {
+                wave.enemyKilled(attackers.get(i));
                 attackers.get(i).removeEnemy(sceneManager, attackers);
-                wave.enemyKilled();
+
             }
         }
 
@@ -334,6 +341,7 @@ public class GameScreen implements Screen {
                 // it could be useful to store the Scene object reference outside this method
             }
         }
+        player = new Player();
         // place example sonicTower
         startPortal = new Startportal(sceneManager, sceneAssetHashMap, mapTowers,3.0f, groundTileDimensions.y, 3.0f);
         endPortal = new Endportal(sceneManager, sceneAssetHashMap, mapTowers,1.0f, groundTileDimensions.y, 1.0f);
@@ -396,7 +404,7 @@ public class GameScreen implements Screen {
         attackers.add(infantryTwo);
         attackers.add(infantry);
 
-        wave = new Wave(this);
+        wave = new Wave(this, player);
         LinkedList<Enemy> liste = new LinkedList<>();
         BossUnit shawn = new BossUnit();
         Infantry bob = new Infantry();
@@ -573,10 +581,15 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * Spawns the enemy on the startPortal. Used by the Wave-Class
+     * @param enemy
+     */
     public void initEnemy(Enemy enemy) {
         enemy.init(sceneManager, sceneAssetHashMap, shortestPath, startPortal.getX(), startPortal.getY(), startPortal.getZ());
         attackers.add(enemy);
         enemy.setWalkAnimation();
+        //Let the enemy look in the direction of the shortestPath
         enemy.rotateTowardsVectorInstantly(shortestPath[1]);
     }
 

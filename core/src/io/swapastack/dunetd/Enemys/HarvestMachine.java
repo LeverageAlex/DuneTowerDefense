@@ -13,6 +13,7 @@ public class HarvestMachine extends Enemy{
         rotationSpeed = (float) Math.PI / 128.f;
         movementSpeed = 0.001f;
         health = 50.f;
+        damageOnEndPortal = 10;
     }
 
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath,float x, float y, float z) {
@@ -35,8 +36,8 @@ public class HarvestMachine extends Enemy{
     }
 
     @Override
-    public void onKill() {
-
+    public float arrivedAtEndPortal() {
+        return damageOnEndPortal;
     }
 
 }
