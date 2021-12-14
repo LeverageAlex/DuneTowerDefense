@@ -3,17 +3,20 @@ package io.swapastack.dunetd.Enemys;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import io.swapastack.dunetd.Towers.IterableOverMap;
+import io.swapastack.dunetd.Towers.MapIterable;
 import net.mgsx.gltf.scene3d.scene.Scene;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Enemy {
     protected int level;
     public String name;
     protected int storedSpice;
-    protected int health;
+    protected float health;
     protected float movementSpeed;
     public String graphics;
     protected int type;
@@ -31,6 +34,8 @@ public abstract class Enemy {
     public abstract void onKill();
 
     public abstract void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath, float x, float y, float z);
+
+    public abstract void setWalkAnimation();
 
     //  public abstract void gainDamage();
 
@@ -89,6 +94,18 @@ public abstract class Enemy {
         Vector3 pos = scene.modelInstance.transform.getTranslation(new Vector3());
         return pos;
     }
+
+    public boolean isAlive() {
+        return health > 0;
+    }
+
+    public void removeEnemy(SceneManager sceneManager, ArrayList<Enemy> attackers) {
+        Vector3 pos = scene.modelInstance.transform.getTranslation(new Vector3());
+        attackers.remove(this);
+        sceneManager.removeScene(this.getScene());
+    }
+
+
 
     /**
      * Walks towards the in 'target' specified point.
@@ -155,7 +172,7 @@ public abstract class Enemy {
 
             } else if (numberOnArrayField + 1 >= shortestPath.length) {
                 //Endportal arrived
-                System.out.println("Arrived @ endportal!");
+                //System.out.println("Arrived @ endportal!");
             }
         }
     }
@@ -191,6 +208,13 @@ public abstract class Enemy {
         this.getScene().modelInstance.transform.rotateRad(0.f, 1.F, 0.F, toRotate * -1);
         currentAngle = currentAngle + toRotate;
         return notClamped;
+    }
+
+    public void rotateTowardsVectorInstantly(int[] pointToRotate) {
+        Vector3 enemyCoords = this.scene.modelInstance.transform.getTranslation(new Vector3());
+        float rotation = (float) Math.atan2((enemyCoords.z - ((float) pointToRotate[1])), (enemyCoords.x - ((float) pointToRotate[0])));
+        this.getScene().modelInstance.transform.rotateRad(0.f, 1.F, 0.F, (rotation-currentAngle)*-1);
+        currentAngle = rotation;
     }
 
 }

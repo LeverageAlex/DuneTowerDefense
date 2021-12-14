@@ -15,7 +15,8 @@ public class Infantry extends Enemy {
         type = 0;
         currentAngle = -(float) Math.PI/2.f;
         rotationSpeed = (float) Math.PI / 256.f;
-        movementSpeed = 0.001f;
+        movementSpeed = 0.0028f;
+        health = 20.f;
        // target = new int[]{3, 1};
     }
 
@@ -32,6 +33,11 @@ public class Infantry extends Enemy {
         this.setToTranslation(x, y, z)
                 .scale(0.02f, 0.04f, 0.03f).rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
         this.shortestPath = shortestPath;
+    }
+
+    @Override
+    public void setWalkAnimation() {
+        this.setAnimation("RUN", -1);
     }
 
 

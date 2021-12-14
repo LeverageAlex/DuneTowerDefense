@@ -16,6 +16,7 @@ public class BossUnit extends Enemy{
         currentAngle = -(float) (Math.PI / 2.f);
         rotationSpeed = (float) Math.PI / 256.f;
         movementSpeed = 0.006f;
+        health = 120.f;
 
     }
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath, float x, float y, float z) {
@@ -25,6 +26,11 @@ public class BossUnit extends Enemy{
                 .scale(0.005f, 0.005f, 0.005f);
         this.shortestPath = shortestPath;
 
+    }
+
+    @Override
+    public void setWalkAnimation() {
+        this.setAnimation("Armature|Run", -1);
     }
 
 

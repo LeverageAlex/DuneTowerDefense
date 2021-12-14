@@ -11,7 +11,8 @@ public class HarvestMachine extends Enemy{
         type = 1;
         currentAngle = -(float) Math.PI/2.f;
         rotationSpeed = (float) Math.PI / 128.f;
-        movementSpeed = 0.002f;
+        movementSpeed = 0.001f;
+        health = 50.f;
     }
 
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath,float x, float y, float z) {
@@ -21,6 +22,11 @@ public class HarvestMachine extends Enemy{
                 .scale(0.2f, 0.2f, 0.2f);
         this.shortestPath = shortestPath;
 
+    }
+
+    @Override
+    public void setWalkAnimation() {
+        this.setAnimation("Action", -1);
     }
 
     @Override

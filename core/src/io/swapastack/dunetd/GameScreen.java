@@ -196,11 +196,15 @@ public class GameScreen implements Screen {
         // OpenGL - clear color and depth buffer
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        bossUnit.getAnimationController().update(delta);
+      /*  bossUnit.getAnimationController().update(delta);
         infantry.getAnimationController().update(delta);
         harvestMachine.getAnimationController().update(delta);
-        infantryTwo.getAnimationController().update(delta);
+        infantryTwo.getAnimationController().update(delta);*/
     //    canonTower.getAnimationController().update(delta);
+
+        for (Enemy enemy: attackers) {
+            enemy.getAnimationController().update(delta);
+        }
 
         // SpaiR/imgui-java
         imGuiGlfw.newFrame();
@@ -231,11 +235,23 @@ public class GameScreen implements Screen {
         //infantry.move(0.0000f, 0, -0.002f);
        // infantryTwo.move(0, 0, 0.005f);
       //  bossUnit.move(0.001f, 0, -0.000f);
-        harvestMachine.movingAlongShortestPath();
+       // harvestMachine.movingAlongShortestPath();
        // int[] toRotate = {2, 3};
        // harvestMachine.rotateTowardsPointSmooth(toRotate);
-        infantry.movingAlongShortestPath();
-        bossUnit.movingAlongShortestPath();
+       // infantry.movingAlongShortestPath();
+      //  bossUnit.movingAlongShortestPath();
+
+        for (int i = 0; i < attackers.size(); i++ ) {
+           // System.out.println("stil availaible");
+            if(attackers.get(i).isAlive()) {
+                attackers.get(i).movingAlongShortestPath();
+            }
+            else {
+                attackers.get(i).removeEnemy(sceneManager, attackers);
+                wave.enemyKilled();
+            }
+        }
+
 
         canonTower.fire(attackers);
         bombTower.fire(attackers);
@@ -380,7 +396,19 @@ public class GameScreen implements Screen {
         attackers.add(infantryTwo);
         attackers.add(infantry);
 
-        wave = new Wave();
+        wave = new Wave(this);
+        LinkedList<Enemy> liste = new LinkedList<>();
+        BossUnit shawn = new BossUnit();
+        Infantry bob = new Infantry();
+        liste.add(bob);
+        liste.add(null);
+        liste.add(null);
+        liste.add(shawn);
+
+        wave.initEnemys(liste);
+        wave.startWave();
+        shawn.createScene(sceneAssetHashMap);
+        bob.createScene(sceneAssetHashMap);
 
         beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
         resetBeamPos();
@@ -543,6 +571,13 @@ public class GameScreen implements Screen {
         }
         return walkWay;
 
+    }
+
+    public void initEnemy(Enemy enemy) {
+        enemy.init(sceneManager, sceneAssetHashMap, shortestPath, startPortal.getX(), startPortal.getY(), startPortal.getZ());
+        attackers.add(enemy);
+        enemy.setWalkAnimation();
+        enemy.rotateTowardsVectorInstantly(shortestPath[1]);
     }
 
 

@@ -1,15 +1,20 @@
 package io.swapastack.dunetd.Enemys;
 
 import com.badlogic.gdx.utils.Timer;
+import io.swapastack.dunetd.GameScreen;
+
+import java.util.LinkedList;
+
 
 public class Wave {
     private int enemyCounter, alive;
-    private int[] enemys;
+    private LinkedList<Enemy> enemys;
     Timer timer;
-    private int delaySeconds = 5, intervalSeconds = 1;
+    private float delaySeconds = 5.f, intervalSeconds = 1.5f;
+    private GameScreen gameScreen;
 
-    public Wave() {
-
+    public Wave(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
     }
     //Activate waveSpawner
     public void startWave() {
@@ -23,6 +28,19 @@ public class Wave {
     }
 
     public void continueWave() {
+        if(!enemys.isEmpty()) {
+            Enemy enem;
+            if((enem = enemys.get(0)) != null) {
+                gameScreen.initEnemy(enem);
+                alive++;
+                enemys.remove(0);
+
+            } else {
+                enemys.remove(0);
+                System.out.println("No enemy spawned this tick!");
+            }
+        }
+
         System.out.println("Wave Timer triggered");
     }
 
@@ -34,7 +52,11 @@ public class Wave {
         return false;
     }
 
-    public void initEnemys(int[] enemys) {
+    public void initEnemys(LinkedList<Enemy> enemys) {
         this.enemys = enemys;
+    }
+
+    public void enemyKilled() {
+        alive--;
     }
 }
