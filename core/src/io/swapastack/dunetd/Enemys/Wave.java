@@ -18,6 +18,7 @@ public class Wave {
     public Wave(GameScreen gameScreen, Player player) {
         this.gameScreen = gameScreen;
         this.player = player;
+        //this.enemyCounter = 6;
     }
     //Activate waveSpawner
     public void startWave() {
@@ -57,10 +58,16 @@ public class Wave {
 
     public void initEnemys(LinkedList<Enemy> enemys) {
         this.enemys = enemys;
+        for (Enemy e: enemys) {
+            if(e != null) {
+                enemyCounter++;
+            }
+        }
     }
 
     public void enemyKilled(Enemy e) {
         player.increaseHighscore(e.getHighscorePoints());
+        player.addSpice(e.getStoredSpice());
         alive--;
         killed++;
     }

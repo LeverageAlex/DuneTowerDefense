@@ -18,6 +18,7 @@ public class BossUnit extends Enemy{
         movementSpeed = 0.006f;
         health = 120.f;
         damageOnEndPortal = 50;
+        storedSpice = 40;
 
     }
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath, float x, float y, float z) {

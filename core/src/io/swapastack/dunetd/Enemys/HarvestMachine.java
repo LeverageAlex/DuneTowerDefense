@@ -14,6 +14,7 @@ public class HarvestMachine extends Enemy{
         movementSpeed = 0.001f;
         health = 50.f;
         damageOnEndPortal = 10;
+        storedSpice = 20;
     }
 
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath,float x, float y, float z) {

@@ -19,6 +19,7 @@ public class Infantry extends Enemy {
         health = 20.f;
        // target = new int[]{3, 1};
         damageOnEndPortal = 4;
+        storedSpice = 1;
     }
 
     @Override

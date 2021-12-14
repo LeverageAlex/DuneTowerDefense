@@ -224,4 +224,8 @@ public abstract class Enemy {
     public int getHighscorePoints() {
         return highscorePoints;
     }
+
+    public int getStoredSpice() {
+        return storedSpice;
+    }
 }

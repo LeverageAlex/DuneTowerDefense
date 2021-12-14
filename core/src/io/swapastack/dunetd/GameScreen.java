@@ -241,23 +241,7 @@ public class GameScreen implements Screen {
        // infantry.movingAlongShortestPath();
       //  bossUnit.movingAlongShortestPath();
 
-        for (int i = 0; i < attackers.size(); i++ ) {
-           // System.out.println("stil availaible");
-            if(attackers.get(i).isAlive()) {
-
-               if( attackers.get(i).movingAlongShortestPath()) {
-                   //EndPortal arrived
-                   wave.arrivedAtEndPortal(attackers.get(i));
-                    attackers.get(i).removeEnemy(sceneManager, attackers);
-
-               }
-            }
-            else {
-                wave.enemyKilled(attackers.get(i));
-                attackers.get(i).removeEnemy(sceneManager, attackers);
-
-            }
-        }
+        updateEnemysMovement();
 
 
         canonTower.fire(attackers);
@@ -268,6 +252,10 @@ public class GameScreen implements Screen {
         // SpaiR/imgui-java
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
+
+        //To make this work, every Enemy needs to be part of a wave
+      //  if(wave.waveKilled()) System.out.println("Winning condition triggered");
+
         //Rotation-Fun
        /* if(inRangeofField(vec)) {
             mapTiles[Math.round(vec.z)][Math.round(vec.x)].modelInstance.transform.rotate(new Vector3(0.f, 1.f, 0.f), 0.3f);
@@ -594,6 +582,27 @@ public class GameScreen implements Screen {
     }
 
 
+    /**
+     * Makes each Attacker move if possible, if dead or arrived at endPortal it updates the according values
+     */
+    public void updateEnemysMovement() {
+        for (int i = 0; i < attackers.size(); i++ ) {
+            // System.out.println("stil availaible");
+            if(attackers.get(i).isAlive()) {
 
+                if( attackers.get(i).movingAlongShortestPath()) {
+                    //EndPortal arrived
+                    wave.arrivedAtEndPortal(attackers.get(i));
+                    System.out.println(attackers.get(i).getClass().toString() + " arrived at EndPortal and got deleted");
+                    attackers.get(i).removeEnemy(sceneManager, attackers);
+                }
+            }
+            else {
+                wave.enemyKilled(attackers.get(i));
+                System.out.println(attackers.get(i).getClass().toString() + " went out of live and got deleted");
+                attackers.get(i).removeEnemy(sceneManager, attackers);
+            }
+        }
+    }
 
 }
