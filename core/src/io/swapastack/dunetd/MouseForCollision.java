@@ -2,12 +2,20 @@ package io.swapastack.dunetd;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.utils.Timer;
+import io.swapastack.dunetd.Towers.BombTower;
+import io.swapastack.dunetd.Towers.CanonTower;
+import io.swapastack.dunetd.Towers.SonicTower;
+import io.swapastack.dunetd.Towers.Tower;
 
 public class MouseForCollision implements InputProcessor {
     public GameScreen gameScreen;
+    private Timer timer;
+    private float delaySeconds;
 
     public MouseForCollision(GameScreen screen) {
         gameScreen = screen;
+        delaySeconds = 10;
     }
 
     @Override
@@ -32,13 +40,59 @@ public class MouseForCollision implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        return true;
+        return false;
     }
+
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        //This Method is ment to place towers if game is in TowerBuilder-Phase
+        //Automatically starts countdown after first Tower placed for next Wave to start
+           // gameScreen.getPhase()
+        //Phase == 0 || Phase == 3 => towerBuilding-Phase
+        if(gameScreen.getPhase() == 0) {
+            int nbr = gameScreen.getColliding(screenX, screenY);
+            if(nbr >= 0 && gameScreen.getSelected() == -1) {
+                gameScreen.setPhase(3);
+                gameScreen.setSelected(nbr);
+            }
+            else if(nbr >= 0 && gameScreen.getSelected() >= 0) {
+                gameScreen.setPhase(0);
+                gameScreen.setSelected(-1);
+            }
 
-
+        }
+        //If tower selected, then arrange placement, if selected point valid
+        else if(gameScreen.getSelected() >= 0 && gameScreen.getPhase() == 3) {
+            Tower t;
+            switch(gameScreen.getSelected()) {
+                case 0:
+                    t = new BombTower(gameScreen);
+                    break;
+                case 1:
+                    t = new CanonTower(gameScreen);
+                    break;
+                default:
+                    t = new SonicTower(gameScreen);
+                    break;
+            }
+            gameScreen.setPhase(0);
+            gameScreen.setSelected(-1);
+            if(gameScreen.placeTower(t)) {
+                System.out.println("Tower erfolgreich gesetzt");
+                timer = new Timer();
+                timer.scheduleTask(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        gameScreen.setPhase(1);
+                        gameScreen.setSelected(-1);
+                    }
+                }, delaySeconds);
+            }
+            else {
+                System.out.println("Tower setzen fehlgeschlagen :/");
+            }
+        }
         return false;
     }
 

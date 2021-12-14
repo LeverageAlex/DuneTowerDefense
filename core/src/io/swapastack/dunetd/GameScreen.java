@@ -7,9 +7,16 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Align;
 import imgui.ImGui;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.gl3.ImGuiImplGl3;
@@ -87,6 +94,14 @@ public class GameScreen implements Screen {
     Wave wave;
     MapIterable[][] mapTowers;
     private int[][] shortestPath;
+    Stage towerBuilding, HUD;
+    Skin skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
+    int phase = 0;
+    HUD_Drawer hud;
+    HUD_Drawer[] huds;
+    Label spiceAmount;
+    int selected = -1;
+
 
     public GameScreen(DuneTD parent) {
         this.parent = parent;
@@ -196,12 +211,6 @@ public class GameScreen implements Screen {
         // OpenGL - clear color and depth buffer
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-      /*  bossUnit.getAnimationController().update(delta);
-        infantry.getAnimationController().update(delta);
-        harvestMachine.getAnimationController().update(delta);
-        infantryTwo.getAnimationController().update(delta);*/
-    //    canonTower.getAnimationController().update(delta);
-
         for (Enemy enemy: attackers) {
             enemy.getAnimationController().update(delta);
         }
@@ -211,7 +220,6 @@ public class GameScreen implements Screen {
         ImGui.newFrame();
 
         // GDX GLTF - update scene manager and render scene
-
         sceneManager.update(delta);
         sceneManager.render();
 
@@ -229,7 +237,10 @@ public class GameScreen implements Screen {
         ImGui.text("Mouse Map: " + getClickOnField().toString());
         Vector3 vec = getClickOnField();
 
-        ImGui.text("Mouse Map Rounded X: " + Math.round(vec.x) + ", Y: " + vec.y + ", Z: " + Math.round(vec.z));
+            ImGui.text("Mouse Map Rounded X: " + Math.round(vec.x) + ", Y: " + vec.y + ", Z: " + Math.round(vec.z));
+        ImGui.end();
+
+
 
 
         //infantry.move(0.0000f, 0, -0.002f);
@@ -243,15 +254,30 @@ public class GameScreen implements Screen {
 
         updateEnemysMovement();
 
-
         canonTower.fire(attackers);
         bombTower.fire(attackers);
         sonicTower.fire(attackers);
-        ImGui.end();
+     //   ImGui.end();
 
         // SpaiR/imgui-java
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
+
+        spiceAmount.setText("Spice: " + player.getSpice());
+
+        HUD.act(delta);
+        HUD.draw();
+
+        //TowerBuilderMenu
+        if(phase == 0 || phase == 3) {
+            towerBuilding.act(delta);
+            towerBuilding.draw();
+        }
+
+
+
+        //hud.collision(Gdx.input.getX(), Gdx.input.getY());
+
 
         //To make this work, every Enemy needs to be part of a wave
       //  if(wave.waveKilled()) System.out.println("Winning condition triggered");
@@ -260,7 +286,6 @@ public class GameScreen implements Screen {
        /* if(inRangeofField(vec)) {
             mapTiles[Math.round(vec.z)][Math.round(vec.x)].modelInstance.transform.rotate(new Vector3(0.f, 1.f, 0.f), 0.3f);
         }*/
-
     }
 
     @Override
@@ -409,6 +434,38 @@ public class GameScreen implements Screen {
         beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
         resetBeamPos();
         sceneManager.addScene(beam);
+
+        towerBuilding = new Stage();
+       // Group group = new Group();
+        //group.setBounds(200, 500, 100, 100);
+        //button = new TextButton("GAME SCREEN", skin, "small");
+        //group.addActor(button);
+
+       // tex = new Texture("hud/Ant.png");
+        hud = new HUD_Drawer(skin, "hud/bombTower.png", 500,Gdx.graphics.getWidth()/2-166, 20, 100, 100);
+        huds = new HUD_Drawer[3];
+        huds[0] = hud;
+        huds[1] = new HUD_Drawer(skin, "hud/canonTower.png", 73,Gdx.graphics.getWidth()/2 - 64, 20, 100, 100);
+        huds[2] = new HUD_Drawer(skin, "hud/sonicTower.png", 34,Gdx.graphics.getWidth()/2 + 38, 20, 100, 100);
+
+        for (HUD_Drawer h: huds) {
+            towerBuilding.addActor(h);
+        }
+
+
+        HUD = new Stage();
+
+        spiceAmount = new Label("Spice: " + player.getSpice(),skin);
+        spiceAmount.setPosition(Gdx.graphics.getWidth() - 150, Gdx.graphics.getHeight() - 50);
+        HUD.addActor(spiceAmount);
+      //    spiceAmount.setText("Spice: " + player.getSpice());
+
+
+
+      //  stage.getCamera().position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
+
+
+
 
        // bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
        //  bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
@@ -603,6 +660,37 @@ public class GameScreen implements Screen {
                 attackers.get(i).removeEnemy(sceneManager, attackers);
             }
         }
+    }
+
+    public int getPhase() {
+        return phase;
+    }
+    public int getColliding(int x, int y) {
+        for (int i = 0; i < huds.length; i++) {
+            if(huds[i].collision(x, y)) return i;
+        }
+        return -1;
+    }
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
+    }
+
+    public void setPhase(int phase) {
+        this.phase = phase;
+    }
+
+    public boolean placeTower(Tower t) {
+        Vector3 v = getClickOnField();
+        if(inRangeofField(v) &&Tower.isEligibleToPlace(mapTowers, this, Math.round(v.x), Math.round(v.z))) {
+            t.init(sceneManager, sceneAssetHashMap, mapTowers, Math.round(v.x), 0.02f, Math.round(v.z));
+            return  true;
+        }
+        return false;
     }
 
 }
