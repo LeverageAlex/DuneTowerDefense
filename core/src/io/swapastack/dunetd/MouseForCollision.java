@@ -3,10 +3,7 @@ package io.swapastack.dunetd;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.Timer;
-import io.swapastack.dunetd.Towers.BombTower;
-import io.swapastack.dunetd.Towers.CanonTower;
-import io.swapastack.dunetd.Towers.SonicTower;
-import io.swapastack.dunetd.Towers.Tower;
+import io.swapastack.dunetd.Towers.*;
 
 public class MouseForCollision implements InputProcessor {
     private GameScreen gameScreen;
@@ -79,21 +76,24 @@ public class MouseForCollision implements InputProcessor {
             if (gameScreen.getPlayer().getSpice() - t.getCost() >= 0) {
                 gameScreen.setPhase(0);
                 gameScreen.setSelected(-1);
-                if (gameScreen.placeTower(t)) {
+                    if (gameScreen.placeTower(t)) {
 
-                    System.out.println("Tower erfolgreich gesetzt");
-                    gameScreen.getPlayer().addSpice(-t.getCost());
-                    timer = new Timer();
-                    timer.scheduleTask(new Timer.Task() {
-                        @Override
-                        public void run() {
-                            gameScreen.setPhase(1);
-                            gameScreen.setSelected(-1);
-                        }
-                    }, delaySeconds);
-                } else {
-                    System.out.println("Tower setzen fehlgeschlagen :/");
-                }
+                        System.out.println("Tower erfolgreich gesetzt");
+                        gameScreen.getPlayer().addSpice(-t.getCost());
+                        timer = new Timer();
+                        timer.scheduleTask(new Timer.Task() {
+                            @Override
+                            public void run() {
+                                gameScreen.setPhase(1);
+                                gameScreen.setSelected(-1);
+                            }
+                        }, delaySeconds);
+                    } else {
+                        System.out.println("Tower setzen fehlgeschlagen :/");
+                        gameScreen.setPhase(0);
+                        gameScreen.setSelected(-1);
+                    }
+
             }
             else {
                 System.out.println("Not enough Spice");
