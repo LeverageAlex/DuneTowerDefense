@@ -8,13 +8,14 @@ import net.mgsx.gltf.scene3d.scene.SceneManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SonicTower extends Tower{
-    public SonicTower(GameScreen screen) {
-        graphics = "towerRound_crystals.glb";
-        type = 1;
-        range = 1.7;
+public class Knocker extends Tower{
+
+    public Knocker(GameScreen screen) {
+        graphics = "detail_tree.glb";
+        type = 0;
+        range = 3;
         gameScreen = screen;
-        this.cost = costSonicTower;
+        this.cost = 35;
     }
 
     @Override
@@ -25,14 +26,8 @@ public class SonicTower extends Tower{
         towers[Math.round(x)][Math.round(z)] = this;
     }
 
-    //Take care of HarvestMachine gaining less Damage than other Enemys
     @Override
     public void fire(ArrayList<Enemy> enemiesList) {
-        for (Enemy enemy : enemiesList) {
-            if (isInRange(enemy.getCoords())) {
-                //to fire
-             //   System.out.println("SonicTower shooting at: " + enemy.name );
-            }
-        }
+
     }
 }

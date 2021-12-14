@@ -1,7 +1,7 @@
 package io.swapastack.dunetd;
 
 public class Player {
-    private float health, highscore, spice;
+    private float health, highscore, spice = 150;
     private String name;
 
     public float getHealth() {

@@ -19,6 +19,7 @@ public class BombTower extends Tower{
         type = 0;
         range = 3;
         gameScreen = screen;
+        this.cost = costBombTower;
     }
 
     @Override

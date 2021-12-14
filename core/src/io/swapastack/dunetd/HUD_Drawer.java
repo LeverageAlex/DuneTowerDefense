@@ -13,7 +13,7 @@ public class HUD_Drawer extends Actor {
     private Skin skin;
     private int cost;
 
-    public HUD_Drawer(Skin skin,String graphics, int cost,float x, float y, float width, float height) {
+    public HUD_Drawer(Skin skin,String graphics, int cost, float x, float y, float width, float height) {
         Texture tex = new Texture(graphics);
         this.img = new Image(tex);
         img.setX(x);

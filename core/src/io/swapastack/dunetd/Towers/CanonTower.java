@@ -18,6 +18,7 @@ public class CanonTower extends Tower {
         type = 2;
         range = 2;
         gameScreen = screen;
+        this.cost = costCanonTower;
     }
 
     @Override

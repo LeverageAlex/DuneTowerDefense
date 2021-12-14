@@ -9,7 +9,7 @@ import io.swapastack.dunetd.Towers.SonicTower;
 import io.swapastack.dunetd.Towers.Tower;
 
 public class MouseForCollision implements InputProcessor {
-    public GameScreen gameScreen;
+    private GameScreen gameScreen;
     private Timer timer;
     private float delaySeconds;
 
@@ -65,7 +65,7 @@ public class MouseForCollision implements InputProcessor {
         //If tower selected, then arrange placement, if selected point valid
         else if(gameScreen.getSelected() >= 0 && gameScreen.getPhase() == 3) {
             Tower t;
-            switch(gameScreen.getSelected()) {
+            switch (gameScreen.getSelected()) {
                 case 0:
                     t = new BombTower(gameScreen);
                     break;
@@ -76,21 +76,30 @@ public class MouseForCollision implements InputProcessor {
                     t = new SonicTower(gameScreen);
                     break;
             }
-            gameScreen.setPhase(0);
-            gameScreen.setSelected(-1);
-            if(gameScreen.placeTower(t)) {
-                System.out.println("Tower erfolgreich gesetzt");
-                timer = new Timer();
-                timer.scheduleTask(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        gameScreen.setPhase(1);
-                        gameScreen.setSelected(-1);
-                    }
-                }, delaySeconds);
+            if (gameScreen.getPlayer().getSpice() - t.getCost() >= 0) {
+                gameScreen.setPhase(0);
+                gameScreen.setSelected(-1);
+                if (gameScreen.placeTower(t)) {
+
+                    System.out.println("Tower erfolgreich gesetzt");
+                    gameScreen.getPlayer().addSpice(-t.getCost());
+                    timer = new Timer();
+                    timer.scheduleTask(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            gameScreen.setPhase(1);
+                            gameScreen.setSelected(-1);
+                        }
+                    }, delaySeconds);
+                } else {
+                    System.out.println("Tower setzen fehlgeschlagen :/");
+                }
             }
             else {
-                System.out.println("Tower setzen fehlgeschlagen :/");
+                System.out.println("Not enough Spice");
+                //Unselect selected Tower
+                gameScreen.setPhase(0);
+                gameScreen.setSelected(-1);
             }
         }
         return false;

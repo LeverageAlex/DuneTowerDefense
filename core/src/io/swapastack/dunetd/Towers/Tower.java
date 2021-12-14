@@ -21,6 +21,8 @@ public abstract class Tower implements MapIterable {
     protected AnimationController animController;
     private int length = Integer.MAX_VALUE, color = 130;
     protected GameScreen gameScreen;
+    protected int cost;
+    public static int costBombTower = 23, costCanonTower = 7, costSonicTower = 69;
 
     public abstract void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers,float x, float y, float z);
     public abstract void fire(ArrayList<Enemy> enemiesList);
@@ -121,5 +123,14 @@ public abstract class Tower implements MapIterable {
         mapTowers[Math.round(pos.x)][Math.round(pos.z)] = new IterableOverMap();
         sceneManager.removeScene(this.getScene());
 
+    }
+
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }

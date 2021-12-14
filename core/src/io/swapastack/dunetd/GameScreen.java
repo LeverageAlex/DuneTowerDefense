@@ -274,6 +274,9 @@ public class GameScreen implements Screen {
             towerBuilding.draw();
         }
 
+        if(phase == 1 && !wave.isStarted()) {
+            wave.startWave();
+        }
 
 
         //hud.collision(Gdx.input.getX(), Gdx.input.getY());
@@ -427,7 +430,7 @@ public class GameScreen implements Screen {
         liste.add(shawn);
 
         wave.initEnemys(liste);
-        wave.startWave();
+      //  wave.startWave();
         shawn.createScene(sceneAssetHashMap);
         bob.createScene(sceneAssetHashMap);
 
@@ -442,11 +445,11 @@ public class GameScreen implements Screen {
         //group.addActor(button);
 
        // tex = new Texture("hud/Ant.png");
-        hud = new HUD_Drawer(skin, "hud/bombTower.png", 500,Gdx.graphics.getWidth()/2-166, 20, 100, 100);
+        hud = new HUD_Drawer(skin, "hud/bombTower.png", Tower.costBombTower,Gdx.graphics.getWidth()/2-166, 20, 100, 100);
         huds = new HUD_Drawer[3];
         huds[0] = hud;
-        huds[1] = new HUD_Drawer(skin, "hud/canonTower.png", 73,Gdx.graphics.getWidth()/2 - 64, 20, 100, 100);
-        huds[2] = new HUD_Drawer(skin, "hud/sonicTower.png", 34,Gdx.graphics.getWidth()/2 + 38, 20, 100, 100);
+        huds[1] = new HUD_Drawer(skin, "hud/canonTower.png", Tower.costCanonTower,Gdx.graphics.getWidth()/2 - 64, 20, 100, 100);
+        huds[2] = new HUD_Drawer(skin, "hud/sonicTower.png", Tower.costSonicTower,Gdx.graphics.getWidth()/2 + 38, 20, 100, 100);
 
         for (HUD_Drawer h: huds) {
             towerBuilding.addActor(h);
@@ -684,13 +687,21 @@ public class GameScreen implements Screen {
         this.phase = phase;
     }
 
+    /**
+     * Used by MouseProcessor to place Tower to a field where the mouse clicked, if the place is a valid field
+     * @param t
+     * @return
+     */
     public boolean placeTower(Tower t) {
         Vector3 v = getClickOnField();
-        if(inRangeofField(v) &&Tower.isEligibleToPlace(mapTowers, this, Math.round(v.x), Math.round(v.z))) {
+        if(inRangeofField(v) && Tower.isEligibleToPlace(mapTowers, this, Math.round(v.x), Math.round(v.z))) {
             t.init(sceneManager, sceneAssetHashMap, mapTowers, Math.round(v.x), 0.02f, Math.round(v.z));
             return  true;
         }
         return false;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
 }

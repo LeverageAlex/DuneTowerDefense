@@ -14,14 +14,17 @@ public class Wave {
     private float delaySeconds = 5.f, intervalSeconds = 1.5f;
     private GameScreen gameScreen;
     private Player player;
+    private boolean started;
 
     public Wave(GameScreen gameScreen, Player player) {
         this.gameScreen = gameScreen;
         this.player = player;
+        started = false;
         //this.enemyCounter = 6;
     }
     //Activate waveSpawner
     public void startWave() {
+        started = true;
         timer = new Timer();
         timer.scheduleTask(new Timer.Task() {
             @Override
@@ -76,5 +79,9 @@ public class Wave {
         player.reduceHealth(e.arrivedAtEndPortal());
         alive--;
         arrivedPortal++;
+    }
+
+    public boolean isStarted() {
+        return started;
     }
 }
