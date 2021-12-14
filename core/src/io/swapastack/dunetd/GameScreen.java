@@ -101,6 +101,7 @@ public class GameScreen implements Screen {
     HUD_Drawer[] huds;
     Label spiceAmount;
     int selected = -1;
+    Sandworm sand;
 
 
     public GameScreen(DuneTD parent) {
@@ -178,6 +179,7 @@ public class GameScreen implements Screen {
         parent.assetManager.load("cute_cyborg/scene.gltf", SceneAsset.class);
         parent.assetManager.load("spaceship_orion/scene.gltf", SceneAsset.class);
         parent.assetManager.load("bullet_9_mm/scene.gltf", SceneAsset.class);
+        parent.assetManager.load("sandworm/scene.gltf", SceneAsset.class);
         DuneTD.assetManager.finishLoading();
 
         // Create scene assets for all loaded models
@@ -194,6 +196,8 @@ public class GameScreen implements Screen {
         sceneAssetHashMap.put("spaceship_orion/scene.gltf", harvesterCharacter);
         SceneAsset bullet9mm = parent.assetManager.get("bullet_9_mm/scene.gltf");
         sceneAssetHashMap.put("bullet_9_mm/scene.gltf", bullet9mm);
+        SceneAsset wormChar = parent.assetManager.get("sandworm/scene.gltf");
+        sceneAssetHashMap.put("sandworm/scene.gltf", wormChar);
 
       //   createMapExample(sceneManager);
         createMap(sceneManager);
@@ -240,7 +244,9 @@ public class GameScreen implements Screen {
             ImGui.text("Mouse Map Rounded X: " + Math.round(vec.x) + ", Y: " + vec.y + ", Z: " + Math.round(vec.z));
         ImGui.end();
 
-
+        if(sand.moveWorm()) {
+            sand.removeWorm(sceneManager);
+        }
 
 
         //infantry.move(0.0000f, 0, -0.002f);
@@ -437,6 +443,14 @@ public class GameScreen implements Screen {
         beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
         resetBeamPos();
         sceneManager.addScene(beam);
+
+        Knocker knocker = new Knocker(this);
+        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 4.f, 0, 0);
+        knocker = new Knocker(this);
+        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 2.f, 0, 0);
+        sand = new Sandworm(sceneManager, sceneAssetHashMap, 0, 0.1f, 0, rows, cols);
+
+       // sceneManager.addScene(sand.getScene());
 
         towerBuilding = new Stage();
        // Group group = new Group();
