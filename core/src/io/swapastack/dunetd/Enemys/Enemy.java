@@ -148,16 +148,15 @@ public abstract class Enemy {
         if(walk() ) {
             //If there are still points to move towards, rotate towards it and if successfull, activate the walk() function again
             if (numberOnArrayField + 1 < shortestPath.length) {
-                if(rotateTowardsPointSmooth(shortestPath[numberOnArrayField + 1])) {
+                if (rotateTowardsPointSmooth(shortestPath[numberOnArrayField + 1])) {
                     numberOnArrayField++;
                 }
                 //target = shortestPath[numberOnArrayField];
 
+            } else if (numberOnArrayField + 1 >= shortestPath.length) {
+                //Endportal arrived
+                System.out.println("Arrived @ endportal!");
             }
-        }
-        else if(numberOnArrayField + 1 >= shortestPath.length) {
-            //Endportal arrived
-            System.out.println("Arrived @ endportal!");
         }
     }
     /**
