@@ -95,6 +95,7 @@ public class GameScreen implements Screen {
     HUD_Drawer hud;
     HUD_Drawer[] huds;
     Label spiceAmount;
+    Label hsAmount;
     int selected = -1;
     Sandworm sand;
 
@@ -265,7 +266,8 @@ public class GameScreen implements Screen {
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
 
-        spiceAmount.setText("Spice: " + player.getSpice());
+        spiceAmount.setText("Spice:        " + player.getSpice());
+        hsAmount.setText("Highscore:   " + player.getHighscore());
 
         HUD.act(delta);
         HUD.draw();
@@ -444,7 +446,6 @@ public class GameScreen implements Screen {
         knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 3.f, 0, 0);
         knocker = new Knocker(this);
         knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 2.f, 0, 0);
-       // sand = new Sandworm(sceneManager, sceneAssetHashMap, rows, cols);
 
        // sceneManager.addScene(sand.getScene());
 
@@ -468,9 +469,12 @@ public class GameScreen implements Screen {
 
         HUD = new Stage();
 
-        spiceAmount = new Label("Spice: " + player.getSpice(),skin);
-        spiceAmount.setPosition(Gdx.graphics.getWidth() - 150, Gdx.graphics.getHeight() - 50);
+        spiceAmount = new Label("Spice:     " + player.getSpice(),skin);
+        spiceAmount.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 50);
+        hsAmount = new Label("Highscore: " + player.getHighscore(),skin);
+        hsAmount.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 80);
         HUD.addActor(spiceAmount);
+        HUD.addActor(hsAmount);
       //    spiceAmount.setText("Spice: " + player.getSpice());
 
 
@@ -719,4 +723,16 @@ public class GameScreen implements Screen {
         sand = new Sandworm(sceneManager, sceneAssetHashMap, attackers, mapTowers, this, rows, cols);
         sand.removeLane(mapTowers, attackers);
     }
+
+    /**
+     * Should be called whenever a Wave Swaps
+     */
+    public void onWaveSwap() {
+        Knocker.gambleAvailabilty();
+
+
+
+
+    }
+
 }

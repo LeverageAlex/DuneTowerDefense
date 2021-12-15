@@ -14,6 +14,7 @@ public class Knocker extends Tower{
 
     public static Knocker firstKnocker = null, secondKnocker = null;
     private static float delaySandworm = 5.f;
+    public static boolean isAvailable = true;
 
     public Knocker(GameScreen screen) {
         graphics = "detail_tree.glb";
@@ -21,6 +22,7 @@ public class Knocker extends Tower{
         range = 3;
         gameScreen = screen;
         this.cost = 35;
+
 
     }
 
@@ -34,6 +36,7 @@ public class Knocker extends Tower{
         }
         else if(secondKnocker == null) {
             secondKnocker = this;
+            isAvailable = false;
             Timer timer = new Timer();
             timer.scheduleTask(new Timer.Task() {
                 @Override
@@ -59,18 +62,18 @@ public class Knocker extends Tower{
     }
 
     public static boolean knockerPlaceAble(int x, int z) {
-        if(firstKnocker == null) {
-            return true;
-        }
-        else if (secondKnocker == null){
-            //Check XOR
-           // Vector3 stor = firstKnocker.getCoords();
-            if((firstKnocker.getCoords().x == x ^ firstKnocker.getCoords().z == z )) {
+        if(Knocker.isAvailable()) {
+            if (firstKnocker == null) {
                 return true;
+            } else if (secondKnocker == null) {
+                //Check XOR
+                // Vector3 stor = firstKnocker.getCoords();
+                if ((firstKnocker.getCoords().x == x ^ firstKnocker.getCoords().z == z)) {
+                    return true;
+                }
+
             }
-
         }
-
         return false;
 
     }
@@ -79,5 +82,19 @@ public class Knocker extends Tower{
         Vector3 pos = scene.modelInstance.transform.getTranslation(new Vector3());
         sceneManager.removeScene(this.getScene());
 
+    }
+
+    public static boolean isAvailable() {
+        return isAvailable;
+
+    }
+
+    /**
+     * sets the Knocker available if player is lucky
+     */
+    public static void gambleAvailabilty() {
+        if(Math.round(Math.random()) == 1) {
+            isAvailable = true;
+        }
     }
 }

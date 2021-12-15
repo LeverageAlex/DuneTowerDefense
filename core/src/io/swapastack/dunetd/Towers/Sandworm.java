@@ -17,7 +17,7 @@ public class Sandworm {
     private SceneManager sceneManager;
     private HashMap<String, SceneAsset> sceneAssetHashMap;
     private boolean direction; //false => x-Richtung , true => z-Richtung
-    private float speed = 0.01f;
+    private float speed = 0.03f;
     private int rows, cols;
     private float currentAngle;
     private ArrayList<Enemy> enemies;
