@@ -11,7 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class HUD_Drawer extends Actor {
     private Image img;
     private Skin skin;
-    private int cost;
+    private String cost;
+    private String labelPrefix = "Cost: ";
 
     public HUD_Drawer(Skin skin,String graphics, int cost, float x, float y, float width, float height) {
         Texture tex = new Texture(graphics);
@@ -21,11 +22,22 @@ public class HUD_Drawer extends Actor {
         img.setWidth(width);
         img.setHeight(height);
         this.skin = skin;
-        this.cost = cost;
+        this.cost = String.valueOf(cost);
+    }
+    public HUD_Drawer(Skin skin,String graphics, String cost, float x, float y, float width, float height) {
+        Texture tex = new Texture(graphics);
+        this.img = new Image(tex);
+        img.setX(x);
+        img.setY(y);
+        img.setWidth(width);
+        img.setHeight(height);
+        this.skin = skin;
+        this.cost = (cost);
+        this.labelPrefix = "";
     }
     @Override
     public void draw(Batch batch, float update){
-        Label spiceAmount = new Label("Cost: " + cost,skin);
+        Label spiceAmount = new Label(labelPrefix + cost,skin);
         spiceAmount.setPosition(img.getX(), img.getY() + img.getHeight());
 
         img.draw(batch, update);

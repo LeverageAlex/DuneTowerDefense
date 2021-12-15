@@ -85,7 +85,7 @@ public class Knocker extends Tower{
     }
 
     public static boolean isAvailable() {
-        return isAvailable;
+        return Knocker.isAvailable;
 
     }
 
@@ -94,7 +94,7 @@ public class Knocker extends Tower{
      */
     public static void gambleAvailabilty() {
         if(Math.round(Math.random()) == 1) {
-            isAvailable = true;
+            Knocker.isAvailable = true;
         }
     }
 }

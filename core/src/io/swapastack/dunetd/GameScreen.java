@@ -89,10 +89,9 @@ public class GameScreen implements Screen {
     Wave wave;
     MapIterable[][] mapTowers;
     private int[][] shortestPath;
-    Stage towerBuilding, HUD;
+    Stage towerBuilding, HUD, placeKnockerHUD;
     Skin skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
     int phase = 0;
-    HUD_Drawer hud;
     HUD_Drawer[] huds;
     Label spiceAmount;
     Label hsAmount;
@@ -282,7 +281,10 @@ public class GameScreen implements Screen {
             wave.startWave();
         }
 
-
+        if(Knocker.isAvailable()) {
+            placeKnockerHUD.act(delta);
+            placeKnockerHUD.draw();
+        }
         //hud.collision(Gdx.input.getX(), Gdx.input.getY());
 
 
@@ -444,28 +446,21 @@ public class GameScreen implements Screen {
 
         Knocker knocker = new Knocker(this);
         knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 3.f, 0, 0);
-        knocker = new Knocker(this);
-        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 2.f, 0, 0);
+      //  knocker = new Knocker(this);
+       // knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 2.f, 0, 0);
 
        // sceneManager.addScene(sand.getScene());
 
         towerBuilding = new Stage();
-       // Group group = new Group();
-        //group.setBounds(200, 500, 100, 100);
-        //button = new TextButton("GAME SCREEN", skin, "small");
-        //group.addActor(button);
 
-       // tex = new Texture("hud/Ant.png");
-        hud = new HUD_Drawer(skin, "hud/bombTower.png", Tower.costBombTower,Gdx.graphics.getWidth()/2-166, 20, 100, 100);
         huds = new HUD_Drawer[3];
-        huds[0] = hud;
+        huds[0] = new HUD_Drawer(skin, "hud/bombTower.png", Tower.costBombTower,Gdx.graphics.getWidth()/2-166, 20, 100, 100);;
         huds[1] = new HUD_Drawer(skin, "hud/canonTower.png", Tower.costCanonTower,Gdx.graphics.getWidth()/2 - 64, 20, 100, 100);
         huds[2] = new HUD_Drawer(skin, "hud/sonicTower.png", Tower.costSonicTower,Gdx.graphics.getWidth()/2 + 38, 20, 100, 100);
 
-        for (HUD_Drawer h: huds) {
+       for (HUD_Drawer h: huds) {
             towerBuilding.addActor(h);
         }
-
 
         HUD = new Stage();
 
@@ -475,19 +470,11 @@ public class GameScreen implements Screen {
         hsAmount.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 80);
         HUD.addActor(spiceAmount);
         HUD.addActor(hsAmount);
-      //    spiceAmount.setText("Spice: " + player.getSpice());
 
+        placeKnockerHUD = new Stage();
+        HUD_Drawer placeKnocker = new HUD_Drawer(skin, "hud/sandWorm.png", "FREE",Gdx.graphics.getWidth() - 138, 20, 100, 100);
+        placeKnockerHUD.addActor(placeKnocker);
 
-
-      //  stage.getCamera().position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
-
-
-        //sand.removeLane(mapTowers, attackers);
-
-       // bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
-       //  bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
-       // bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
-       // bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
     }
 
 
