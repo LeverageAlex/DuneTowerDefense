@@ -3,6 +3,7 @@ package io.swapastack.dunetd.Towers;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import io.swapastack.dunetd.Enemys.Enemy;
+import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.Scene;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
@@ -19,8 +20,12 @@ public class Sandworm {
     private float speed = 0.01f;
     private int rows, cols;
     private float currentAngle;
+    private ArrayList<Enemy> enemies;
+    private MapIterable[][] mapTowers;
+    private float offset = 4;
+    private GameScreen gameScreen;
 
-    public Sandworm(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int rows, int cols) {
+    public Sandworm(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, ArrayList<Enemy> enemies, MapIterable[][] mapTowers, GameScreen gameScreen, int rows, int cols) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
 
@@ -28,6 +33,10 @@ public class Sandworm {
         //Only for about 10 Seconds, so it's okay
         this.sceneManager = sceneManager;
         this.sceneAssetHashMap = sceneAssetHashMap;
+        this.enemies = enemies;
+        this.mapTowers = mapTowers;
+        this.gameScreen = gameScreen;
+
         Vector3 vec1 = Knocker.firstKnocker.getCoords();
         Vector3 vec2 = Knocker.secondKnocker.getCoords();
 
@@ -35,9 +44,9 @@ public class Sandworm {
         float y = 0.1f;
         //this.setTranslation(x, y, z);
         if(direction) {
-            this.setTranslation(Math.round(vec1.x), y, -4);
+            this.setTranslation(Math.round(vec1.x), y, -offset);
         }else {
-            this.setTranslation(-4, y, Math.round(vec1.z));
+            this.setTranslation(-offset, y, Math.round(vec1.z));
             rotateTowardsXAxis();
                     /*.scale(1f, 1f, 1f);*/
         }
@@ -64,6 +73,10 @@ public class Sandworm {
     public void removeWorm(SceneManager sceneManager) {
         Vector3 pos = scene.modelInstance.transform.getTranslation(new Vector3());
         sceneManager.removeScene(this.getScene());
+        Knocker.firstKnocker.removeKnocker(sceneManager);
+        Knocker.firstKnocker = null;
+        Knocker.secondKnocker.removeKnocker(sceneManager);
+        Knocker.secondKnocker = null;
     }
 
     public boolean moveWorm() {
@@ -76,6 +89,7 @@ public class Sandworm {
             //walk on x-Axis
             this.scene.modelInstance.transform.setTranslation(pos.x + speed, pos.y, pos.z);
         }
+        removeLane(mapTowers, enemies);
         return (pos.x > rows || pos.z > cols);
 
     }
@@ -94,44 +108,44 @@ public class Sandworm {
 
     public void removeLane(MapIterable[][] mapTowers, ArrayList<Enemy> enemies) {
         Vector3 pos = getCoords();
-        int x = Math.round(pos.x);
-        int z = Math.round(pos.z);
-        if(direction) {
+        int x = direction ? Math.round(pos.x) : (Math.round(pos.x+ offset/2) );
+        int z = direction ? (Math.round(pos.z+ offset/2 )) : Math.round(pos.z);
+       // if(direction) {
             //z-axis
-            for (int i = 0; i < mapTowers[0].length; i++) {
-                if(mapTowers[x][i] instanceof Tower) {
-                    ((Tower)mapTowers[x][i]).removeTower(sceneManager, mapTowers);
-                }
+           // for (int i = 0; i < mapTowers[0].length; i++) {
+                if(gameScreen.inRangeofField(new Vector3(x, 0, z)) && mapTowers[x][z] instanceof Tower) {
+                    ((Tower)mapTowers[x][z]).removeTower(sceneManager, mapTowers);
+             //   }
             }
             for (int i = 0; i < enemies.size(); i++) {
                 float enemX = enemies.get(i).getCoords().x;
                 float enemZ = enemies.get(i).getCoords().z;
-                if(Math.round(enemX) == x) {
+                if(Math.round(enemX) == x &&  Math.round(enemZ) == z) {
                     enemies.get(i).removeEnemy(sceneManager, enemies);
                     i--;
                 }
             }
 
-        }else {
+      /*  }else {
             //x-axis
 
-            for (int i = 0; i < mapTowers.length; i++) {
-                if(mapTowers[i][z] instanceof Tower) {
-                    ((Tower)mapTowers[i][z]).removeTower(sceneManager, mapTowers);
+          //  for (int i = 0; i < mapTowers.length; i++) {
+                if(gameScreen.inRangeofField(new Vector3(x, 0, z)) && mapTowers[x][z] instanceof Tower) {
+                    ((Tower)mapTowers[x][z]).removeTower(sceneManager, mapTowers);
                 }
 
-            }
+          //  }
 
             for (int i = 0; i < enemies.size(); i++) {
                 float enemX = enemies.get(i).getCoords().x;
                 float enemZ = enemies.get(i).getCoords().z;
-                if(Math.round(enemZ) == z) {
+                if(Math.round(enemX) == x && Math.round(enemZ) == z) {
                     enemies.get(i).removeEnemy(sceneManager, enemies);
                     i--;
                 }
             }
 
-        }
+        }*/
     }
 
 

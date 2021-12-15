@@ -28,7 +28,7 @@ public class Knocker extends Tower{
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers, float x, float y, float z) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
-        this.setTranslation(x, y, z);
+        this.setTranslation(x, y, z).scale(0.5f, 0.5f, 0.5f);
         if(firstKnocker == null) {
             firstKnocker = this;
         }
@@ -72,6 +72,12 @@ public class Knocker extends Tower{
         }
 
         return false;
+
+    }
+
+    public void removeKnocker(SceneManager sceneManager) {
+        Vector3 pos = scene.modelInstance.transform.getTranslation(new Vector3());
+        sceneManager.removeScene(this.getScene());
 
     }
 }

@@ -441,9 +441,9 @@ public class GameScreen implements Screen {
         sceneManager.addScene(beam);
 
         Knocker knocker = new Knocker(this);
-        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 3.f, 0, 1);
+        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 3.f, 0, 0);
         knocker = new Knocker(this);
-        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 3.f, 0, 2);
+        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 2.f, 0, 0);
        // sand = new Sandworm(sceneManager, sceneAssetHashMap, rows, cols);
 
        // sceneManager.addScene(sand.getScene());
@@ -716,7 +716,7 @@ public class GameScreen implements Screen {
     }
 
     public void launchSandwormAttack() {
-        sand = new Sandworm(sceneManager, sceneAssetHashMap, rows, cols);
+        sand = new Sandworm(sceneManager, sceneAssetHashMap, attackers, mapTowers, this, rows, cols);
         sand.removeLane(mapTowers, attackers);
     }
 }
