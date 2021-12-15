@@ -113,7 +113,7 @@ public class GameScreen implements Screen {
      */
     @Override
     public void show() {
-        ConfigMgr mgr = new ConfigMgr();
+        ConfigMgr.readCfg();
         this.rows = ConfigMgr.rows;
         this.cols = ConfigMgr.cols;
         // SpaiR/imgui-java

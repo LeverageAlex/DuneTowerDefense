@@ -5,16 +5,16 @@ import java.io.*;
 import java.util.Arrays;
 
 public class ConfigMgr {
-    File file = new File("core/assets/config.ini");
+    private static File file = new File("core/assets/config.ini");
     public static int rows, cols, stPortalX, stPortalY, stPortalZ, endPortalX, endPortalY, endPortalZ, playerHealth, playerStartSpice, canonTowCost, bombTowCost, sonicTowCost, bombTowDmg,
     canonTowDmg, sonicTowDmg, knockerCost,bossDmgOnEndPortal, infDmgOnEndPortal, harvDmgOnEndPortal, bossStoredSpice, infStoredSpice, harvStoredSpice, bossHSPoints, infHSPoints
             , harvHSPoints;
     public static float canonTowRot, bombTowRot, canonTowRange, bombTowRange, sonicTowRange, sandWormSpeed,bossMovSpeed, infMovSpeed, harvMovSpeed, bossHealth, harvHealth, infHealth, bossLevelUpCoeff, infLevelUpCoeff, harvLevelUpCoeff, waveSpawnDelayIntervall;
     public static String[] waves;
-    private BufferedReader in;
+    private static BufferedReader in;
 
 
-    public ConfigMgr()  {
+    public static void readCfg() {
         try {
             in = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 
@@ -191,11 +191,11 @@ public class ConfigMgr {
         }
     }
 
-    public int readInt() throws IOException {
+    private static int readInt() throws IOException {
         return Integer.parseInt(in.readLine().split("=")[1]);
     }
 
-    public float readFloat() throws IOException {
+    private static float readFloat() throws IOException {
         return Float.parseFloat(in.readLine().split("=")[1]);
     }
 
