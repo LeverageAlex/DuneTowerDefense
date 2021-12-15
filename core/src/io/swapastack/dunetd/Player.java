@@ -1,7 +1,7 @@
 package io.swapastack.dunetd;
 
 public class Player {
-    private int health, highscore, spice = 150;
+    private int health = ConfigMgr.playerHealth, highscore, spice = ConfigMgr.playerStartSpice;
     private String name;
 
     public void setHealth(int health) {
