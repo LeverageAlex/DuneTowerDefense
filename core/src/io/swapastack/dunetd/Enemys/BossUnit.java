@@ -42,7 +42,7 @@ public class BossUnit extends Enemy{
     }
 
     @Override
-    public float arrivedAtEndPortal() {
+    public int arrivedAtEndPortal() {
         return damageOnEndPortal;
     }
 

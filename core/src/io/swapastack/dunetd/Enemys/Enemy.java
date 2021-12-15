@@ -33,7 +33,7 @@ public abstract class Enemy {
 
     public abstract void destroyDamage();
 
-    public abstract float arrivedAtEndPortal();
+    public abstract int arrivedAtEndPortal();
 
     public abstract void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath, float x, float y, float z);
 

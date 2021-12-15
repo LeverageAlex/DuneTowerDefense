@@ -37,7 +37,7 @@ public class HarvestMachine extends Enemy{
     }
 
     @Override
-    public float arrivedAtEndPortal() {
+    public int arrivedAtEndPortal() {
         return damageOnEndPortal;
     }
 

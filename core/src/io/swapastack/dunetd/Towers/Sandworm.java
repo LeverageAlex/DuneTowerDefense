@@ -19,7 +19,6 @@ public class Sandworm {
     private boolean direction; //false => x-Richtung , true => z-Richtung
     private float speed = 0.03f;
     private int rows, cols;
-    private float currentAngle;
     private ArrayList<Enemy> enemies;
     private MapIterable[][] mapTowers;
     private float offset = 4;

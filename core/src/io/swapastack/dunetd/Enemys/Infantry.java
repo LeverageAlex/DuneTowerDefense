@@ -49,7 +49,7 @@ public class Infantry extends Enemy {
     }
 
     @Override
-    public float arrivedAtEndPortal() {
+    public int arrivedAtEndPortal() {
         return damageOnEndPortal;
     }
 
