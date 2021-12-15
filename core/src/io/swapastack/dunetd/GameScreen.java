@@ -239,8 +239,9 @@ public class GameScreen implements Screen {
             ImGui.text("Mouse Map Rounded X: " + Math.round(vec.x) + ", Y: " + vec.y + ", Z: " + Math.round(vec.z));
         ImGui.end();
 
-        if(sand.moveWorm()) {
+        if(sand != null && sand.moveWorm()) {
             sand.removeWorm(sceneManager);
+            sand = null;
         }
 
 
@@ -443,7 +444,7 @@ public class GameScreen implements Screen {
         knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 3.f, 0, 1);
         knocker = new Knocker(this);
         knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 3.f, 0, 2);
-        sand = new Sandworm(sceneManager, sceneAssetHashMap, rows, cols);
+       // sand = new Sandworm(sceneManager, sceneAssetHashMap, rows, cols);
 
        // sceneManager.addScene(sand.getScene());
 
@@ -477,7 +478,7 @@ public class GameScreen implements Screen {
       //  stage.getCamera().position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
 
 
-        sand.removeLane(mapTowers, attackers);
+        //sand.removeLane(mapTowers, attackers);
 
        // bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
        //  bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
@@ -712,5 +713,10 @@ public class GameScreen implements Screen {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void launchSandwormAttack() {
+        sand = new Sandworm(sceneManager, sceneAssetHashMap, rows, cols);
+        sand.removeLane(mapTowers, attackers);
     }
 }

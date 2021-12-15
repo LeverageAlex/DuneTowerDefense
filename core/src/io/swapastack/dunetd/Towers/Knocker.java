@@ -1,6 +1,7 @@
 package io.swapastack.dunetd.Towers;
 
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Timer;
 import io.swapastack.dunetd.Enemys.Enemy;
 import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 public class Knocker extends Tower{
 
     public static Knocker firstKnocker = null, secondKnocker = null;
+    private static float delaySandworm = 5.f;
 
     public Knocker(GameScreen screen) {
         graphics = "detail_tree.glb";
@@ -32,6 +34,13 @@ public class Knocker extends Tower{
         }
         else if(secondKnocker == null) {
             secondKnocker = this;
+            Timer timer = new Timer();
+            timer.scheduleTask(new Timer.Task() {
+                @Override
+                public void run() {
+                    gameScreen.launchSandwormAttack();
+                }
+            }, delaySandworm);
         }
         else {
             System.out.println("This should not be triggered. The Knocker shouldn't be alloweded to Place");
