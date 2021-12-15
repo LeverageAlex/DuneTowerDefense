@@ -11,7 +11,7 @@ import java.util.LinkedList;
 public class Wave {
     private int enemyCounter, alive, killed, arrivedPortal;
     private LinkedList<Enemy> enemies;
-    Timer timer;
+    private Timer timer;
     private float delaySeconds = 5.f, intervalSeconds = ConfigMgr.waveSpawnDelayIntervall;
     private GameScreen gameScreen;
     private Player player;
@@ -107,5 +107,14 @@ public class Wave {
             }
 
         }
+    }
+
+    public void reset() {
+        timer.clear();
+        started = false;
+        enemyCounter = 0;
+        alive = 0;
+        killed = 0;
+        arrivedPortal = 0;
     }
 }

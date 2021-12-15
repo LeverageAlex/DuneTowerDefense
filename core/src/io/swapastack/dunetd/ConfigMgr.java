@@ -175,7 +175,7 @@ public class ConfigMgr {
             os.println("spawnDelayIntervall="+1.5f);
 
             //specWave1
-            //0: no Spawn 1: Infantry, 2: HarvestMachine, 3: BossUnit
+            //0: no Spawn 1: Infantry, 2: HarvestMachine, 3: BossUnit, 0: to skip this spawn position
             os.println("waveSpawnOrder=11100200003");
 
             //specWave2

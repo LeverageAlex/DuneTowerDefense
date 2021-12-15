@@ -114,6 +114,8 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         ConfigMgr mgr = new ConfigMgr();
+        this.rows = ConfigMgr.rows;
+        this.cols = ConfigMgr.cols;
         // SpaiR/imgui-java
         ImGui.createContext();
         windowHandle = ((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle();
@@ -248,22 +250,8 @@ public class GameScreen implements Screen {
             sand = null;
         }
 
-
-        //infantry.move(0.0000f, 0, -0.002f);
-       // infantryTwo.move(0, 0, 0.005f);
-      //  bossUnit.move(0.001f, 0, -0.000f);
-       // harvestMachine.movingAlongShortestPath();
-       // int[] toRotate = {2, 3};
-       // harvestMachine.rotateTowardsPointSmooth(toRotate);
-       // infantry.movingAlongShortestPath();
-      //  bossUnit.movingAlongShortestPath();
-
         updateEnemysMovement();
 
-     //   canonTower.fire(attackers);
-     //   bombTower.fire(attackers);
-     //   sonicTower.fire(attackers);
-     //   ImGui.end();
         for (Tower t : towers) {
             t.fire(attackers);
         }
@@ -295,7 +283,7 @@ public class GameScreen implements Screen {
         }
         //To make this work, every Enemy needs to be part of a wave
         if(wave.waveKilled()) {
-            onWaveSwap(); System.out.println("Winning condition triggered");
+            onWaveSwap(); System.out.println("waveSwap");
         }
 
     }
@@ -734,10 +722,11 @@ public class GameScreen implements Screen {
      * Should be called whenever a Wave Swaps
      */
     public void onWaveSwap() {
-        if(waveCounter < ConfigMgr.waves.length) {
+        if(waveCounter+1 < ConfigMgr.waves.length) {
             Knocker.gambleAvailabilty();
             phase = 0;
-            wave = new Wave(this, player);
+            //wave = new Wave(this, player);
+            wave.reset();
             wave.initEnemies(ConfigMgr.waves[waveCounter]);
             waveCounter++;
         }
