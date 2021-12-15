@@ -100,6 +100,7 @@ public class GameScreen implements Screen {
     int selected = -1;
     Sandworm sand;
     ArrayList<Tower> towers = new ArrayList<>();
+    private int waveCounter = 0;
 
 
     public GameScreen(DuneTD parent) {
@@ -292,16 +293,9 @@ public class GameScreen implements Screen {
             placeKnockerHUD.act(delta);
             placeKnockerHUD.draw();
         }
-        //hud.collision(Gdx.input.getX(), Gdx.input.getY());
-
-
         //To make this work, every Enemy needs to be part of a wave
       //  if(wave.waveKilled()) System.out.println("Winning condition triggered");
 
-        //Rotation-Fun
-       /* if(inRangeofField(vec)) {
-            mapTiles[Math.round(vec.z)][Math.round(vec.x)].modelInstance.transform.rotate(new Vector3(0.f, 1.f, 0.f), 0.3f);
-        }*/
     }
 
     @Override
@@ -375,7 +369,7 @@ public class GameScreen implements Screen {
         startPortal = new Startportal(sceneManager, sceneAssetHashMap, mapTowers,ConfigMgr.stPortalX, groundTileDimensions.y, ConfigMgr.stPortalZ);
         endPortal = new Endportal(sceneManager, sceneAssetHashMap, mapTowers,ConfigMgr.endPortalX, groundTileDimensions.y, ConfigMgr.endPortalZ);
 
-        if(Tower.isEligibleToPlace(mapTowers, this,Math.round(0.0f), Math.round(0.0f))) {
+       /* if(Tower.isEligibleToPlace(mapTowers, this,Math.round(0.0f), Math.round(0.0f))) {
             sonicTower = new SonicTower(this);
             sonicTower.init(sceneManager, sceneAssetHashMap, mapTowers, towers,0.0f, groundTileDimensions.y, 1.0f);
         }
@@ -388,7 +382,7 @@ public class GameScreen implements Screen {
 
         // place example bombTower
         bombTower = new BombTower(this);
-        bombTower.init(sceneManager, sceneAssetHashMap, mapTowers,towers,1.0f, groundTileDimensions.y, 2.0f);
+        bombTower.init(sceneManager, sceneAssetHashMap, mapTowers,towers,1.0f, groundTileDimensions.y, 2.0f);*/
 
       /*  if(Tower.isEligibleToPlace(mapTowers, this,Math.round(1.0f), Math.round(0.0f))) {
             CanonTower canonTower2 = new CanonTower(this);
@@ -403,7 +397,7 @@ public class GameScreen implements Screen {
 
 
         // place enemy character
-        infantry = new Infantry();
+    /*    infantry = new Infantry();
   //      infantry.init(sceneManager, sceneAssetHashMap, shortestPath,2.0f, groundTileDimensions.y, 2.0f);
         infantry.init(sceneManager, sceneAssetHashMap, shortestPath,startPortal.getX(), groundTileDimensions.y, startPortal.getZ());
         infantry.getScene().modelInstance.calculateTransforms();
@@ -422,16 +416,16 @@ public class GameScreen implements Screen {
 
         infantryTwo = new Infantry();
         infantryTwo.init(sceneManager, sceneAssetHashMap, shortestPath,2.0f, 0.25f, 4.0f);
-        infantryTwo.setAnimation("RIDING", -1);
+        infantryTwo.setAnimation("RIDING", -1);*/
 
         // Bullet9mm bullet = new Bullet9mm();
         // bullet.init(sceneManager, sceneAssetHashMap, -1.F, 0.F, -1.F);
 
 
-        attackers.add(bossUnit);
+        /*attackers.add(bossUnit);
         attackers.add(harvestMachine);
         attackers.add(infantryTwo);
-        attackers.add(infantry);
+        attackers.add(infantry);*/
 
         wave = new Wave(this, player);
         LinkedList<Enemy> liste = new LinkedList<>();
@@ -442,7 +436,7 @@ public class GameScreen implements Screen {
         liste.add(null);
         liste.add(shawn);
 
-        wave.initEnemys(liste);
+        wave.initEnemies(liste);
       //  wave.startWave();
         shawn.createScene(sceneAssetHashMap);
         bob.createScene(sceneAssetHashMap);
@@ -737,10 +731,9 @@ public class GameScreen implements Screen {
      */
     public void onWaveSwap() {
         Knocker.gambleAvailabilty();
-
-
-
-
+        wave = new Wave(this, player);
+        wave.initEnemies(ConfigMgr.waves[waveCounter]);
+        waveCounter++;
     }
 
 
