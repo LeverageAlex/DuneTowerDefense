@@ -5,11 +5,28 @@ import java.io.*;
 import java.nio.Buffer;
 
 public class ConfigSaver {
+    File file = new File("core/assets/config.ini");
+    public static int rows, cols, stPortalX, stPortalY, stPortalZ, endPortalX, endPortalY, endPortalZ, playerHealth, playerStartSpice, canonTowCost, bombTowCost, sonicTowCost, bombTowDmg,
+    canonTowDmg, sonicTowDmg, bossDmgOnEndPortal, infDmgOnEndPortal, harvDmgOnEndPortal, bossStoredSpice, infStoredSpice, harvStoredSpice;
+    public static float canonTowRot, bombTowRot, canonTowRange, bombTowRange, sonicTowRange, bossMovSpeed, infMovSpeed, harvMovSpeed, bossHealth, harvHealth, infHealth, bossHSPoints, infHSPoints
+            , harvHSPoints, bossLevelUpCoeff, infLevelUpCoeff, harvLevelUpCoeff;
+
+
 
     public ConfigSaver()  {
-        File f = new File("core/assets/config.ini");
         try {
-            PrintWriter os = new PrintWriter(new OutputStreamWriter(new FileOutputStream(f)));
+            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeCfg() {
+
+        try {
+            PrintWriter os = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file)));
             //DataOutputStream os = new DataOutputStream(out);
             //rows
             os.println("Rows=" + 5);
@@ -59,8 +76,6 @@ public class ConfigSaver {
             os.println("sonicTowCost="+69);
             //damage
             os.println("sonicTowDmg="+3);
-            //rotationSpeed
-            os.println("sonicTowRot="+(float) Math.PI / 256);
             //Range
             os.println("sonicTowRange="+1.7);
 
@@ -115,7 +130,8 @@ public class ConfigSaver {
     }
 
     public static void main(String[] args) {
-        new ConfigSaver();
+        ConfigSaver cfg = new ConfigSaver();
+        cfg.writeCfg();
     }
 
 }
