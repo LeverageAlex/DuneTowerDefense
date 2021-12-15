@@ -14,16 +14,18 @@ public class BombTower extends Tower{
     float currentAngle = (float) (Math.PI/2);
     float rotationSpeed = (float) Math.PI/256;
 
+
     public BombTower(GameScreen screen) {
         graphics = "weapon_blaster.glb";
         type = 0;
         range = 3;
         gameScreen = screen;
         this.cost = costBombTower;
+
     }
 
     @Override
-    public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers, float x, float y, float z) {
+    public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers, ArrayList<Tower> towerList, float x, float y, float z) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
         this.setTranslation(x, y, z);
@@ -31,6 +33,8 @@ public class BombTower extends Tower{
        // if(isEligibleToPlace(towers, gameScreen,Math.round(x), Math.round(z))) {
             towers[Math.round(x)][Math.round(z)] = this;
        // }
+        towerList.add(this);
+        this.towerList = towerList;
     }
 
     @Override

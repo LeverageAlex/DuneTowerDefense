@@ -22,11 +22,13 @@ public class CanonTower extends Tower {
     }
 
     @Override
-    public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers, float x, float y, float z) {
+    public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers, ArrayList<Tower> towerList, float x, float y, float z) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
         this.setTranslation(x, y, z);
         towers[Math.round(x)][Math.round(z)] = this;
+        towerList.add(this);
+        this.towerList = towerList;
     }
 
     @Override

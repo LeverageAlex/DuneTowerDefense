@@ -52,6 +52,7 @@ public class MouseForCollision implements InputProcessor {
             if(nbr >= 0 && gameScreen.getSelected() == -1) {
                 gameScreen.setPhase(3);
                 gameScreen.setSelected(nbr);
+                return true;
             }
             else if(nbr >= 0 && gameScreen.getSelected() >= 0) {
                 gameScreen.setPhase(0);
@@ -61,7 +62,7 @@ public class MouseForCollision implements InputProcessor {
         }
         //If tower selected, then arrange placement, if selected point valid
         else if(gameScreen.getSelected() >= 0 && gameScreen.getPhase() == 3) {
-            Tower t;
+            Tower t = null;
             switch (gameScreen.getSelected()) {
                 case 0:
                     t = new BombTower(gameScreen);
@@ -69,7 +70,7 @@ public class MouseForCollision implements InputProcessor {
                 case 1:
                     t = new CanonTower(gameScreen);
                     break;
-                default:
+                case 2:
                     t = new SonicTower(gameScreen);
                     break;
             }
@@ -85,9 +86,12 @@ public class MouseForCollision implements InputProcessor {
                             @Override
                             public void run() {
                                 gameScreen.setPhase(1);
-                                gameScreen.setSelected(-1);
+                                if(gameScreen.getSelected() < 3) {
+                                    gameScreen.setSelected(-1);
+                                }
                             }
                         }, delaySeconds);
+                        return true;
                     } else {
                         System.out.println("Tower setzen fehlgeschlagen :/");
                         gameScreen.setPhase(0);
@@ -102,6 +106,24 @@ public class MouseForCollision implements InputProcessor {
                 gameScreen.setSelected(-1);
             }
         }
+
+        if(gameScreen.getCollidingKnocker(screenX, screenY)) {
+            if (gameScreen.getSelected() == -1) {
+                gameScreen.setSelected(3);
+            }
+        }
+            else if(gameScreen.getSelected() == 3) {
+                gameScreen.setSelected(-1);
+                Knocker knocker = new Knocker(gameScreen);
+                if(gameScreen.placeKnocker(knocker)) {
+                    System.out.println("Successfull Knocker place");
+                }
+                else {
+                    System.out.println("Placing went wrong!");
+                }
+            }
+
+
         return false;
     }
 

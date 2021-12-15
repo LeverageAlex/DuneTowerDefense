@@ -93,10 +93,13 @@ public class GameScreen implements Screen {
     Skin skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
     int phase = 0;
     HUD_Drawer[] huds;
+    Label health;
     Label spiceAmount;
     Label hsAmount;
+    Label waveToBeat;
     int selected = -1;
     Sandworm sand;
+    ArrayList<Tower> towers = new ArrayList<>();
 
 
     public GameScreen(DuneTD parent) {
@@ -258,15 +261,19 @@ public class GameScreen implements Screen {
 
      //   canonTower.fire(attackers);
      //   bombTower.fire(attackers);
-    //    sonicTower.fire(attackers);
+     //   sonicTower.fire(attackers);
      //   ImGui.end();
+        for (Tower t : towers) {
+            t.fire(attackers);
+        }
 
         // SpaiR/imgui-java
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
 
-        spiceAmount.setText("Spice:        " + player.getSpice());
-        hsAmount.setText("Highscore:   " + player.getHighscore());
+        health.setText(     "Health:      " + player.getHealth());
+        spiceAmount.setText("Spice:       " + player.getSpice());
+        hsAmount.setText(   "Highscore:   " + player.getHighscore());
 
         HUD.act(delta);
         HUD.draw();
@@ -370,18 +377,18 @@ public class GameScreen implements Screen {
 
         if(Tower.isEligibleToPlace(mapTowers, this,Math.round(0.0f), Math.round(0.0f))) {
             sonicTower = new SonicTower(this);
-            sonicTower.init(sceneManager, sceneAssetHashMap, mapTowers, 0.0f, groundTileDimensions.y, 1.0f);
+            sonicTower.init(sceneManager, sceneAssetHashMap, mapTowers, towers,0.0f, groundTileDimensions.y, 1.0f);
         }
 
 
         // place example canonTower
         canonTower = new CanonTower(this);
-        canonTower.init(sceneManager, sceneAssetHashMap,mapTowers,2.0f, groundTileDimensions.y, 1.0f);
+        canonTower.init(sceneManager, sceneAssetHashMap,mapTowers,towers,2.0f, groundTileDimensions.y, 1.0f);
 
 
         // place example bombTower
         bombTower = new BombTower(this);
-        bombTower.init(sceneManager, sceneAssetHashMap, mapTowers,1.0f, groundTileDimensions.y, 2.0f);
+        bombTower.init(sceneManager, sceneAssetHashMap, mapTowers,towers,1.0f, groundTileDimensions.y, 2.0f);
 
       /*  if(Tower.isEligibleToPlace(mapTowers, this,Math.round(1.0f), Math.round(0.0f))) {
             CanonTower canonTower2 = new CanonTower(this);
@@ -444,8 +451,8 @@ public class GameScreen implements Screen {
         resetBeamPos();
         sceneManager.addScene(beam);
 
-        Knocker knocker = new Knocker(this);
-        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 3.f, 0, 0);
+       // Knocker knocker = new Knocker(this);
+       // knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 3.f, 0, 0);
       //  knocker = new Knocker(this);
        // knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 2.f, 0, 0);
 
@@ -463,11 +470,13 @@ public class GameScreen implements Screen {
         }
 
         HUD = new Stage();
-
+        health = new Label("Health:    " + player.getHealth(),skin);
+        health.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 30);
         spiceAmount = new Label("Spice:     " + player.getSpice(),skin);
-        spiceAmount.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 50);
-        hsAmount = new Label("Highscore: " + player.getHighscore(),skin);
-        hsAmount.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 80);
+        spiceAmount.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 60);
+        hsAmount = new Label(   "Highscore: " + player.getHighscore(),skin);
+        hsAmount.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 90);
+        HUD.addActor(health);
         HUD.addActor(spiceAmount);
         HUD.addActor(hsAmount);
 
@@ -675,6 +684,9 @@ public class GameScreen implements Screen {
         }
         return -1;
     }
+    public boolean getCollidingKnocker(int x, int y) {
+        return Knocker.isAvailable() && ((HUD_Drawer)placeKnockerHUD.getActors().get(0)).collision(x, y);
+    }
 
     public int getSelected() {
         return selected;
@@ -696,8 +708,17 @@ public class GameScreen implements Screen {
     public boolean placeTower(Tower t) {
         Vector3 v = getClickOnField();
         if(inRangeofField(v) && Tower.isEligibleToPlace(mapTowers, this, Math.round(v.x), Math.round(v.z))) {
-            t.init(sceneManager, sceneAssetHashMap, mapTowers, Math.round(v.x), 0.02f, Math.round(v.z));
+            t.init(sceneManager, sceneAssetHashMap, mapTowers, towers, Math.round(v.x), 0.02f, Math.round(v.z));
             return  true;
+        }
+        return false;
+    }
+
+    public boolean placeKnocker(Knocker k) {
+        Vector3 v = getClickOnField();
+        if(inRangeofField(v) && Knocker.knockerPlaceAble(Math.round(v.x), Math.round(v.z))) {
+            k.init(sceneManager, sceneAssetHashMap, mapTowers, null, Math.round(v.x), 0.1f,Math.round(v.z));
+            return true;
         }
         return false;
     }

@@ -27,7 +27,7 @@ public class Knocker extends Tower{
     }
 
     @Override
-    public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers, float x, float y, float z) {
+    public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers, ArrayList<Tower> useless, float x, float y, float z) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
         this.setTranslation(x, y, z).scale(0.5f, 0.5f, 0.5f);
