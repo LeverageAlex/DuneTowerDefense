@@ -372,8 +372,8 @@ public class GameScreen implements Screen {
         }
         player = new Player();
         // place example sonicTower
-        startPortal = new Startportal(sceneManager, sceneAssetHashMap, mapTowers,3.0f, groundTileDimensions.y, 3.0f);
-        endPortal = new Endportal(sceneManager, sceneAssetHashMap, mapTowers,1.0f, groundTileDimensions.y, 1.0f);
+        startPortal = new Startportal(sceneManager, sceneAssetHashMap, mapTowers,ConfigMgr.stPortalX, groundTileDimensions.y, ConfigMgr.stPortalZ);
+        endPortal = new Endportal(sceneManager, sceneAssetHashMap, mapTowers,ConfigMgr.endPortalX, groundTileDimensions.y, ConfigMgr.endPortalZ);
 
         if(Tower.isEligibleToPlace(mapTowers, this,Math.round(0.0f), Math.round(0.0f))) {
             sonicTower = new SonicTower(this);

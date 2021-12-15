@@ -73,6 +73,7 @@ public class ConfigMgr {
             for (int i = 0; i < nbrWaves; i++) {
                 waves[i] = in.readLine();
             }
+            in.close();
 
 
         } catch (FileNotFoundException e) {
