@@ -1,6 +1,7 @@
 package io.swapastack.dunetd.Enemys;
 
 import com.badlogic.gdx.utils.Timer;
+import io.swapastack.dunetd.ConfigMgr;
 import io.swapastack.dunetd.GameScreen;
 import io.swapastack.dunetd.Player;
 
@@ -11,7 +12,7 @@ public class Wave {
     private int enemyCounter, alive, killed, arrivedPortal;
     private LinkedList<Enemy> enemies;
     Timer timer;
-    private float delaySeconds = 5.f, intervalSeconds = 1.5f;
+    private float delaySeconds = 5.f, intervalSeconds = ConfigMgr.waveSpawnDelayIntervall;
     private GameScreen gameScreen;
     private Player player;
     private boolean started;
@@ -20,6 +21,7 @@ public class Wave {
         this.gameScreen = gameScreen;
         this.player = player;
         started = false;
+        enemies = new LinkedList<>();
         //this.enemyCounter = 6;
     }
     //Activate waveSpawner
@@ -88,18 +90,22 @@ public class Wave {
     public void initEnemies(String wave) {
         for(int i = 0; i < wave.length(); i++) {
             switch(wave.charAt(i)) {
-                case 1:
+                case '1':
                     enemies.add(new Infantry());
+                    enemyCounter++;
                     break;
-                case 2:
+                case '2':
                     enemies.add(new HarvestMachine());
+                    enemyCounter++;
                     break;
-                case 3:
+                case '3':
                     enemies.add(new BossUnit());
+                    enemyCounter++;
                     break;
                 default:
                     enemies.add(null);
             }
+
         }
     }
 }
