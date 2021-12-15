@@ -2,23 +2,82 @@ package io.swapastack.dunetd;
 
 
 import java.io.*;
-import java.nio.Buffer;
 
-public class ConfigSaver {
+public class ConfigMgr {
     File file = new File("core/assets/config.ini");
     public static int rows, cols, stPortalX, stPortalY, stPortalZ, endPortalX, endPortalY, endPortalZ, playerHealth, playerStartSpice, canonTowCost, bombTowCost, sonicTowCost, bombTowDmg,
-    canonTowDmg, sonicTowDmg, bossDmgOnEndPortal, infDmgOnEndPortal, harvDmgOnEndPortal, bossStoredSpice, infStoredSpice, harvStoredSpice;
-    public static float canonTowRot, bombTowRot, canonTowRange, bombTowRange, sonicTowRange, bossMovSpeed, infMovSpeed, harvMovSpeed, bossHealth, harvHealth, infHealth, bossHSPoints, infHSPoints
-            , harvHSPoints, bossLevelUpCoeff, infLevelUpCoeff, harvLevelUpCoeff;
+    canonTowDmg, sonicTowDmg, knockerCost,bossDmgOnEndPortal, infDmgOnEndPortal, harvDmgOnEndPortal, bossStoredSpice, infStoredSpice, harvStoredSpice;
+    public static float canonTowRot, bombTowRot, canonTowRange, bombTowRange, sonicTowRange, sandWormSpeed,bossMovSpeed, infMovSpeed, harvMovSpeed, bossHealth, harvHealth, infHealth, bossHSPoints, infHSPoints
+            , harvHSPoints, bossLevelUpCoeff, infLevelUpCoeff, harvLevelUpCoeff, waveSpawnDelayIntervall;
+    public static String[] waves;
+    private BufferedReader in;
 
 
-
-    public ConfigSaver()  {
+    public ConfigMgr()  {
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+
+            rows = readInt();
+            cols = readInt();
+            stPortalX = readInt();
+            stPortalY = readInt();
+            stPortalZ = readInt();
+            endPortalX = readInt();
+            endPortalY = readInt();
+            endPortalZ = readInt();
+            playerHealth = readInt();
+            playerStartSpice = readInt();
+
+            canonTowCost = readInt();
+            canonTowDmg = readInt();
+            canonTowRot = readFloat();
+            canonTowRange = readFloat();
+
+            bombTowCost = readInt();
+            bombTowDmg = readInt();
+            bombTowRot = readFloat();
+            bombTowRange = readFloat();
+
+            sonicTowCost = readInt();
+            sonicTowDmg = readInt();
+            sonicTowRange = readFloat();
+
+            knockerCost = readInt();
+            sandWormSpeed = readFloat();
+
+            bossMovSpeed = readFloat();
+            bossHealth = readFloat();
+            bossHSPoints = readFloat();
+            bossDmgOnEndPortal = readInt();
+            bossStoredSpice = readInt();
+            bossLevelUpCoeff = readFloat();
+
+            infMovSpeed = readFloat();
+            infHealth = readFloat();
+            infHSPoints = readFloat();
+            infDmgOnEndPortal = readInt();
+            infStoredSpice = readInt();
+            infLevelUpCoeff = readFloat();
+
+            harvMovSpeed = readFloat();
+            harvHealth = readFloat();
+            harvHSPoints = readFloat();
+            harvDmgOnEndPortal = readInt();
+            harvStoredSpice = readInt();
+            harvLevelUpCoeff = readFloat();
+
+            int nbrWaves = readInt();
+            waveSpawnDelayIntervall = readFloat();
+
+            waves = new String[nbrWaves];
+            for (int i = 0; i < nbrWaves; i++) {
+                waves[i] = in.readLine();
+            }
 
 
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -129,9 +188,17 @@ public class ConfigSaver {
         }
     }
 
+    public int readInt() throws IOException {
+        return Integer.parseInt(in.readLine().split("=")[1]);
+    }
+
+    public float readFloat() throws IOException {
+        return Float.parseFloat(in.readLine().split("=")[1]);
+    }
+
     public static void main(String[] args) {
-        ConfigSaver cfg = new ConfigSaver();
-        cfg.writeCfg();
+        ConfigMgr cfg = new ConfigMgr();
+     //   cfg.writeCfg();
     }
 
 }
