@@ -294,7 +294,9 @@ public class GameScreen implements Screen {
             placeKnockerHUD.draw();
         }
         //To make this work, every Enemy needs to be part of a wave
-      //  if(wave.waveKilled()) System.out.println("Winning condition triggered");
+        if(wave.waveKilled()) {
+            onWaveSwap(); System.out.println("Winning condition triggered");
+        }
 
     }
 
@@ -428,18 +430,19 @@ public class GameScreen implements Screen {
         attackers.add(infantry);*/
 
         wave = new Wave(this, player);
-        LinkedList<Enemy> liste = new LinkedList<>();
+        wave.initEnemies(ConfigMgr.waves[waveCounter]);
+      /*  LinkedList<Enemy> liste = new LinkedList<>();
         BossUnit shawn = new BossUnit();
         Infantry bob = new Infantry();
         liste.add(bob);
         liste.add(null);
         liste.add(null);
-        liste.add(shawn);
+        liste.add(shawn);*/
 
-        wave.initEnemies(liste);
+       // wave.initEnemies(liste);
       //  wave.startWave();
-        shawn.createScene(sceneAssetHashMap);
-        bob.createScene(sceneAssetHashMap);
+       // shawn.createScene(sceneAssetHashMap);
+      //  bob.createScene(sceneAssetHashMap);
 
         beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
         resetBeamPos();
@@ -726,14 +729,22 @@ public class GameScreen implements Screen {
         sand.removeLane(mapTowers, attackers);
     }
 
+
     /**
      * Should be called whenever a Wave Swaps
      */
     public void onWaveSwap() {
-        Knocker.gambleAvailabilty();
-        wave = new Wave(this, player);
-        wave.initEnemies(ConfigMgr.waves[waveCounter]);
-        waveCounter++;
+        if(waveCounter < ConfigMgr.waves.length) {
+            Knocker.gambleAvailabilty();
+            phase = 0;
+            wave = new Wave(this, player);
+            wave.initEnemies(ConfigMgr.waves[waveCounter]);
+            waveCounter++;
+        }
+        else {
+            System.out.println("you've successfully won! --- Ending");
+            System.exit(0);
+        }
     }
 
 

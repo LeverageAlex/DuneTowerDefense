@@ -2,6 +2,7 @@ package io.swapastack.dunetd;
 
 
 import java.io.*;
+import java.util.Arrays;
 
 public class ConfigMgr {
     File file = new File("core/assets/config.ini");
@@ -71,8 +72,9 @@ public class ConfigMgr {
 
             waves = new String[nbrWaves];
             for (int i = 0; i < nbrWaves; i++) {
-                waves[i] = in.readLine();
+                waves[i] = in.readLine().split("=")[1];
             }
+            System.out.println("Waves" + Arrays.toString(waves));
             in.close();
 
 
