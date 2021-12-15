@@ -2,6 +2,7 @@ package io.swapastack.dunetd.Towers;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import io.swapastack.dunetd.ConfigMgr;
 import io.swapastack.dunetd.Enemys.Enemy;
 import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.Scene;
@@ -17,7 +18,7 @@ public class Sandworm {
     private SceneManager sceneManager;
     private HashMap<String, SceneAsset> sceneAssetHashMap;
     private boolean direction; //false => x-Richtung , true => z-Richtung
-    private float speed = 0.03f;
+    private float speed = ConfigMgr.sandWormSpeed;
     private int rows, cols;
     private ArrayList<Enemy> enemies;
     private MapIterable[][] mapTowers;

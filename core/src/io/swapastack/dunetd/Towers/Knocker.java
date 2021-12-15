@@ -2,6 +2,7 @@ package io.swapastack.dunetd.Towers;
 
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Timer;
+import io.swapastack.dunetd.ConfigMgr;
 import io.swapastack.dunetd.Enemys.Enemy;
 import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
@@ -19,9 +20,9 @@ public class Knocker extends Tower{
     public Knocker(GameScreen screen) {
         graphics = "detail_tree.glb";
         type = 0;
-        range = 3;
+        range = 0;
         gameScreen = screen;
-        this.cost = 35;
+        this.cost = ConfigMgr.knockerCost;
 
 
     }
