@@ -7,16 +7,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.Align;
 import imgui.ImGui;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.gl3.ImGuiImplGl3;
@@ -445,9 +440,9 @@ public class GameScreen implements Screen {
         sceneManager.addScene(beam);
 
         Knocker knocker = new Knocker(this);
-        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 2.f, 0, 1);
+        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 3.f, 0, 1);
         knocker = new Knocker(this);
-        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 4.f, 0, 1);
+        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 3.f, 0, 2);
         sand = new Sandworm(sceneManager, sceneAssetHashMap, rows, cols);
 
        // sceneManager.addScene(sand.getScene());

@@ -103,6 +103,14 @@ public class Sandworm {
                     ((Tower)mapTowers[x][i]).removeTower(sceneManager, mapTowers);
                 }
             }
+            for (int i = 0; i < enemies.size(); i++) {
+                float enemX = enemies.get(i).getCoords().x;
+                float enemZ = enemies.get(i).getCoords().z;
+                if(Math.round(enemX) == x) {
+                    enemies.get(i).removeEnemy(sceneManager, enemies);
+                    i--;
+                }
+            }
 
         }else {
             //x-axis
@@ -110,6 +118,16 @@ public class Sandworm {
             for (int i = 0; i < mapTowers.length; i++) {
                 if(mapTowers[i][z] instanceof Tower) {
                     ((Tower)mapTowers[i][z]).removeTower(sceneManager, mapTowers);
+                }
+
+            }
+
+            for (int i = 0; i < enemies.size(); i++) {
+                float enemX = enemies.get(i).getCoords().x;
+                float enemZ = enemies.get(i).getCoords().z;
+                if(Math.round(enemZ) == z) {
+                    enemies.get(i).removeEnemy(sceneManager, enemies);
+                    i--;
                 }
             }
 
