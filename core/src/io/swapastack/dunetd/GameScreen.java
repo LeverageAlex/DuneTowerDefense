@@ -112,7 +112,7 @@ public class GameScreen implements Screen {
      */
     @Override
     public void show() {
-
+        ConfigMgr mgr = new ConfigMgr();
         // SpaiR/imgui-java
         ImGui.createContext();
         windowHandle = ((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle();

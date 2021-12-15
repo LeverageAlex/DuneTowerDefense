@@ -2,6 +2,7 @@ package io.swapastack.dunetd.Enemys;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
+import io.swapastack.dunetd.ConfigMgr;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 
@@ -15,11 +16,12 @@ public class Infantry extends Enemy {
         type = 0;
         currentAngle = -(float) Math.PI/2.f;
         rotationSpeed = (float) Math.PI / 256.f;
-        movementSpeed = 0.0028f;
-        health = 20.f;
+        movementSpeed = ConfigMgr.infMovSpeed;
+        health = ConfigMgr.infHealth;
        // target = new int[]{3, 1};
-        damageOnEndPortal = 4;
-        storedSpice = 1;
+        damageOnEndPortal = ConfigMgr.infDmgOnEndPortal;
+        storedSpice = ConfigMgr.infStoredSpice;
+        highscorePoints = ConfigMgr.infHSPoints;
     }
 
     @Override

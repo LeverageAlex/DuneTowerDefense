@@ -6,9 +6,9 @@ import java.io.*;
 public class ConfigMgr {
     File file = new File("core/assets/config.ini");
     public static int rows, cols, stPortalX, stPortalY, stPortalZ, endPortalX, endPortalY, endPortalZ, playerHealth, playerStartSpice, canonTowCost, bombTowCost, sonicTowCost, bombTowDmg,
-    canonTowDmg, sonicTowDmg, knockerCost,bossDmgOnEndPortal, infDmgOnEndPortal, harvDmgOnEndPortal, bossStoredSpice, infStoredSpice, harvStoredSpice;
-    public static float canonTowRot, bombTowRot, canonTowRange, bombTowRange, sonicTowRange, sandWormSpeed,bossMovSpeed, infMovSpeed, harvMovSpeed, bossHealth, harvHealth, infHealth, bossHSPoints, infHSPoints
-            , harvHSPoints, bossLevelUpCoeff, infLevelUpCoeff, harvLevelUpCoeff, waveSpawnDelayIntervall;
+    canonTowDmg, sonicTowDmg, knockerCost,bossDmgOnEndPortal, infDmgOnEndPortal, harvDmgOnEndPortal, bossStoredSpice, infStoredSpice, harvStoredSpice, bossHSPoints, infHSPoints
+            , harvHSPoints;
+    public static float canonTowRot, bombTowRot, canonTowRange, bombTowRange, sonicTowRange, sandWormSpeed,bossMovSpeed, infMovSpeed, harvMovSpeed, bossHealth, harvHealth, infHealth, bossLevelUpCoeff, infLevelUpCoeff, harvLevelUpCoeff, waveSpawnDelayIntervall;
     public static String[] waves;
     private BufferedReader in;
 
@@ -47,21 +47,21 @@ public class ConfigMgr {
 
             bossMovSpeed = readFloat();
             bossHealth = readFloat();
-            bossHSPoints = readFloat();
+            bossHSPoints = readInt();
             bossDmgOnEndPortal = readInt();
             bossStoredSpice = readInt();
             bossLevelUpCoeff = readFloat();
 
             infMovSpeed = readFloat();
             infHealth = readFloat();
-            infHSPoints = readFloat();
+            infHSPoints = readInt();
             infDmgOnEndPortal = readInt();
             infStoredSpice = readInt();
             infLevelUpCoeff = readFloat();
 
             harvMovSpeed = readFloat();
             harvHealth = readFloat();
-            harvHSPoints = readFloat();
+            harvHSPoints = readInt();
             harvDmgOnEndPortal = readInt();
             harvStoredSpice = readInt();
             harvLevelUpCoeff = readFloat();
@@ -145,7 +145,7 @@ public class ConfigMgr {
             //BossUnit
             os.println("bossMovSpeed=" + 0.006f);
             os.println("bossHealth="+120.f);
-            os.println("bossHSPoints="+130.f);
+            os.println("bossHSPoints="+130);
             os.println("bossDmgOnEndPortal="+50);
             os.println("bossStoredSpice="+40);
             os.println("bossLevelUpCoeff="+1.3);
@@ -153,7 +153,7 @@ public class ConfigMgr {
             //Infantry
             os.println("infMovSpeed=" + 0.0028f);
             os.println("infHealth="+20.0f);
-            os.println("infHSPoints="+40.f);
+            os.println("infHSPoints="+40);
             os.println("infDmgOnEndPortal="+4);
             os.println("infStoredSpice="+1);
             os.println("infLevelUpCoeff="+1.3);
@@ -161,7 +161,7 @@ public class ConfigMgr {
             //HarvestMachine
             os.println("harvMovSpeed=" + 0.001f);
             os.println("harvHealth="+50.0f);
-            os.println("harvHSPoints="+70.f);
+            os.println("harvHSPoints="+70);
             os.println("harvDmgOnEndPortal="+10);
             os.println("harvStoredSpice="+20);
             os.println("harvLevelUpCoeff="+1.3);

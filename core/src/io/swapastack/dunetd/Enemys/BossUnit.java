@@ -2,6 +2,7 @@ package io.swapastack.dunetd.Enemys;
 
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Vector3;
+import io.swapastack.dunetd.ConfigMgr;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 
@@ -15,10 +16,11 @@ public class BossUnit extends Enemy{
         type = 2;
         currentAngle = -(float) (Math.PI / 2.f);
         rotationSpeed = (float) Math.PI / 256.f;
-        movementSpeed = 0.006f;
-        health = 120.f;
-        damageOnEndPortal = 50;
-        storedSpice = 40;
+        movementSpeed = ConfigMgr.bossMovSpeed;
+        health = ConfigMgr.bossHealth;
+        damageOnEndPortal = ConfigMgr.bossDmgOnEndPortal;
+        storedSpice = ConfigMgr.bossStoredSpice;
+        highscorePoints = ConfigMgr.bossHSPoints;
 
     }
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath, float x, float y, float z) {

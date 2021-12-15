@@ -1,5 +1,6 @@
 package io.swapastack.dunetd.Enemys;
 
+import io.swapastack.dunetd.ConfigMgr;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 
@@ -11,10 +12,11 @@ public class HarvestMachine extends Enemy{
         type = 1;
         currentAngle = -(float) Math.PI/2.f;
         rotationSpeed = (float) Math.PI / 128.f;
-        movementSpeed = 0.001f;
-        health = 50.f;
-        damageOnEndPortal = 10;
-        storedSpice = 20;
+        movementSpeed = ConfigMgr.harvMovSpeed;
+        health = ConfigMgr.harvHealth;
+        damageOnEndPortal = ConfigMgr.harvDmgOnEndPortal;
+        storedSpice = ConfigMgr.harvStoredSpice;
+        highscorePoints = ConfigMgr.harvHSPoints;
     }
 
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath,float x, float y, float z) {
