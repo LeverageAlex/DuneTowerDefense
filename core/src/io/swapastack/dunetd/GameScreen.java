@@ -461,9 +461,9 @@ public class GameScreen implements Screen {
         towerBuilding = new Stage();
 
         huds = new HUD_Drawer[3];
-        huds[0] = new HUD_Drawer(skin, "hud/bombTower.png", Tower.costBombTower,Gdx.graphics.getWidth()/2-166, 20, 100, 100);;
-        huds[1] = new HUD_Drawer(skin, "hud/canonTower.png", Tower.costCanonTower,Gdx.graphics.getWidth()/2 - 64, 20, 100, 100);
-        huds[2] = new HUD_Drawer(skin, "hud/sonicTower.png", Tower.costSonicTower,Gdx.graphics.getWidth()/2 + 38, 20, 100, 100);
+        huds[0] = new HUD_Drawer(skin, "hud/bombTower.png", ConfigMgr.bombTowCost,Gdx.graphics.getWidth()/2-166, 20, 100, 100);;
+        huds[1] = new HUD_Drawer(skin, "hud/canonTower.png", ConfigMgr.canonTowCost,Gdx.graphics.getWidth()/2 - 64, 20, 100, 100);
+        huds[2] = new HUD_Drawer(skin, "hud/sonicTower.png", ConfigMgr.sonicTowCost,Gdx.graphics.getWidth()/2 + 38, 20, 100, 100);
 
        for (HUD_Drawer h: huds) {
             towerBuilding.addActor(h);

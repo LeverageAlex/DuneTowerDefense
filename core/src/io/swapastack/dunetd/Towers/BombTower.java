@@ -1,6 +1,7 @@
 package io.swapastack.dunetd.Towers;
 
 import com.badlogic.gdx.math.Vector3;
+import io.swapastack.dunetd.ConfigMgr;
 import io.swapastack.dunetd.Enemys.Enemy;
 import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
@@ -18,9 +19,10 @@ public class BombTower extends Tower{
     public BombTower(GameScreen screen) {
         graphics = "weapon_blaster.glb";
         type = 0;
-        range = 3;
+        range = ConfigMgr.bombTowRange;
         gameScreen = screen;
-        this.cost = costBombTower;
+        this.cost = ConfigMgr.bombTowCost;
+        towerDmg = ConfigMgr.bombTowDmg;
 
     }
 

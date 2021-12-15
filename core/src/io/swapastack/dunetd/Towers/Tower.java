@@ -22,8 +22,8 @@ public abstract class Tower implements MapIterable {
     private int length = Integer.MAX_VALUE, color = 130;
     protected GameScreen gameScreen;
     protected int cost;
-    public static int costBombTower = 23, costCanonTower = 7, costSonicTower = 69;
     protected ArrayList<Tower> towerList;
+    protected int towerDmg;
 
     public abstract void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers,ArrayList<Tower> towerList, float x, float y, float z);
     public abstract void fire(ArrayList<Enemy> enemiesList);

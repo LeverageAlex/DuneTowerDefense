@@ -1,6 +1,7 @@
 package io.swapastack.dunetd.Towers;
 
 import com.badlogic.gdx.math.Vector3;
+import io.swapastack.dunetd.ConfigMgr;
 import io.swapastack.dunetd.Enemys.Enemy;
 import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
@@ -16,9 +17,10 @@ public class CanonTower extends Tower {
     public CanonTower(GameScreen screen) {
         graphics = "weapon_cannon.glb";
         type = 2;
-        range = 2;
+        range = ConfigMgr.canonTowRange;
         gameScreen = screen;
-        this.cost = costCanonTower;
+        this.cost = ConfigMgr.canonTowCost;
+        towerDmg = ConfigMgr.canonTowDmg;
     }
 
     @Override
