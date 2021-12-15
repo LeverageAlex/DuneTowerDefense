@@ -20,7 +20,7 @@ public class Sandworm {
     private int rows, cols;
     private float currentAngle;
 
-    public Sandworm(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, float x, float y, float z, int rows, int cols) {
+    public Sandworm(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int rows, int cols) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
 
@@ -32,11 +32,12 @@ public class Sandworm {
         Vector3 vec2 = Knocker.secondKnocker.getCoords();
 
         direction = vec1.x == vec2.x;
-        this.setTranslation(x, y, z);
+        float y = 0.1f;
+        //this.setTranslation(x, y, z);
         if(direction) {
-            this.setTranslation(x, y, z-4);
+            this.setTranslation(Math.round(vec1.x), y, -4);
         }else {
-            this.setTranslation(x-4, y, z);
+            this.setTranslation(-4, y, Math.round(vec1.z));
             rotateTowardsXAxis();
                     /*.scale(1f, 1f, 1f);*/
         }
@@ -90,5 +91,35 @@ public class Sandworm {
 
     }
 
+
+    public void removeLane(MapIterable[][] mapTowers, ArrayList<Enemy> enemies) {
+        Vector3 pos = getCoords();
+        int x = Math.round(pos.x);
+        int z = Math.round(pos.z);
+        if(direction) {
+            //z-axis
+            for (int i = 0; i < mapTowers[0].length; i++) {
+                if(mapTowers[x][i] instanceof Tower) {
+                    ((Tower)mapTowers[x][i]).removeTower(sceneManager, mapTowers);
+                }
+            }
+
+        }else {
+            //x-axis
+
+            for (int i = 0; i < mapTowers.length; i++) {
+                if(mapTowers[i][z] instanceof Tower) {
+                    ((Tower)mapTowers[i][z]).removeTower(sceneManager, mapTowers);
+                }
+            }
+
+        }
+    }
+
+
+    public Vector3 getCoords() {
+        Vector3 pos = scene.modelInstance.transform.getTranslation(new Vector3());
+        return pos;
+    }
 
 }

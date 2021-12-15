@@ -260,9 +260,9 @@ public class GameScreen implements Screen {
 
         updateEnemysMovement();
 
-        canonTower.fire(attackers);
-        bombTower.fire(attackers);
-        sonicTower.fire(attackers);
+     //   canonTower.fire(attackers);
+     //   bombTower.fire(attackers);
+    //    sonicTower.fire(attackers);
      //   ImGui.end();
 
         // SpaiR/imgui-java
@@ -445,10 +445,10 @@ public class GameScreen implements Screen {
         sceneManager.addScene(beam);
 
         Knocker knocker = new Knocker(this);
-        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 4.f, 0, 0);
+        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 2.f, 0, 1);
         knocker = new Knocker(this);
-        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 2.f, 0, 0);
-        sand = new Sandworm(sceneManager, sceneAssetHashMap, 0, 0.1f, 0, rows, cols);
+        knocker.init(sceneManager, sceneAssetHashMap, mapTowers, 4.f, 0, 1);
+        sand = new Sandworm(sceneManager, sceneAssetHashMap, rows, cols);
 
        // sceneManager.addScene(sand.getScene());
 
@@ -482,7 +482,7 @@ public class GameScreen implements Screen {
       //  stage.getCamera().position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
 
 
-
+        sand.removeLane(mapTowers, attackers);
 
        // bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
        //  bombTower.rotateTowardsVectorSmooth(infantry.getCoords());
