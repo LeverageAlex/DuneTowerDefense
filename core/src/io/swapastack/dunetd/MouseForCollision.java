@@ -9,10 +9,23 @@ public class MouseForCollision implements InputProcessor {
     private GameScreen gameScreen;
     private Timer timer;
     private float delaySeconds;
+    int countdown = 0;
+    Timer.Task graphicalCountdown = new Timer.Task() {
+        @Override
+        public void run() {
+            countdown--;
+            gameScreen.setCountdown(countdown);
+            if(countdown > 0) {
+                timer.scheduleTask(graphicalCountdown, 1);
+            }
+
+        }
+    };
 
     public MouseForCollision(GameScreen screen) {
         gameScreen = screen;
-        delaySeconds = 10;
+        delaySeconds = ConfigMgr.waveStartdelay;
+        timer = new Timer();
     }
 
     @Override
@@ -81,16 +94,23 @@ public class MouseForCollision implements InputProcessor {
 
                         System.out.println("Tower erfolgreich gesetzt");
                         gameScreen.getPlayer().addSpice(-t.getCost());
-                        timer = new Timer();
-                        timer.scheduleTask(new Timer.Task() {
-                            @Override
-                            public void run() {
-                                gameScreen.setPhase(1);
-                                if(gameScreen.getSelected() < 3) {
-                                    gameScreen.setSelected(-1);
+
+                        if(timer.isEmpty()) {
+                            countdown = Math.round(delaySeconds);
+                            gameScreen.setCountdown(countdown);
+                            timer.scheduleTask(new Timer.Task() {
+                                @Override
+                                public void run() {
+                                    countdown = 0;
+                                    gameScreen.setPhase(1);
+                                    if (gameScreen.getSelected() < 3) {
+                                        gameScreen.setSelected(-1);
+                                    }
                                 }
-                            }
-                        }, delaySeconds);
+                            }, delaySeconds);
+
+                            timer.scheduleTask(graphicalCountdown, 1);
+                        }
                         return true;
                     } else {
                         System.out.println("Tower setzen fehlgeschlagen :/");

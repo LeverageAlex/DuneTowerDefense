@@ -102,7 +102,8 @@ public class GameScreen implements Screen {
     ArrayList<Tower> towers = new ArrayList<>();
     private int waveCounter = 0;
     private ArrayList<Bullet> bullets = new ArrayList<>();
-    int[] lastWay = new int[0];
+    Stage waveCountdown;
+    int countdown;
 
 
     public GameScreen(DuneTD parent) {
@@ -225,17 +226,17 @@ public class GameScreen implements Screen {
         }
 
         // SpaiR/imgui-java
-        imGuiGlfw.newFrame();
-        ImGui.newFrame();
+       // imGuiGlfw.newFrame();
+       // ImGui.newFrame();
 
         // GDX GLTF - update scene manager and render scene
         sceneManager.update(delta);
         sceneManager.render();
 
 
-        ImGui.begin("Performance", ImGuiWindowFlags.AlwaysAutoResize);
-        ImGui.text(String.format(Locale.US,"deltaTime: %1.6f", delta));
-        ImGui.end();
+       // ImGui.begin("Performance", ImGuiWindowFlags.AlwaysAutoResize);
+       // ImGui.text(String.format(Locale.US,"deltaTime: %1.6f", delta));
+       // ImGui.end();
 
       //  ImGui.begin("Menu", ImGuiWindowFlags.AlwaysAutoResize);
       //  if (ImGui.button("Back to menu")) {
@@ -271,8 +272,8 @@ public class GameScreen implements Screen {
         }
 
         // SpaiR/imgui-java
-        ImGui.render();
-        imGuiGl3.renderDrawData(ImGui.getDrawData());
+      //  ImGui.render();
+       // imGuiGl3.renderDrawData(ImGui.getDrawData());
 
         health.setText(     "Health:      " + player.getHealth());
         spiceAmount.setText("Spice:       " + player.getSpice());
@@ -302,6 +303,10 @@ public class GameScreen implements Screen {
 
         if(player.getHealth() <= 0) {
             parent.changeScreen(ScreenEnum.LOSE);
+        }
+        if(countdown > 0) {
+            ((Label) waveCountdown.getActors().get(0)).setText(countdown);
+            waveCountdown.draw();
         }
 
     }
@@ -418,6 +423,12 @@ public class GameScreen implements Screen {
         placeKnockerHUD = new Stage();
         HUD_Drawer placeKnocker = new HUD_Drawer(this, skin, "hud/sandWorm.png", "hud/sandWorm_selected.png", 3,"FREE",Gdx.graphics.getWidth() - 138, 20, 100, 100);
         placeKnockerHUD.addActor(placeKnocker);
+
+
+        waveCountdown = new Stage();
+        Label cnd = new Label("", skin, "big");
+        cnd.setPosition(Gdx.graphics.getWidth()/2-10, Gdx.graphics.getHeight()/2 + 200);
+        waveCountdown.addActor(cnd);
 
     }
 
@@ -568,27 +579,6 @@ public class GameScreen implements Screen {
 
                 gridTile.modelInstance.transform.setToTranslation(walkWay[i][0], 0.0f, walkWay[i][1]);
                 sceneManager.addScene(gridTile);
-                /*
-                        Scene gridTile = new Scene(sceneAssetHashMap.get("tile.glb").scene);
-                // Create a new BoundingBox, this is useful to check collisions or to get the model dimensions
-                BoundingBox boundingBox = new BoundingBox();
-
-                // Calculate the BoundingBox from the given ModelInstance
-                gridTile.modelInstance.calculateBoundingBox(boundingBox);
-                // Create Vector3 to store the ModelInstance dimensions
-                Vector3 modelDimensions = new Vector3();
-                // Read the ModelInstance BoundingBox dimensions
-                boundingBox.getDimensions(modelDimensions);
-                // TODO: refactor this if needed, e.g. if ground tiles are not all the same size
-                groundTileDimensions.set(modelDimensions);
-                // Set the ModelInstance to the respective row and cell of the map
-                gridTile.modelInstance.transform.setToTranslation(k * modelDimensions.x, 0.0f, i * modelDimensions.z);
-                //  gridTile.modelInstance.transform.setToTranslation( 10* modelDimensions.x, 0.0f,  5*modelDimensions.z);
-                // Add the Scene object to the SceneManager for rendering
-                sceneManager.addScene(gridTile);
-                mapTiles[i][k] = gridTile;
-               // mapBoxes[i][k] = boundingBox;
-                 */
                 mapTiles[walkWay[i][1]][walkWay[i][0]] = gridTile;
             }
 
@@ -728,5 +718,7 @@ public class GameScreen implements Screen {
         }
     }
 
-
+    public void setCountdown(int countdown) {
+        this.countdown = countdown;
+    }
 }
