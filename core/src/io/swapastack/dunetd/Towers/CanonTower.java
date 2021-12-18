@@ -54,7 +54,7 @@ public class CanonTower extends Tower {
                     if(fire) {
                         if(readyToShoot) {
                             //canonTowCounter = 0;
-                            System.out.println("canonTower shot");
+                         //   System.out.println("canonTower shot");
                             enemy.gainDamage(towerDmg);
                             readyToShoot = false;
                             //   currentTarget = enemy;

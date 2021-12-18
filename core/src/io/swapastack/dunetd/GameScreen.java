@@ -254,12 +254,11 @@ public class GameScreen implements Screen {
         updateEnemysMovement();
 
         for (Tower t : towers) {
-            Enemy storage = t.fire(attackers);
-            if(storage != null) {
+            Enemy locEnemy = t.fire(attackers);
+            if(locEnemy != null) {
                 //ToDo activate shot sound
-                    Vector3 enemyCord = storage.getCoords();
                     Vector3 currentCord = t.getScene().modelInstance.transform.getTranslation(new Vector3());
-                    Bullet b = new Bullet(sceneManager, sceneAssetHashMap, attackers, bullets, currentCord.x, 0.24f, currentCord.z, storage);
+                    new Bullet(sceneManager, sceneAssetHashMap, attackers, bullets, currentCord.x, 0.24f, currentCord.z, locEnemy);
                    // bullets.add(b);
             }
         }

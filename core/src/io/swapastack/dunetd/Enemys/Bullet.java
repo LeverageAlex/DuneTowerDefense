@@ -40,7 +40,7 @@ public class Bullet {
 
         if(enemy.collides(vec)) {
             //destroyBullet
-            System.out.println("Destroyage");
+         //   System.out.println("Destroyage");
             bulletDelete();
         }
         else {

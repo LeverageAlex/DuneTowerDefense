@@ -1,6 +1,7 @@
 package io.swapastack.dunetd.Towers;
 
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Timer;
 import io.swapastack.dunetd.ConfigMgr;
 import io.swapastack.dunetd.Enemys.Enemy;
 import io.swapastack.dunetd.GameScreen;
@@ -14,6 +15,13 @@ import java.util.HashMap;
 public class BombTower extends Tower{
     float currentAngle = (float) (Math.PI/2);
     float rotationSpeed = (float) Math.PI/256;
+    boolean readyToShoot = true;
+    Timer towerTimer = new Timer();
+    Timer.Task task = new Timer.Task() {
+        @Override
+        public void run() {
+            readyToShoot = true;
+        }};
 
 
     public BombTower(GameScreen screen) {
@@ -23,6 +31,7 @@ public class BombTower extends Tower{
         gameScreen = screen;
         this.cost = ConfigMgr.bombTowCost;
         towerDmg = ConfigMgr.bombTowDmg;
+
 
     }
 
@@ -48,6 +57,15 @@ public class BombTower extends Tower{
                 boolean fire = rotateTowardsVectorSmooth(enemy.getCoords());
                 //Beeing able to shoot
                 if (fire) {
+                    if(readyToShoot) {
+                        //canonTowCounter = 0;
+                  //      System.out.println("bombTower shot");
+                        enemy.gainDamage(towerDmg);
+                        readyToShoot = false;
+                        //   currentTarget = enemy;
+                        towerTimer.scheduleTask(task, ConfigMgr.bombTowIntervall);
+                        return enemy;
+                    }
                     //   System.out.println("fire");
                 }
                 return null;
