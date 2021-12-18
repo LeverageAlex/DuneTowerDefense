@@ -5,4 +5,5 @@ public enum ScreenEnum {
     , GAME
     , SHOWCASE
     , WIN
+    , LOSE
 }
