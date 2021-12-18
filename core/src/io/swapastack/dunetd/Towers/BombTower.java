@@ -40,7 +40,7 @@ public class BombTower extends Tower{
     }
 
     @Override
-    public void fire(ArrayList<Enemy> enemiesList) {
+    public Enemy fire(ArrayList<Enemy> enemiesList) {
         for (Enemy enemy : enemiesList) {
 
             if (isInRange(enemy.getCoords())) {
@@ -50,10 +50,11 @@ public class BombTower extends Tower{
                 if (fire) {
                     //   System.out.println("fire");
                 }
-                return;
+                return null;
                 // }
             }
         }
+        return null;
     }
 
     public boolean rotateTowardsVectorSmooth(Vector3 pointToRotate) {

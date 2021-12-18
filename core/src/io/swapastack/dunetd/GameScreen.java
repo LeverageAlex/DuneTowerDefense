@@ -101,6 +101,7 @@ public class GameScreen implements Screen {
     Sandworm sand;
     ArrayList<Tower> towers = new ArrayList<>();
     private int waveCounter = 0;
+    private ArrayList<Bullet> bullets = new ArrayList<>();
 
 
     public GameScreen(DuneTD parent) {
@@ -253,7 +254,18 @@ public class GameScreen implements Screen {
         updateEnemysMovement();
 
         for (Tower t : towers) {
-            t.fire(attackers);
+            Enemy storage = t.fire(attackers);
+            if(storage != null) {
+                //ToDo activate shot sound
+                    Vector3 enemyCord = storage.getCoords();
+                    Vector3 currentCord = t.getScene().modelInstance.transform.getTranslation(new Vector3());
+                    Bullet b = new Bullet(sceneManager, sceneAssetHashMap, attackers, bullets, currentCord.x, 0.24f, currentCord.z, storage);
+                   // bullets.add(b);
+            }
+        }
+
+        for(int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).move();
         }
 
         // SpaiR/imgui-java

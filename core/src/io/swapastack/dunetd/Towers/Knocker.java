@@ -53,8 +53,9 @@ public class Knocker extends Tower{
     }
 
     @Override
-    public void fire(ArrayList<Enemy> enemiesList) {
+    public Enemy fire(ArrayList<Enemy> enemiesList) {
         //Used for Condition check of the Sandworm
+        return null;
     }
 
     public Vector3 getCoords() {

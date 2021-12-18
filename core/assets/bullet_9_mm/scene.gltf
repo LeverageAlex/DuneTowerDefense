@@ -1,76 +1,44 @@
 {
   "accessors": [
     {
-      "bufferView": 2,
+      "bufferView": 1,
       "componentType": 5126,
-      "count": 1254,
+      "count": 32514,
       "max": [
-        1.4576482772827148,
-        0.4974486231803894,
-        0.49744880199432373
+        10,
+        10,
+        20
       ],
       "min": [
-        -1.4576480388641357,
-        -0.49744895100593567,
-        -0.49744847416877747
+        -10,
+        -10,
+        0
       ],
       "type": "VEC3"
-    },
-    {
-      "bufferView": 2,
-      "byteOffset": 15048,
-      "componentType": 5126,
-      "count": 1254,
-      "max": [
-        1,
-        1,
-        1
-      ],
-      "min": [
-        -1,
-        -1,
-        -1
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 3,
-      "componentType": 5126,
-      "count": 1254,
-      "max": [
-        0.99995869398117065,
-        1,
-        1,
-        1
-      ],
-      "min": [
-        -0.9999353289604187,
-        -1,
-        -1,
-        1
-      ],
-      "type": "VEC4"
     },
     {
       "bufferView": 1,
+      "byteOffset": 390168,
       "componentType": 5126,
-      "count": 1254,
+      "count": 32514,
       "max": [
-        0.99480557441711426,
-        0.998046875
+        1,
+        0.99994164705276489,
+        0.99994158744812012
       ],
       "min": [
-        0.001953125,
-        0.001953125
+        -1,
+        -0.99994164705276489,
+        -0.99994158744812012
       ],
-      "type": "VEC2"
+      "type": "VEC3"
     },
     {
       "bufferView": 0,
       "componentType": 5125,
-      "count": 4800,
+      "count": 195072,
       "max": [
-        1253
+        32513
       ],
       "min": [
         0
@@ -80,83 +48,41 @@
   ],
   "asset": {
     "extras": {
-      "author": "Y2JHBK (https://sketchfab.com/Y2JHBK)",
+      "author": "3DVarious (https://sketchfab.com/3DVarious)",
       "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
-      "source": "https://sketchfab.com/3d-models/bullet-9-mm-4cc75b7ef1bc474392c319a47fd97348",
-      "title": "Bullet 9 mm"
+      "source": "https://sketchfab.com/3d-models/sphere-b31b12ffa93a40f48c9d991b6f168f4d",
+      "title": "Sphere"
     },
-    "generator": "Sketchfab-7.51.0",
+    "generator": "Sketchfab-4.44.0",
     "version": "2.0"
   },
   "bufferViews": [
     {
       "buffer": 0,
-      "byteLength": 19200,
+      "byteLength": 780288,
       "byteOffset": 0,
       "name": "floatBufferViews",
       "target": 34963
     },
     {
       "buffer": 0,
-      "byteLength": 10032,
-      "byteOffset": 19200,
-      "byteStride": 8,
-      "name": "floatBufferViews",
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 30096,
-      "byteOffset": 29232,
+      "byteLength": 780336,
+      "byteOffset": 780288,
       "byteStride": 12,
-      "name": "floatBufferViews",
-      "target": 34962
-    },
-    {
-      "buffer": 0,
-      "byteLength": 20064,
-      "byteOffset": 59328,
-      "byteStride": 16,
       "name": "floatBufferViews",
       "target": 34962
     }
   ],
   "buffers": [
     {
-      "byteLength": 79392,
+      "byteLength": 1560624,
       "uri": "scene.bin"
-    }
-  ],
-  "images": [
-    {
-      "uri": "textures/bullet_baseColor.png"
-    },
-    {
-      "uri": "textures/bullet_metallicRoughness.png"
-    },
-    {
-      "uri": "textures/bullet_normal.png"
     }
   ],
   "materials": [
     {
       "doubleSided": true,
-      "emissiveFactor": [
-        0,
-        0,
-        0
-      ],
-      "name": "bullet",
-      "normalTexture": {
-        "index": 2,
-        "scale": 1,
-        "texCoord": 0
-      },
-      "occlusionTexture": {
-        "index": 1,
-        "strength": 1,
-        "texCoord": 0
-      },
+      "name": "Scene_-_Root",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
           1,
@@ -164,31 +90,20 @@
           1,
           1
         ],
-        "baseColorTexture": {
-          "index": 0,
-          "texCoord": 0
-        },
-        "metallicFactor": 1,
-        "metallicRoughnessTexture": {
-          "index": 1,
-          "texCoord": 0
-        },
-        "roughnessFactor": 1
+        "metallicFactor": 0,
+        "roughnessFactor": 0.59999999999999998
       }
     }
   ],
   "meshes": [
     {
-      "name": "Bullet_bullet_0",
       "primitives": [
         {
           "attributes": {
             "NORMAL": 1,
-            "POSITION": 0,
-            "TANGENT": 2,
-            "TEXCOORD_0": 3
+            "POSITION": 0
           },
-          "indices": 4,
+          "indices": 2,
           "material": 0,
           "mode": 4
         }
@@ -218,49 +133,11 @@
       "children": [
         3
       ],
-      "matrix": [
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        -1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1
-      ],
-      "name": "Bullet.fbx"
-    },
-    {
-      "children": [
-        4
-      ],
-      "name": "RootNode"
-    },
-    {
-      "children": [
-        5
-      ],
-      "name": "Bullet"
+      "name": "spheree.stl.cleaner.materialmerger.gles"
     },
     {
       "mesh": 0,
-      "name": "Bullet_bullet_0"
-    }
-  ],
-  "samplers": [
-    {
-      "magFilter": 9729,
-      "minFilter": 9987,
-      "wrapS": 10497,
-      "wrapT": 10497
+      "name": ""
     }
   ],
   "scene": 0,
@@ -270,20 +147,6 @@
       "nodes": [
         0
       ]
-    }
-  ],
-  "textures": [
-    {
-      "sampler": 0,
-      "source": 0
-    },
-    {
-      "sampler": 0,
-      "source": 1
-    },
-    {
-      "sampler": 0,
-      "source": 2
     }
   ]
 }
