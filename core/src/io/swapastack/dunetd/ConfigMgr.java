@@ -7,9 +7,9 @@ import java.util.Arrays;
 public class ConfigMgr {
     private static File file = new File("core/assets/config.ini");
     public static int rows, cols, stPortalX, stPortalY, stPortalZ, endPortalX, endPortalY, endPortalZ, playerHealth, playerStartSpice, canonTowCost, bombTowCost, sonicTowCost, bombTowDmg,
-    canonTowDmg, sonicTowDmg, knockerCost,bossDmgOnEndPortal, infDmgOnEndPortal, harvDmgOnEndPortal, bossStoredSpice, infStoredSpice, harvStoredSpice, bossHSPoints, infHSPoints
+    canonTowDmg, knockerCost,bossDmgOnEndPortal, infDmgOnEndPortal, harvDmgOnEndPortal, bossStoredSpice, infStoredSpice, harvStoredSpice, bossHSPoints, infHSPoints
             , harvHSPoints;
-    public static float canonTowRot, bombTowRot, canonTowRange, bombTowRange, sonicTowRange, sandWormSpeed,bossMovSpeed, infMovSpeed, harvMovSpeed, bossHealth, harvHealth, infHealth, bossLevelUpCoeff, infLevelUpCoeff, harvLevelUpCoeff, waveSpawnDelayIntervall, canonTowIntervall, bombTowIntervall, sonicTowIntervall;
+    public static float sonicTowDmg, canonTowRot, bombTowRot, canonTowRange, bombTowRange, sonicTowRange, sandWormSpeed,bossMovSpeed, infMovSpeed, harvMovSpeed, bossHealth, harvHealth, infHealth, bossLevelUpCoeff, infLevelUpCoeff, harvLevelUpCoeff, waveSpawnDelayIntervall, canonTowIntervall, bombTowIntervall, sonicTowIntervall;
     public static String[] waves;
     private static BufferedReader in;
 
@@ -42,7 +42,7 @@ public class ConfigMgr {
             bombTowIntervall = readFloat();
 
             sonicTowCost = readInt();
-            sonicTowDmg = readInt();
+            sonicTowDmg = readFloat();
             sonicTowRange = readFloat();
             sonicTowIntervall = readFloat();
 

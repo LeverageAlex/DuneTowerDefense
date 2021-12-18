@@ -23,10 +23,11 @@ public abstract class Tower implements MapIterable {
     protected GameScreen gameScreen;
     protected int cost;
     protected ArrayList<Tower> towerList;
-    protected int towerDmg;
+    protected float towerDmg;
+    protected Vector3 nullVec = new Vector3();
 
     public abstract void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers,ArrayList<Tower> towerList, float x, float y, float z);
-    public abstract void fire(ArrayList<Enemy> enemiesList);
+    public abstract Enemy fire(ArrayList<Enemy> enemiesList);
 
 
 

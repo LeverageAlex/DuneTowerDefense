@@ -29,6 +29,7 @@ public abstract class Enemy {
     protected int[][] shortestPath;
     float currentAngle;
     float rotationSpeed;
+    float hitDistanz = 0.5f;
 
 
     public abstract void destroyDamage();
@@ -227,5 +228,18 @@ public abstract class Enemy {
 
     public int getStoredSpice() {
         return storedSpice;
+    }
+
+    public void gainDamage(float dmg) {
+        health -= dmg;
+    }
+
+    public boolean collides(Vector3 bullet) {
+        float absX = Math.abs(bullet.x);
+        float absZ = Math.abs(bullet.z);
+        if(Math.abs(this.getCoords().x - absX) < hitDistanz && Math.abs(this.getCoords().z - absZ) < hitDistanz ) {
+            return true;
+        }
+        return false;
     }
 }

@@ -1,5 +1,6 @@
 package io.swapastack.dunetd.Towers;
 
+import com.badlogic.gdx.math.Vector3;
 import io.swapastack.dunetd.ConfigMgr;
 import io.swapastack.dunetd.Enemys.Enemy;
 import io.swapastack.dunetd.GameScreen;
@@ -31,12 +32,14 @@ public class SonicTower extends Tower{
 
     //Take care of HarvestMachine gaining less Damage than other Enemys
     @Override
-    public void fire(ArrayList<Enemy> enemiesList) {
+    public Enemy fire(ArrayList<Enemy> enemiesList) {
         for (Enemy enemy : enemiesList) {
             if (isInRange(enemy.getCoords())) {
+                enemy.gainDamage(towerDmg);
                 //to fire
              //   System.out.println("SonicTower shooting at: " + enemy.name );
             }
         }
+        return null;
     }
 }

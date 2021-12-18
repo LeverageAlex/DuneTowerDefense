@@ -1,6 +1,7 @@
 package io.swapastack.dunetd.Towers;
 
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Timer;
 import io.swapastack.dunetd.ConfigMgr;
 import io.swapastack.dunetd.Enemys.Enemy;
 import io.swapastack.dunetd.GameScreen;
@@ -13,6 +14,15 @@ import java.util.HashMap;
 public class CanonTower extends Tower {
     float currentAngle = (float) (Math.PI / 2);
     float rotationSpeed = (float) Math.PI / 256;
+    float canonTowCounter;
+    //Enemy currentTarget;
+    Timer towerTimer = new Timer();
+    Timer.Task task = new Timer.Task() {
+        @Override
+        public void run() {
+            readyToShoot = true;
+        }};
+    boolean readyToShoot = true;
 
     public CanonTower(GameScreen screen) {
         graphics = "weapon_cannon.glb";
@@ -21,6 +31,7 @@ public class CanonTower extends Tower {
         gameScreen = screen;
         this.cost = ConfigMgr.canonTowCost;
         towerDmg = ConfigMgr.canonTowDmg;
+
     }
 
     @Override
@@ -34,18 +45,34 @@ public class CanonTower extends Tower {
     }
 
     @Override
-    public void fire(ArrayList<Enemy> enemiesList) {
+    public Enemy fire(ArrayList<Enemy> enemiesList) {
+        canonTowCounter++;
         for (Enemy enemy : enemiesList) {
             if (isInRange(enemy.getCoords())) {
                 boolean fire = rotateTowardsVectorSmooth(enemy.getCoords());
                 //Beeing able to shoot
                     if(fire) {
+                        if(readyToShoot) {
+                            //canonTowCounter = 0;
+                            System.out.println("canonTower shot");
+                            enemy.gainDamage(towerDmg);
+                            readyToShoot = false;
+                            //   currentTarget = enemy;
+                            towerTimer.scheduleTask(task, ConfigMgr.canonTowIntervall);
+                            return enemy;
+                        }
+
+
+
                      //   System.out.println("fire");
                     }
-                return;
+                return null;
                 // }
             }
         }
+       // towerTimer.clear();
+       // currentTarget = null;
+        return null;
     }
 
     /**
