@@ -9,7 +9,7 @@ public class ConfigMgr {
     public static int rows, cols, stPortalX, stPortalY, stPortalZ, endPortalX, endPortalY, endPortalZ, playerHealth, playerStartSpice, canonTowCost, bombTowCost, sonicTowCost, bombTowDmg,
     canonTowDmg, sonicTowDmg, knockerCost,bossDmgOnEndPortal, infDmgOnEndPortal, harvDmgOnEndPortal, bossStoredSpice, infStoredSpice, harvStoredSpice, bossHSPoints, infHSPoints
             , harvHSPoints;
-    public static float canonTowRot, bombTowRot, canonTowRange, bombTowRange, sonicTowRange, sandWormSpeed,bossMovSpeed, infMovSpeed, harvMovSpeed, bossHealth, harvHealth, infHealth, bossLevelUpCoeff, infLevelUpCoeff, harvLevelUpCoeff, waveSpawnDelayIntervall;
+    public static float canonTowRot, bombTowRot, canonTowRange, bombTowRange, sonicTowRange, sandWormSpeed,bossMovSpeed, infMovSpeed, harvMovSpeed, bossHealth, harvHealth, infHealth, bossLevelUpCoeff, infLevelUpCoeff, harvLevelUpCoeff, waveSpawnDelayIntervall, canonTowIntervall, bombTowIntervall, sonicTowIntervall;
     public static String[] waves;
     private static BufferedReader in;
 
@@ -33,15 +33,18 @@ public class ConfigMgr {
             canonTowDmg = readInt();
             canonTowRot = readFloat();
             canonTowRange = readFloat();
+            canonTowIntervall = readFloat();
 
             bombTowCost = readInt();
             bombTowDmg = readInt();
             bombTowRot = readFloat();
             bombTowRange = readFloat();
+            bombTowIntervall = readFloat();
 
             sonicTowCost = readInt();
             sonicTowDmg = readInt();
             sonicTowRange = readFloat();
+            sonicTowIntervall = readFloat();
 
             knockerCost = readInt();
             sandWormSpeed = readFloat();
