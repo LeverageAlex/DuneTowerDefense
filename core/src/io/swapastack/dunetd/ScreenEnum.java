@@ -4,4 +4,5 @@ public enum ScreenEnum {
     MENU
     , GAME
     , SHOWCASE
+    , WIN
 }

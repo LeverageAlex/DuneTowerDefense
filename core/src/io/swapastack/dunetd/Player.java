@@ -1,7 +1,7 @@
 package io.swapastack.dunetd;
 
 public class Player {
-    private int health = ConfigMgr.playerHealth, highscore, spice = ConfigMgr.playerStartSpice;
+    private int health = ConfigMgr.playerHealth, highscore, spice = ConfigMgr.playerStartSpice, enemiesKilled;
     private String name;
 
     public void setHealth(int health) {
@@ -35,5 +35,13 @@ public class Player {
     }
     public void endGame() {
 
+    }
+
+    public int getEnemiesKilled() {
+        return enemiesKilled;
+    }
+
+    public void addEnemiesKilled(int enemiesKilled) {
+        this.enemiesKilled += enemiesKilled;
     }
 }

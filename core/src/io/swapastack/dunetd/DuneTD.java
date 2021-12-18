@@ -12,6 +12,7 @@ public class DuneTD extends Game {
 
 	// The AssetManager is used to load game assets like 3D gltf models or pngs
 	public static AssetManager assetManager = new AssetManager();
+	private WinScreen winScreen;
 
 	/**
 	 * This function can be used to switch screens.
@@ -40,8 +41,12 @@ public class DuneTD extends Game {
 			case SHOWCASE:
 				this.setScreen(new ModelShowcase(this));
 				break;
+			case WIN:
+				this.setScreen(winScreen);
 		}
 	}
+
+
 	
 	@Override
 	public void create () {
@@ -70,5 +75,9 @@ public class DuneTD extends Game {
 		}
 		// free all resources allocated by the AssetManager
 		assetManager.dispose();
+	}
+
+	public void setWinScreen(WinScreen winScreen) {
+		this.winScreen = winScreen;
 	}
 }

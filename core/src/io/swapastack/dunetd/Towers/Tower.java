@@ -96,7 +96,7 @@ public abstract class Tower implements MapIterable {
     //Checks whether tile is free or a way to the Endportal continues to exist
     public static boolean isEligibleToPlace(MapIterable[][] mapTowers , GameScreen gameScreen, int x, int z) {
         //check for no Tower Placed
-        if(/*map[x][z] == null || */ /*mapTowers[x][z].getPathColor() == 0 */ mapTowers[x][z] instanceof IterableOverMap) {
+        if(/*map[x][z] == null || */ /*mapTowers[x][z].getPathColor() == 0 */ mapTowers[x][z] instanceof IterableOverMap && !(mapTowers[x][z] instanceof Startportal) && !(mapTowers[x][z] instanceof Endportal)) {
             //Check if a Path is after placing still available
             int previousColor = mapTowers[x][z].getPathColor();
             mapTowers[x][z].setPathColor(130);

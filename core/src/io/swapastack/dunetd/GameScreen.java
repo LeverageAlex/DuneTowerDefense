@@ -466,11 +466,11 @@ public class GameScreen implements Screen {
         }
 
         HUD = new Stage();
-        health = new Label("Health:    " + player.getHealth(),skin);
+        health = new Label("Health:    " + player.getHealth(),skin, "black");
         health.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 30);
-        spiceAmount = new Label("Spice:     " + player.getSpice(),skin);
+        spiceAmount = new Label("Spice:     " + player.getSpice(),skin, "black");
         spiceAmount.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 60);
-        hsAmount = new Label(   "Highscore: " + player.getHighscore(),skin);
+        hsAmount = new Label(   "Highscore: " + player.getHighscore(),skin, "black");
         hsAmount.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 90);
         HUD.addActor(health);
         HUD.addActor(spiceAmount);
@@ -743,7 +743,9 @@ public class GameScreen implements Screen {
         }
         else {
             System.out.println("you've successfully won! --- Ending");
-            System.exit(0);
+           // System.exit(0);
+            parent.setWinScreen(new WinScreen(parent,player.getHighscore(), player.getHealth(), player.getEnemiesKilled(), ConfigMgr.waves.length));
+            parent.changeScreen(ScreenEnum.WIN);
         }
     }
 
