@@ -19,7 +19,7 @@ public class LoseScreen implements Screen {
 
     public LoseScreen(DuneTD duneTD) {
 
-
+        parent = duneTD;
         Label lose = new Label("You have lost all your Lifes", skin, "black");
         lose.setFontScale(4);
         lose.setPosition(Gdx.graphics.getWidth()/2 - 300, Gdx.graphics.getHeight()/2 + 100);

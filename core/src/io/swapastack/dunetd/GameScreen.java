@@ -88,7 +88,7 @@ public class GameScreen implements Screen {
     Endportal endPortal;
     Wave wave;
     MapIterable[][] mapTowers;
-    private int[][] shortestPath;
+    private int[][] shortestPath = new int[0][0];
     Stage towerBuilding, HUD, placeKnockerHUD;
     Skin skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
     int phase = 0;
@@ -102,6 +102,7 @@ public class GameScreen implements Screen {
     ArrayList<Tower> towers = new ArrayList<>();
     private int waveCounter = 0;
     private ArrayList<Bullet> bullets = new ArrayList<>();
+    int[] lastWay = new int[0];
 
 
     public GameScreen(DuneTD parent) {
@@ -216,6 +217,8 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         // OpenGL - clear color and depth buffer
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+
 
         for (Enemy enemy: attackers) {
             enemy.getAnimationController().update(delta);
@@ -345,7 +348,7 @@ public class GameScreen implements Screen {
         for (int i = 0; i < rows; i++) {
             for (int k = 0; k < cols; k++) {
                 // Create a new Scene object from the tile_dirt gltf model
-                Scene gridTile = new Scene(sceneAssetHashMap.get("tile_dirt.glb").scene);
+                Scene gridTile = new Scene(sceneAssetHashMap.get("tile.glb").scene);
                 // Create a new BoundingBox, this is useful to check collisions or to get the model dimensions
                 BoundingBox boundingBox = new BoundingBox();
 
@@ -363,7 +366,7 @@ public class GameScreen implements Screen {
                 // Add the Scene object to the SceneManager for rendering
                 sceneManager.addScene(gridTile);
                 mapTiles[i][k] = gridTile;
-                mapBoxes[i][k] = boundingBox;
+               // mapBoxes[i][k] = boundingBox;
 
                 //   System.out.printf("Breite: %f \n", boundingBox.	getHeight() );
                 // it could be useful to store the Scene object reference outside this method
@@ -539,14 +542,54 @@ public class GameScreen implements Screen {
 
         int[][] walkWay;
         if(endPortal.getPathLength() != Integer.MAX_VALUE) {
+
+            //Draw the Path
+            //First removes the graphics of last way and replaces them by gras
+            for(int i = 0; i < shortestPath.length; i++) {
+                sceneManager.removeScene(mapTiles[shortestPath[i][1]][shortestPath[i][0]]);
+                    Scene gridTile = new Scene(sceneAssetHashMap.get("tile.glb").scene);
+                mapTiles[shortestPath[i][1]][shortestPath[i][0]] = gridTile;
+                gridTile.modelInstance.transform.setToTranslation(shortestPath[i][0], 0.0f,shortestPath[i][1]);
+                sceneManager.addScene(gridTile);
+            }
+
             int[] pos = endPortal.getPosition();
             walkWay = new int[endPortal.getPathLength()+1][2];
             // IterableOverMap[] arr = new IterableOverMap[endPortal.getPathLength() + 1];
-
+            //Create the shortestPath array and draw the new way
             for (int i = walkWay.length - 1; i >= 0; i--) {
               //  arr[i] = (IterableOverMap) mapTowers[pos[0]][pos[1]];
+
                 walkWay[i] = ((IterableOverMap) mapTowers[pos[0]][pos[1]]).getPosition();
+                sceneManager.removeScene(mapTiles[walkWay[i][1]][walkWay[i][0]]);
                 pos = ((IterableOverMap) mapTowers[pos[0]][pos[1]]).getVorgaenger();
+                Scene gridTile = new Scene(sceneAssetHashMap.get("tile_dirt.glb").scene);
+
+
+                gridTile.modelInstance.transform.setToTranslation(walkWay[i][0], 0.0f, walkWay[i][1]);
+                sceneManager.addScene(gridTile);
+                /*
+                        Scene gridTile = new Scene(sceneAssetHashMap.get("tile.glb").scene);
+                // Create a new BoundingBox, this is useful to check collisions or to get the model dimensions
+                BoundingBox boundingBox = new BoundingBox();
+
+                // Calculate the BoundingBox from the given ModelInstance
+                gridTile.modelInstance.calculateBoundingBox(boundingBox);
+                // Create Vector3 to store the ModelInstance dimensions
+                Vector3 modelDimensions = new Vector3();
+                // Read the ModelInstance BoundingBox dimensions
+                boundingBox.getDimensions(modelDimensions);
+                // TODO: refactor this if needed, e.g. if ground tiles are not all the same size
+                groundTileDimensions.set(modelDimensions);
+                // Set the ModelInstance to the respective row and cell of the map
+                gridTile.modelInstance.transform.setToTranslation(k * modelDimensions.x, 0.0f, i * modelDimensions.z);
+                //  gridTile.modelInstance.transform.setToTranslation( 10* modelDimensions.x, 0.0f,  5*modelDimensions.z);
+                // Add the Scene object to the SceneManager for rendering
+                sceneManager.addScene(gridTile);
+                mapTiles[i][k] = gridTile;
+               // mapBoxes[i][k] = boundingBox;
+                 */
+                mapTiles[walkWay[i][1]][walkWay[i][0]] = gridTile;
             }
 
          //   System.out.println(Arrays.toString(arr));
