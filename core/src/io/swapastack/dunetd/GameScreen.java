@@ -586,7 +586,7 @@ public class GameScreen implements Screen {
      * @param enemy
      */
     public void initEnemy(Enemy enemy) {
-        enemy.init(sceneManager, sceneAssetHashMap, shortestPath, startPortal.getX(), startPortal.getY(), startPortal.getZ());
+        enemy.init(sceneManager, sceneAssetHashMap, shortestPath, startPortal.getX(), startPortal.getY()+0.03f, startPortal.getZ());
         attackers.add(enemy);
         enemy.setWalkAnimation();
         //Let the enemy look in the direction of the shortestPath

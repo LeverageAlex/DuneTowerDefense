@@ -22,7 +22,7 @@ public class HarvestMachine extends Enemy{
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath,float x, float y, float z) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
-        this.setToTranslation(x, y, z)
+        this.setToTranslation(x, y+0.06f, z)
                 .scale(0.2f, 0.2f, 0.2f);
         this.shortestPath = shortestPath;
 
