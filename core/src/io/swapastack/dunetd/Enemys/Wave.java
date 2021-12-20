@@ -12,7 +12,7 @@ public class Wave {
     private int enemyCounter, alive, killed, arrivedPortal;
     private LinkedList<Enemy> enemies;
     private Timer timer;
-    private float delaySeconds = 5.f, intervalSeconds = ConfigMgr.waveSpawnDelayIntervall;
+    private float delaySeconds = 2.f, intervalSeconds = ConfigMgr.waveSpawnDelayIntervall;
     private GameScreen gameScreen;
     private Player player;
     private boolean started;

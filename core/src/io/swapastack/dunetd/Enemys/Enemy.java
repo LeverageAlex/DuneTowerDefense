@@ -183,38 +183,44 @@ public abstract class Enemy {
     }
     /**
      * rotates smoothly towards a given point.  Returns true if the rotation is slower than max rotation speed
+     * Inspired by https://gamedev.stackexchange.com/questions/190013/libgdx-make-player-rotate-towards-mouse-pointer-player-facing-mouse
      * @param pointToRotate
      * @return if rotation is slower than maxRotationSpeed
      */
     @SuppressWarnings("DuplicatedCode")
     public boolean rotateTowardsPointSmooth(int[] pointToRotate) {
-        Vector3 enemyCoords = this.scene.modelInstance.transform.getTranslation(new Vector3());
-        float rotation = (float) Math.atan2((enemyCoords.z - ((float) pointToRotate[1])), (enemyCoords.x - ((float) pointToRotate[0])));
-        //   int x = rotation-currentAngle < 0 ? -1 : 1;
-        //rotating the gun smoothly with clamp (Min/Max of Clamp is max speed of rotating towards point
-        float toRotate;
-        boolean notClamped = true;
-        if (rotation - currentAngle < -rotationSpeed) {
-            toRotate = -rotationSpeed;
-            notClamped = false;
-        } else if (rotation - currentAngle > rotationSpeed) {
-            toRotate = rotationSpeed;
-            notClamped = false;
-        } else {
-            toRotate = rotation - currentAngle;
-        }
+            Vector3 enemyCoords = this.scene.modelInstance.transform.getTranslation(new Vector3());
+            float rotation = (float) Math.atan2((enemyCoords.z - ((float) pointToRotate[1])), (enemyCoords.x - ((float) pointToRotate[0])));
+            //   int x = rotation-currentAngle < 0 ? -1 : 1;
+            //rotating the gun smoothly with clamp (Min/Max of Clamp is max speed of rotating towards point
+            float toRotate;
+            boolean notClamped = true;
+            if (rotation - currentAngle < -rotationSpeed) {
+                toRotate = -rotationSpeed;
+                notClamped = false;
+            } else if (rotation - currentAngle > rotationSpeed) {
+                toRotate = rotationSpeed;
+                notClamped = false;
+            } else {
+                toRotate = rotation - currentAngle;
+            }
 
-        //activate if necessary
+            //activate if necessary
         /*if(currentAngle - 0.05f < -Math.PI && rotation + 0.05f > Math.PI) {
             toRotate = (float) (rotation + Math.PI);
             System.out.println("Critical code in Enemy triggered. Check for interferences!");
         }*/
 
-        this.getScene().modelInstance.transform.rotateRad(0.f, 1.F, 0.F, toRotate * -1);
-        currentAngle = currentAngle + toRotate;
-        return notClamped;
+            this.getScene().modelInstance.transform.rotateRad(0.f, 1.F, 0.F, toRotate * -1);
+            currentAngle = currentAngle + toRotate;
+            return notClamped;
+
     }
 
+    /**
+     * Inspired by https://gamedev.stackexchange.com/questions/190013/libgdx-make-player-rotate-towards-mouse-pointer-player-facing-mouse
+     * @param pointToRotate
+     */
     public void rotateTowardsVectorInstantly(int[] pointToRotate) {
         Vector3 enemyCoords = this.scene.modelInstance.transform.getTranslation(new Vector3());
         float rotation = (float) Math.atan2((enemyCoords.z - ((float) pointToRotate[1])), (enemyCoords.x - ((float) pointToRotate[0])));
