@@ -117,4 +117,8 @@ public class Wave {
         killed = 0;
         arrivedPortal = 0;
     }
+
+    public void gotEaten() {
+        killed++;
+    }
 }

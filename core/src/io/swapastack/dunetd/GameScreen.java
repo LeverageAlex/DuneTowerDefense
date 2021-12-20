@@ -86,7 +86,8 @@ public class GameScreen implements Screen {
     Label health;
     Label spiceAmount;
     Label hsAmount;
-    Label waveToBeat;
+    Label enemiesToBeat;
+    Label remainingWaves;
     int selected = -1;
     Sandworm sand;
     ArrayList<Tower> towers = new ArrayList<>();
@@ -299,6 +300,10 @@ public class GameScreen implements Screen {
             waveCountdown.draw();
         }
 
+
+        enemiesToBeat.setText(   "Enemies left: " + wave.enemiesLeft());
+        remainingWaves.setText(   "Remaining waves: " + (ConfigMgr.waves.length - waveCounter));
+
     }
 
     @Override
@@ -406,9 +411,15 @@ public class GameScreen implements Screen {
         spiceAmount.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 60);
         hsAmount = new Label(   "Highscore: " + player.getHighscore(),skin, "black");
         hsAmount.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 90);
+        enemiesToBeat = new Label(   "Enemies left: " + wave.enemiesLeft(),skin, "black");
+        enemiesToBeat.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 120);
+        remainingWaves = new Label(   "Remaining waves: " + (ConfigMgr.waves.length - waveCounter),skin, "black");
+        remainingWaves.setPosition(Gdx.graphics.getWidth() - 180, Gdx.graphics.getHeight() - 150);
         HUD.addActor(health);
         HUD.addActor(spiceAmount);
         HUD.addActor(hsAmount);
+        HUD.addActor(enemiesToBeat);
+        HUD.addActor(remainingWaves);
 
         placeKnockerHUD = new Stage();
         HUD_Drawer placeKnocker = new HUD_Drawer(this, skin, "hud/sandWorm.png", "hud/sandWorm_selected.png", 3,"FREE",Gdx.graphics.getWidth() - 138, 20, 100, 100);
@@ -670,7 +681,7 @@ public class GameScreen implements Screen {
     }
 
     public void launchSandwormAttack() {
-        sand = new Sandworm(sceneManager, sceneAssetHashMap, attackers, mapTowers, this, rows, cols);
+        sand = new Sandworm(sceneManager, sceneAssetHashMap, attackers, mapTowers, wave,this, rows, cols);
         sand.removeLane(mapTowers, attackers);
     }
 

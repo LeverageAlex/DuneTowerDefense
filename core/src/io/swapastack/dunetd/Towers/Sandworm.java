@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import io.swapastack.dunetd.ConfigMgr;
 import io.swapastack.dunetd.Enemys.Enemy;
+import io.swapastack.dunetd.Enemys.Wave;
 import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.Scene;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
@@ -24,8 +25,9 @@ public class Sandworm {
     private MapIterable[][] mapTowers;
     private float offset = 4;
     private GameScreen gameScreen;
+    private Wave wave;
 
-    public Sandworm(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, ArrayList<Enemy> enemies, MapIterable[][] mapTowers, GameScreen gameScreen, int rows, int cols) {
+    public Sandworm(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, ArrayList<Enemy> enemies, MapIterable[][] mapTowers, Wave wave, GameScreen gameScreen, int rows, int cols) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
 
@@ -36,6 +38,7 @@ public class Sandworm {
         this.enemies = enemies;
         this.mapTowers = mapTowers;
         this.gameScreen = gameScreen;
+        this.wave = wave;
 
         Vector3 vec1 = Knocker.firstKnocker.getCoords();
         Vector3 vec2 = Knocker.secondKnocker.getCoords();
@@ -122,6 +125,7 @@ public class Sandworm {
                 float enemZ = enemies.get(i).getCoords().z;
                 if(Math.round(enemX) == x &&  Math.round(enemZ) == z) {
                     enemies.get(i).removeEnemy(sceneManager, enemies);
+                    wave.gotEaten();
                     i--;
                 }
             }
