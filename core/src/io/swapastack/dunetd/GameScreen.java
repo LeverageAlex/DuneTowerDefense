@@ -37,18 +37,8 @@ import java.util.*;
 public class GameScreen implements Screen {
 
     private final DuneTD parent;
-    private Infantry infantry;
-    private BossUnit bossUnit;
-    private HarvestMachine harvestMachine;
-
-    private Infantry infantryTwo;
 
     private ArrayList<Enemy> attackers;
-
-    //Towers
-    private CanonTower canonTower;
-    private BombTower bombTower;
-    private SonicTower sonicTower;
 
     // GDX GLTF
     private SceneManager sceneManager;
@@ -172,7 +162,7 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         // Load all 3D models listed in kenney_assets.txt file in blocking mode
-        FileHandle assetsHandle = Gdx.files.internal("kenney_assets.txt");
+        FileHandle assetsHandle = Gdx.files.internal(kenneyAssetsFile);
         String fileContent = assetsHandle.readString();
         kenneyModels = fileContent.split("\\r?\\n");
         for (int i = 0; i < kenneyModels.length; i++) {
@@ -262,7 +252,7 @@ public class GameScreen implements Screen {
             if(locEnemy != null) {
                 //ToDo activate shot sound
                     Vector3 currentCord = t.getScene().modelInstance.transform.getTranslation(new Vector3());
-                    new Bullet(sceneManager, sceneAssetHashMap, attackers, bullets, currentCord.x, 0.24f, currentCord.z, locEnemy);
+                    new Bullet(sceneManager, sceneAssetHashMap, attackers, bullets, currentCord.x, 0.29f, currentCord.z, locEnemy);
                    // bullets.add(b);
             }
         }
@@ -366,7 +356,7 @@ public class GameScreen implements Screen {
                 // TODO: refactor this if needed, e.g. if ground tiles are not all the same size
                 groundTileDimensions.set(modelDimensions);
                 // Set the ModelInstance to the respective row and cell of the map
-                gridTile.modelInstance.transform.setToTranslation(k * modelDimensions.x, 0.0f, i * modelDimensions.z);
+                gridTile.modelInstance.transform.setToTranslation(k * modelDimensions.x, 0.0f, i * modelDimensions.z).scale(1, 0.6f, 1);
                 //  gridTile.modelInstance.transform.setToTranslation( 10* modelDimensions.x, 0.0f,  5*modelDimensions.z);
                 // Add the Scene object to the SceneManager for rendering
                 sceneManager.addScene(gridTile);
@@ -379,8 +369,8 @@ public class GameScreen implements Screen {
         }
         player = new Player();
         // place example sonicTower
-        startPortal = new Startportal(sceneManager, sceneAssetHashMap, mapTowers,ConfigMgr.stPortalX, groundTileDimensions.y, ConfigMgr.stPortalZ);
-        endPortal = new Endportal(sceneManager, sceneAssetHashMap, mapTowers,ConfigMgr.endPortalX, groundTileDimensions.y, ConfigMgr.endPortalZ);
+        startPortal = new Startportal(sceneManager, sceneAssetHashMap, mapTowers,ConfigMgr.stPortalX, 0.12f, ConfigMgr.stPortalZ);
+        endPortal = new Endportal(sceneManager, sceneAssetHashMap, mapTowers,ConfigMgr.endPortalX, 0.10f, ConfigMgr.endPortalZ);
 
 
 
@@ -459,6 +449,7 @@ public class GameScreen implements Screen {
     public Vector3 getClickOnField() {
         Vector3 camPos = new Vector3(camera.position);
         Vector3 clickDir = calculateClickDirection();
+        //lambda of our direction-Vector which is needed to set y = 0 (x-z plane) where the gameMap is allocated at
         float lambda = new Vector3(camera.position).y / clickDir.y;
 
         camPos = new Vector3(camPos.x - clickDir.x*lambda, 0.f, camPos.z - clickDir.z*lambda);
@@ -474,16 +465,6 @@ public class GameScreen implements Screen {
         return vecMousePos.sub(camera.position).setLength(1f);
     }
 
-    /**
-     *
-     * @param direction (a Vector3 who points towards a direction)
-     * @return lambda of our direction-Vector which is needed to set y = 0 (x-z plane) where the gameMap is allocated at
-     */
-    private float findYCutLambda(Vector3 direction) {
-        Vector3 v = new Vector3(camera.position);
-        return v.y /direction.y;
-
-    }
     public boolean inRangeofField(Vector3 vec) {
         int x = Math.round(vec.x);
      //   int y = 0;
@@ -492,10 +473,6 @@ public class GameScreen implements Screen {
             return true;
         }
         return false;
-    }
-
-    public int[][] getShortestPath() {
-        return shortestPath;
     }
 
     /**
@@ -560,7 +537,7 @@ public class GameScreen implements Screen {
                 sceneManager.removeScene(mapTiles[shortestPath[i][1]][shortestPath[i][0]]);
                     Scene gridTile = new Scene(sceneAssetHashMap.get("tile.glb").scene);
                 mapTiles[shortestPath[i][1]][shortestPath[i][0]] = gridTile;
-                gridTile.modelInstance.transform.setToTranslation(shortestPath[i][0], 0.0f,shortestPath[i][1]);
+                gridTile.modelInstance.transform.setToTranslation(shortestPath[i][0], 0.0f,shortestPath[i][1]).scale(1, 0.6f, 1);
                 sceneManager.addScene(gridTile);
             }
 
@@ -577,7 +554,7 @@ public class GameScreen implements Screen {
                 Scene gridTile = new Scene(sceneAssetHashMap.get("tile_dirt.glb").scene);
 
 
-                gridTile.modelInstance.transform.setToTranslation(walkWay[i][0], 0.0f, walkWay[i][1]);
+                gridTile.modelInstance.transform.setToTranslation(walkWay[i][0], 0.0f, walkWay[i][1]).scale(1, 1.1f, 1);
                 sceneManager.addScene(gridTile);
                 mapTiles[walkWay[i][1]][walkWay[i][0]] = gridTile;
             }
@@ -673,7 +650,7 @@ public class GameScreen implements Screen {
     public boolean placeTower(Tower t) {
         Vector3 v = getClickOnField();
         if(inRangeofField(v) && Tower.isEligibleToPlace(mapTowers, this, Math.round(v.x), Math.round(v.z))) {
-            t.init(sceneManager, sceneAssetHashMap, mapTowers, towers, Math.round(v.x), 0.02f, Math.round(v.z));
+            t.init(sceneManager, sceneAssetHashMap, mapTowers, towers, Math.round(v.x), 0.053f, Math.round(v.z));
             return  true;
         }
         return false;
