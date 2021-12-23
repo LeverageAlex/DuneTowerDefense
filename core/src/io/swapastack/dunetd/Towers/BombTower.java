@@ -3,14 +3,17 @@ package io.swapastack.dunetd.Towers;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Timer;
 import io.swapastack.dunetd.ConfigMgr;
+import io.swapastack.dunetd.Enemys.Bullet;
 import io.swapastack.dunetd.Enemys.Enemy;
 import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
+import org.lwjgl.system.CallbackI;
 
 import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class BombTower extends Tower{
     float currentAngle = (float) (Math.PI/2);
@@ -60,7 +63,7 @@ public class BombTower extends Tower{
                     if(readyToShoot) {
                         //canonTowCounter = 0;
                   //      System.out.println("bombTower shot");
-                        enemy.gainDamage(towerDmg);
+                        //enemy.gainDamage(towerDmg);
                         readyToShoot = false;
                         //   currentTarget = enemy;
                         towerTimer.scheduleTask(task, ConfigMgr.bombTowIntervall);
@@ -106,6 +109,11 @@ public class BombTower extends Tower{
         this.getScene().modelInstance.transform.rotateRad(0.f, 1.F, 0.F, toRotate * -1);
         currentAngle = currentAngle + toRotate;
         return notClamped;
+    }
+
+    public void createBullet(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, List<Enemy> attackers, ArrayList<Bullet> bullets, float startX, float startY, float startZ, Enemy enemy) {
+        Vector3 vec = getScene().modelInstance.transform.getTranslation(new Vector3());
+
     }
 
 

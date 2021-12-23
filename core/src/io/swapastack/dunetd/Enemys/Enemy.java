@@ -240,10 +240,10 @@ public abstract class Enemy {
         health -= dmg;
     }
 
-    public boolean collides(Vector3 bullet) {
+    public boolean collides(Vector3 bullet, float hitRadians) {
         float absX = Math.abs(bullet.x);
         float absZ = Math.abs(bullet.z);
-        if(Math.abs(this.getCoords().x - absX) < hitDistanz && Math.abs(this.getCoords().z - absZ) < hitDistanz ) {
+        if(Math.abs(this.getCoords().x - absX) < hitDistanz*hitRadians && Math.abs(this.getCoords().z - absZ) < hitDistanz*hitRadians ) {
             return true;
         }
         return false;

@@ -2,7 +2,11 @@ package io.swapastack.dunetd.Enemys;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import io.swapastack.dunetd.ConfigMgr;
+import io.swapastack.dunetd.Towers.BombTower;
+import io.swapastack.dunetd.Towers.CanonTower;
 import io.swapastack.dunetd.Towers.IterableOverMap;
+import io.swapastack.dunetd.Towers.Tower;
 import net.mgsx.gltf.scene3d.scene.Scene;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
@@ -20,8 +24,10 @@ public class Bullet {
     private Enemy enemy;
     private ArrayList<Bullet> bullets;
     private Vector3 directT;
+    private boolean bomb = false;
+    private float damage;
 
-    public Bullet(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, List<Enemy> attackers, ArrayList<Bullet> bullets, float startX, float startY, float startZ, Enemy enemy) {
+    public Bullet(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, List<Enemy> attackers, ArrayList<Bullet> bullets, float startX, float startY, float startZ, Enemy enemy, Tower t) {
         scene = new Scene(sceneAssetHashMap.get(graphics).scene);
         sceneManager.addScene(scene);
         this.setTranslation(startX, startY, startZ).scale(0.004f, 0.004f, 0.004f);
@@ -33,15 +39,34 @@ public class Bullet {
         this.enemy = enemy;
         this.bullets = bullets;
         bullets.add(this);
+        if(t instanceof BombTower) {
+            bomb = true;
+        }
     }
+
+
+
 
     public void move() {
         Vector3 vec = this.scene.modelInstance.transform.getTranslation(new Vector3());
 
-        if(enemy.collides(vec)) {
+        if(enemy.collides(vec, 1.f)) {
             //destroyBullet
          //   System.out.println("Destroyage");
-            bulletDelete();
+            if(!bomb) {
+                enemy.gainDamage(ConfigMgr.canonTowDmg);
+                bulletDelete();
+            }
+            else {
+                //If bombTower
+                for(Enemy e : attackers) {
+                    if(e.collides(vec, ConfigMgr.bombTowExplosRange)) {
+                        e.gainDamage(ConfigMgr.bombTowDmg);
+                    }
+                }
+
+                bulletDelete();
+            }
         }
         else {
             scene.modelInstance.transform.setTranslation(vec.x + directT.x, vec.y, vec.z + directT.z);

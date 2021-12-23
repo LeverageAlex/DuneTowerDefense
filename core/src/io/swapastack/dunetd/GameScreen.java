@@ -253,7 +253,7 @@ public class GameScreen implements Screen {
             if(locEnemy != null) {
                 //ToDo activate shot sound
                     Vector3 currentCord = t.getScene().modelInstance.transform.getTranslation(new Vector3());
-                    new Bullet(sceneManager, sceneAssetHashMap, attackers, bullets, currentCord.x, 0.29f, currentCord.z, locEnemy);
+                    new Bullet(sceneManager, sceneAssetHashMap, attackers, bullets, currentCord.x, 0.29f, currentCord.z, locEnemy, t);
                    // bullets.add(b);
             }
         }

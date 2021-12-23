@@ -55,7 +55,7 @@ public class CanonTower extends Tower {
                         if(readyToShoot) {
                             //canonTowCounter = 0;
                          //   System.out.println("canonTower shot");
-                            enemy.gainDamage(towerDmg);
+                            //enemy.gainDamage(towerDmg);
                             readyToShoot = false;
                             //   currentTarget = enemy;
                             towerTimer.scheduleTask(task, ConfigMgr.canonTowIntervall);
