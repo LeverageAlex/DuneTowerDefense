@@ -27,6 +27,18 @@ public class Bullet {
     private boolean bomb = false;
     private float damage;
 
+    /**
+     * creates a bullet, which flies towards startX, startZ
+     * @param sceneManager
+     * @param sceneAssetHashMap
+     * @param attackers
+     * @param bullets
+     * @param startX
+     * @param startY
+     * @param startZ
+     * @param enemy
+     * @param t
+     */
     public Bullet(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, List<Enemy> attackers, ArrayList<Bullet> bullets, float startX, float startY, float startZ, Enemy enemy, Tower t) {
         scene = new Scene(sceneAssetHashMap.get(graphics).scene);
         sceneManager.addScene(scene);
@@ -64,7 +76,6 @@ public class Bullet {
                         e.gainDamage(ConfigMgr.bombTowDmg);
                     }
                 }
-
                 bulletDelete();
             }
         }
@@ -76,6 +87,9 @@ public class Bullet {
 
     }
 
+    /**
+     * removes the graphics and references to this bullet
+     */
     public void bulletDelete() {
         Vector3 pos = scene.modelInstance.transform.getTranslation(new Vector3());
         sceneManager.removeScene(this.scene);

@@ -14,6 +14,9 @@ public class ConfigMgr {
     private static BufferedReader in;
 
 
+    /**
+     * Reads the config
+     */
     public static void readCfg() {
         try {
             in = new BufferedReader(new InputStreamReader(new FileInputStream(file)));

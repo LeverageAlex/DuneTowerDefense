@@ -99,4 +99,5 @@ public class Knocker extends Tower{
             Knocker.isAvailable = true;
         }
     }
+
 }
