@@ -212,6 +212,7 @@ public class GameScreen implements Screen {
 
 
 
+        //Update Animations
         for (Enemy enemy: attackers) {
             enemy.getAnimationController().update(delta);
         }
@@ -241,6 +242,7 @@ public class GameScreen implements Screen {
         //    ImGui.text("Mouse Map Rounded X: " + Math.round(vec.x) + ", Y: " + vec.y + ", Z: " + Math.round(vec.z));
         //ImGui.end();
 
+        //Moves Sandworm if existent and manages deletion
         if(sand != null && sand.moveWorm()) {
             sand.removeWorm(sceneManager);
             sand = null;
@@ -248,13 +250,13 @@ public class GameScreen implements Screen {
 
         updateEnemysMovement();
 
+        //Rotates the towers towards enemies and shoots new bullets, if timer is ready
         for (Tower t : towers) {
             Enemy locEnemy = t.fire(attackers);
             if(locEnemy != null) {
                 //ToDo activate shot sound
                     Vector3 currentCord = t.getScene().modelInstance.transform.getTranslation(new Vector3());
                     new Bullet(sceneManager, sceneAssetHashMap, attackers, bullets, currentCord.x, 0.29f, currentCord.z, locEnemy, t);
-                   // bullets.add(b);
             }
         }
 
@@ -571,7 +573,7 @@ public class GameScreen implements Screen {
             }
 
          //   System.out.println(Arrays.toString(arr));
-            System.out.println("Numbered Dijkstra: " + Arrays.deepToString(walkWay));
+          //  System.out.println("Numbered Dijkstra: " + Arrays.deepToString(walkWay));
             shortestPath = walkWay;
         }
         else {
