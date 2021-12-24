@@ -1,7 +1,6 @@
 package io.swapastack.dunetd.Towers;
 
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Timer;
 import io.swapastack.dunetd.ConfigMgr;
 import io.swapastack.dunetd.Enemys.Enemy;
 import io.swapastack.dunetd.GameScreen;
@@ -10,6 +9,8 @@ import net.mgsx.gltf.scene3d.scene.SceneManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CanonTower extends Tower {
     float currentAngle = (float) (Math.PI / 2);
@@ -17,7 +18,7 @@ public class CanonTower extends Tower {
     float canonTowCounter;
     //Enemy currentTarget;
     Timer towerTimer = new Timer();
-    Timer.Task task = new Timer.Task() {
+    TimerTask task = new TimerTask() {
         @Override
         public void run() {
             readyToShoot = true;
@@ -31,7 +32,6 @@ public class CanonTower extends Tower {
         gameScreen = screen;
         this.cost = ConfigMgr.canonTowCost;
         towerDmg = ConfigMgr.canonTowDmg;
-
     }
 
     @Override
@@ -58,7 +58,11 @@ public class CanonTower extends Tower {
                             //enemy.gainDamage(towerDmg);
                             readyToShoot = false;
                             //   currentTarget = enemy;
-                            towerTimer.scheduleTask(task, ConfigMgr.canonTowIntervall);
+                            towerTimer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    readyToShoot = true;
+                                }}, Math.round(ConfigMgr.canonTowIntervall*1000));
                             return enemy;
                         }
 
