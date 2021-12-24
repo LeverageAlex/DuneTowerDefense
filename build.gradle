@@ -106,3 +106,14 @@ project(":core") {
         implementation 'io.github.spair:imgui-java-natives-macos:1.84.1.4'
     }
 }
+dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    compile(project(":core")) {
+        transitive = false
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
