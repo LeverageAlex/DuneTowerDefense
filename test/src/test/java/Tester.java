@@ -8,8 +8,6 @@ import io.swapastack.dunetd.Enemys.Wave;
 import io.swapastack.dunetd.GameScreen;
 import io.swapastack.dunetd.Player;
 import io.swapastack.dunetd.Towers.*;
-import net.mgsx.gltf.scene3d.scene.Scene;
-import net.mgsx.gltf.scene3d.scene.SceneManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -128,6 +126,8 @@ public class Tester {
         }
         Assertions.assertTrue(Knocker.isAvailable());
     }
+
+
 
 
 

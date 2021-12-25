@@ -57,8 +57,9 @@ public class Bullet {
     }
 
 
-
-
+    /**
+     * Moves the bullet towards the targetEnemy, if it collides with it, it will deal damage and delete itself
+     */
     public void move() {
         Vector3 vec = this.scene.modelInstance.transform.getTranslation(new Vector3());
 

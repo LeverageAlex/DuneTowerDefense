@@ -93,7 +93,9 @@ public abstract class Tower implements MapIterable {
         this.color = color;
     }
 
-    //Checks whether tile is free or a way to the Endportal continues to exist
+    /**
+     * Checks whether tile is free or a way to the Endportal continues to exist
+     */
     public static boolean isEligibleToPlace(MapIterable[][] mapTowers , GameScreen gameScreen, int x, int z) {
         //check for no Tower Placed
         if(/*map[x][z] == null || */ /*mapTowers[x][z].getPathColor() == 0 */ mapTowers[x][z] instanceof IterableOverMap && !(mapTowers[x][z] instanceof Startportal) && !(mapTowers[x][z] instanceof Endportal)) {
@@ -114,12 +116,21 @@ public abstract class Tower implements MapIterable {
         }
     }
 
-    //Pythagoras to see if point is in range of the Range circle
+    /**
+     * Pythagoras to see if point is in range of the Range circle
+     * @param pos
+     * @return
+     */
     public boolean isInRange(Vector3 pos) {
         Vector3 towerPos = getScene().modelInstance.transform.getTranslation(new Vector3());
         return ((pos.x-towerPos.x)*(pos.x-towerPos.x) + (pos.z-towerPos.z)*(pos.z-towerPos.z) <= range*range );
     }
 
+    /**
+     * Deletes the Scene of tower from sceneManger and removes its references in mapTowers
+     * @param sceneManager
+     * @param mapTowers
+     */
     public void removeTower(SceneManager sceneManager, MapIterable[][] mapTowers) {
         Vector3 pos = scene.modelInstance.transform.getTranslation(new Vector3());
         mapTowers[Math.round(pos.x)][Math.round(pos.z)] = new IterableOverMap();

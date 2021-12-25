@@ -23,6 +23,16 @@ public class BossUnit extends Enemy{
         highscorePoints = ConfigMgr.bossHSPoints;
 
     }
+
+    /**
+     * Instantiates the scene of the enemy and updates its moving direction
+     * @param sceneManager
+     * @param sceneAssetHashMap
+     * @param shortestPath
+     * @param x
+     * @param y
+     * @param z
+     */
     public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath, float x, float y, float z) {
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);

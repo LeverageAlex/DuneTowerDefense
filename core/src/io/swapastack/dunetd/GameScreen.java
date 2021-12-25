@@ -380,12 +380,7 @@ public class GameScreen implements Screen {
         startPortal = new Startportal(sceneManager, sceneAssetHashMap, mapTowers,ConfigMgr.stPortalX, 0.12f, ConfigMgr.stPortalZ);
         endPortal = new Endportal(sceneManager, sceneAssetHashMap, mapTowers,ConfigMgr.endPortalX, 0.10f, ConfigMgr.endPortalZ);
 
-
-
         pathFinder();
-
-
-
 
 
         wave = new Wave(this, player);
@@ -620,13 +615,13 @@ public class GameScreen implements Screen {
                 if( attackers.get(i).movingAlongShortestPath()) {
                     //EndPortal arrived
                     wave.arrivedAtEndPortal(attackers.get(i));
-                    System.out.println(attackers.get(i).getClass().toString() + " arrived at EndPortal and got deleted");
+               //     System.out.println(attackers.get(i).getClass().toString() + " arrived at EndPortal and got deleted");
                     attackers.get(i).removeEnemy(sceneManager, attackers);
                 }
             }
             else {
                 wave.enemyKilled(attackers.get(i));
-                System.out.println(attackers.get(i).getClass().toString() + " went out of live and got deleted");
+              //  System.out.println(attackers.get(i).getClass().toString() + " went out of live and got deleted");
                 attackers.get(i).removeEnemy(sceneManager, attackers);
             }
         }
@@ -704,7 +699,6 @@ public class GameScreen implements Screen {
         }
         else {
             System.out.println("you've successfully won! --- Ending");
-           // System.exit(0);
             parent.setWinScreen(new WinScreen(parent,player.getHighscore(), player.getHealth(), player.getEnemiesKilled(), ConfigMgr.waves.length));
             parent.changeScreen(ScreenEnum.WIN);
         }
