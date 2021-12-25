@@ -70,7 +70,6 @@ public class GameScreen implements Screen {
 
     //Custom
     MouseForCollision mouseForCollision;
-    Scene beam;
     private Scene[][] mapTiles;
     BoundingBox[][] mapBoxes;
     Player player;
@@ -386,9 +385,6 @@ public class GameScreen implements Screen {
         wave = new Wave(this, player);
         wave.initEnemies(ConfigMgr.waves[waveCounter]);
 
-        beam = new Scene(sceneAssetHashMap.get("detail_crystal.glb").scene);
-        resetBeamPos();
-        sceneManager.addScene(beam);
 
 
         towerBuilding = new Stage();
@@ -445,12 +441,6 @@ public class GameScreen implements Screen {
         System.out.println("disposed");
     }
 
-    /**
-     * Places our Beam at the position of the mouse on the gameMap
-     */
-    public void resetBeamPos() {
-        beam.modelInstance.transform.setToTranslation(getClickOnField());
-     }
 
     /** Converts MouseClick to Coordinate on the x-z plane (y=0)
      * lambda of our direction-Vector which is needed to set y = 0 (x-z plane) where the gameMap is allocated at

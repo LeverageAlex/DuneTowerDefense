@@ -36,9 +36,6 @@ public class MouseForCollision implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        if(Input.Keys.SPACE == keycode) {
-            gameScreen.resetBeamPos();
-        }
         return false;
     }
 
