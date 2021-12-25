@@ -1,12 +1,9 @@
 import com.badlogic.gdx.math.Vector3;
-import io.swapastack.dunetd.ConfigMgr;
-import io.swapastack.dunetd.DuneTD;
+import io.swapastack.dunetd.*;
 import io.swapastack.dunetd.Enemys.BossUnit;
 import io.swapastack.dunetd.Enemys.Enemy;
 import io.swapastack.dunetd.Enemys.Infantry;
 import io.swapastack.dunetd.Enemys.Wave;
-import io.swapastack.dunetd.GameScreen;
-import io.swapastack.dunetd.Player;
 import io.swapastack.dunetd.Towers.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -128,7 +125,12 @@ public class Tester {
     }
 
 
-
+    @Test
+    public void GameStateEnumTest() {
+        Assertions.assertEquals(GameStateEnum.gameState(GameStateEnum.WAVE), 1);
+        Assertions.assertEquals(GameStateEnum.gameState(GameStateEnum.BUILDING), 0);
+        Assertions.assertEquals(GameStateEnum.gameState(GameStateEnum.SELECTED), 3);
+    }
 
 
 
