@@ -46,10 +46,6 @@ public class HarvestMachine extends Enemy{
         this.setAnimation("Action", -1);
     }
 
-    @Override
-    public void destroyDamage() {
-
-    }
 
     @Override
     public int arrivedAtEndPortal() {

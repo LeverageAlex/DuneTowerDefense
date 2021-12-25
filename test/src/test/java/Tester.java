@@ -16,11 +16,7 @@ public class Tester {
     CanonTower canon = new CanonTower(null) {
         @Override
         public boolean isInRange(Vector3 pos) {
-           // System.out.println((pos.x-3.f)*(pos.x-3.f) );
-           // System.out.println((pos.z-3.f)*(pos.z-3.f));
-           // System.out.println("range: " + range*range);
             return ((pos.x-3.f)*(pos.x-3.f) + (pos.z-3.f)*(pos.z-3.f) <= range*range );
-           // return true;
         }
         @Override
         public boolean rotateTowardsVectorSmooth(Vector3 pointToRotate) {

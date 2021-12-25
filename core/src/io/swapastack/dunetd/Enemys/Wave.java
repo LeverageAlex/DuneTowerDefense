@@ -22,9 +22,11 @@ public class Wave {
         this.player = player;
         started = false;
         enemies = new LinkedList<>();
-        //this.enemyCounter = 6;
     }
-    //Activate waveSpawner
+
+    /**
+     * Activate waveSpawner
+     */
     public void startWave() {
         started = true;
         timer = new Timer();
@@ -36,6 +38,9 @@ public class Wave {
         }, delaySeconds, intervalSeconds);
     }
 
+    /**
+     * called every intervalsecond while timer is active
+     */
     public void continueWave() {
         if(!enemies.isEmpty()) {
             Enemy enem;
@@ -46,11 +51,9 @@ public class Wave {
 
             } else {
                 enemies.remove(0);
-             //   System.out.println("No enemy spawned this tick!");
             }
         }
 
-      //  System.out.println("Wave Timer triggered");
     }
 
     public int enemiesLeft() {
@@ -109,6 +112,9 @@ public class Wave {
         }
     }
 
+    /**
+     * makes the Wave-Object reusable for new Wave
+     */
     public void reset() {
         timer.clear();
         started = false;

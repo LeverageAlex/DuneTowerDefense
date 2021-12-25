@@ -52,10 +52,6 @@ public class BossUnit extends Enemy{
     }
 
 
-    @Override
-    public void destroyDamage() {
-
-    }
 
     @Override
     public int arrivedAtEndPortal() {

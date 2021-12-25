@@ -7,9 +7,7 @@ import io.swapastack.dunetd.Enemys.Enemy;
 import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
-import org.lwjgl.system.CallbackI;
 
-import javax.sound.midi.Soundbank;
 import java.util.*;
 
 public class BombTower extends Tower{
@@ -17,11 +15,11 @@ public class BombTower extends Tower{
     float rotationSpeed = (float) Math.PI/256;
     boolean readyToShoot = true;
     Timer towerTimer = new Timer();
-    TimerTask task = new TimerTask() {
+   /* TimerTask task = new TimerTask() {
         @Override
         public void run() {
             readyToShoot = true;
-        }};
+        }};*/
 
 
     public BombTower(GameScreen screen) {
@@ -40,10 +38,7 @@ public class BombTower extends Tower{
         this.scene = createScene(sceneAssetHashMap);
         sceneManager.addScene(scene);
         this.setTranslation(x, y, z);
-       // this.scene.modelInstance.mate
-       // if(isEligibleToPlace(towers, gameScreen,Math.round(x), Math.round(z))) {
-            towers[Math.round(x)][Math.round(z)] = this;
-       // }
+        towers[Math.round(x)][Math.round(z)] = this;
         towerList.add(this);
         this.towerList = towerList;
     }
@@ -60,7 +55,6 @@ public class BombTower extends Tower{
                     if(readyToShoot) {
                         //canonTowCounter = 0;
                   //      System.out.println("bombTower shot");
-                        //enemy.gainDamage(towerDmg);
                         readyToShoot = false;
                         //   currentTarget = enemy;
                         towerTimer.schedule(new TimerTask() {

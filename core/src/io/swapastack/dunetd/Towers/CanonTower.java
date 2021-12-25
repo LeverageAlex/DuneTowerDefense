@@ -18,11 +18,11 @@ public class CanonTower extends Tower {
     float canonTowCounter;
     //Enemy currentTarget;
     Timer towerTimer = new Timer();
-    TimerTask task = new TimerTask() {
+    /*TimerTask task = new TimerTask() {
         @Override
         public void run() {
             readyToShoot = true;
-        }};
+        }};*/
     boolean readyToShoot = true;
 
     public CanonTower(GameScreen screen) {
@@ -55,7 +55,6 @@ public class CanonTower extends Tower {
                         if(readyToShoot) {
                             //canonTowCounter = 0;
                          //   System.out.println("canonTower shot");
-                            //enemy.gainDamage(towerDmg);
                             readyToShoot = false;
                             //   currentTarget = enemy;
                             towerTimer.schedule(new TimerTask() {

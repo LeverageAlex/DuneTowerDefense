@@ -12,13 +12,12 @@ import java.util.HashMap;
 public class Infantry extends Enemy {
 
     public Infantry() {
-        graphics = /*"faceted_character/scene.gltf";*/ "cute_cyborg/scene.gltf";
+        graphics = "cute_cyborg/scene.gltf";
         type = 0;
         currentAngle = -(float) Math.PI/2.f;
         rotationSpeed = (float) Math.PI / 256.f;
         movementSpeed = ConfigMgr.infMovSpeed;
         health = ConfigMgr.infHealth;
-       // target = new int[]{3, 1};
         damageOnEndPortal = ConfigMgr.infDmgOnEndPortal;
         storedSpice = ConfigMgr.infStoredSpice;
         highscorePoints = ConfigMgr.infHSPoints;
@@ -31,7 +30,6 @@ public class Infantry extends Enemy {
     @Override
     public void move(float x, float y, float z) {
         Vector3 pos = scene.modelInstance.transform.getTranslation(new Vector3());
-      //  System.out.printf("%f %f %f\n",this.x, this.y, this.z);
         this.scene.modelInstance.transform.setTranslation(pos.x + x, pos.y + y, pos.z + z);
     }
 
@@ -58,20 +56,11 @@ public class Infantry extends Enemy {
     }
 
 
-    @Override
-    public void destroyDamage() {
 
-    }
 
     @Override
     public int arrivedAtEndPortal() {
         return damageOnEndPortal;
-    }
-
-
-    public boolean collides(float x, float y, float z, Camera cam) {
-        printCoords();
-        return false;
     }
 
 

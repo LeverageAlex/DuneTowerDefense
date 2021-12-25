@@ -364,13 +364,10 @@ public class GameScreen implements Screen {
                 groundTileDimensions.set(modelDimensions);
                 // Set the ModelInstance to the respective row and cell of the map
                 gridTile.modelInstance.transform.setToTranslation(k * modelDimensions.x, 0.0f, i * modelDimensions.z).scale(1, 0.6f, 1);
-                //  gridTile.modelInstance.transform.setToTranslation( 10* modelDimensions.x, 0.0f,  5*modelDimensions.z);
                 // Add the Scene object to the SceneManager for rendering
                 sceneManager.addScene(gridTile);
                 mapTiles[i][k] = gridTile;
-               // mapBoxes[i][k] = boundingBox;
 
-                //   System.out.printf("Breite: %f \n", boundingBox.	getHeight() );
                 // it could be useful to store the Scene object reference outside this method
             }
         }
@@ -543,10 +540,8 @@ public class GameScreen implements Screen {
 
             int[] pos = endPortal.getPosition();
             walkWay = new int[endPortal.getPathLength()+1][2];
-            // IterableOverMap[] arr = new IterableOverMap[endPortal.getPathLength() + 1];
             //Create the shortestPath array and draw the new way
             for (int i = walkWay.length - 1; i >= 0; i--) {
-              //  arr[i] = (IterableOverMap) mapTowers[pos[0]][pos[1]];
 
                 walkWay[i] = ((IterableOverMap) mapTowers[pos[0]][pos[1]]).getPosition();
                 sceneManager.removeScene(mapTiles[walkWay[i][1]][walkWay[i][0]]);
@@ -559,7 +554,6 @@ public class GameScreen implements Screen {
                 mapTiles[walkWay[i][1]][walkWay[i][0]] = gridTile;
             }
 
-         //   System.out.println(Arrays.toString(arr));
           //  System.out.println("Numbered Dijkstra: " + Arrays.deepToString(walkWay));
             shortestPath = walkWay;
         }
@@ -682,7 +676,6 @@ public class GameScreen implements Screen {
         if(waveCounter+1 < ConfigMgr.waves.length) {
             Knocker.gambleAvailabilty();
             phase = GameStateEnum.gameState(GameStateEnum.BUILDING);
-            //wave = new Wave(this, player);
             wave.reset();
             ConfigMgr.levelStrength++;
             wave.initEnemies(ConfigMgr.waves[waveCounter]);

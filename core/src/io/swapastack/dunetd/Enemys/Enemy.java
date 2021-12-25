@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Enemy {
-    protected int level;
     public String name;
     protected int storedSpice;
     protected int highscorePoints;
@@ -32,8 +31,6 @@ public abstract class Enemy {
     float hitDistanz = 0.5f;
 
 
-    public abstract void destroyDamage();
-
     public abstract int arrivedAtEndPortal();
 
     public abstract void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, int[][] shortestPath, float x, float y, float z);
@@ -49,14 +46,11 @@ public abstract class Enemy {
     }
 
     public Matrix4 setToTranslation(Vector3 vector) {
-       // Vector3 scaler = scene.modelInstance.transform.getScale(new Vector3());
         return scene.modelInstance.transform.setTranslation(vector);
     }
 
     public Matrix4 setToTranslation(float x, float y, float z) {
-       // Vector3 scaler = scene.modelInstance.transform.getScale(new Vector3());
-     //   Quaternion rotation = scene.modelInstance.transform.getRotation(new Quaternion());
-        return scene.modelInstance.transform.setTranslation(x, y, z)/*.scale(scaler.x, scaler.y, scaler.z)/*.rotate(rotation)*/;
+        return scene.modelInstance.transform.setTranslation(x, y, z);
     }
 
     public void setAnimation(String id, int loopCnt) {

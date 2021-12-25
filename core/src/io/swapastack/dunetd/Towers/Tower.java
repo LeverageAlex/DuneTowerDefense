@@ -24,7 +24,6 @@ public abstract class Tower implements MapIterable {
     protected int cost;
     protected ArrayList<Tower> towerList;
     protected float towerDmg;
-    protected Vector3 nullVec = new Vector3();
 
     public abstract void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] towers,ArrayList<Tower> towerList, float x, float y, float z);
     public abstract Enemy fire(ArrayList<Enemy> enemiesList);
@@ -144,7 +143,4 @@ public abstract class Tower implements MapIterable {
         return cost;
     }
 
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
 }
