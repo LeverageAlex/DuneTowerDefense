@@ -106,10 +106,5 @@ public class BombTower extends Tower{
         return notClamped;
     }
 
-    public void createBullet(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, List<Enemy> attackers, ArrayList<Bullet> bullets, float startX, float startY, float startZ, Enemy enemy) {
-        Vector3 vec = getScene().modelInstance.transform.getTranslation(new Vector3());
-
-    }
-
 
 }

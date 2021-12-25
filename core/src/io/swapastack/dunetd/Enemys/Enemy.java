@@ -205,6 +205,16 @@ public abstract class Enemy {
             System.out.println("Critical code in Enemy triggered. Check for interferences!");
         }*/
 
+        if(rotation-currentAngle > Math.PI - 0.05f) {
+            toRotate = (float) (rotation + Math.PI + 0.07f );
+            System.out.println("Critical code 1 in Enemy triggered. Check for interferences!");
+        }
+        //This might be odd
+        if(rotation-currentAngle < - Math.PI+0.05f) {
+            toRotate = (float) (rotation - Math.PI -  Math.PI/2);
+            System.out.println("Critical code 2 in Enemy triggered. Check for interferences!");
+        }
+
             this.getScene().modelInstance.transform.rotateRad(0.f, 1.F, 0.F, toRotate * -1);
             currentAngle = currentAngle + toRotate;
             return notClamped;
