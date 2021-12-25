@@ -81,7 +81,7 @@ public class GameScreen implements Screen {
     private int[][] shortestPath = new int[0][0];
     Stage towerBuilding, HUD, placeKnockerHUD;
     Skin skin;
-    int phase = 0;
+    int phase = GameStateEnum.gameState(GameStateEnum.BUILDING);;
     HUD_Drawer[] huds;
     Label health;
     Label spiceAmount;
@@ -648,8 +648,8 @@ public class GameScreen implements Screen {
         this.selected = selected;
     }
 
-    public void setPhase(int phase) {
-        this.phase = phase;
+    public void setPhase(GameStateEnum gs) {
+        this.phase = GameStateEnum.gameState(gs);
     }
 
     /**
@@ -691,7 +691,7 @@ public class GameScreen implements Screen {
     public void onWaveSwap() {
         if(waveCounter+1 < ConfigMgr.waves.length) {
             Knocker.gambleAvailabilty();
-            phase = 0;
+            phase = GameStateEnum.gameState(GameStateEnum.BUILDING);
             //wave = new Wave(this, player);
             wave.reset();
             wave.initEnemies(ConfigMgr.waves[waveCounter]);
@@ -707,4 +707,5 @@ public class GameScreen implements Screen {
     public void setCountdown(int countdown) {
         this.countdown = countdown;
     }
+
 }

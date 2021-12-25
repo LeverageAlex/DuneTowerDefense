@@ -63,12 +63,12 @@ public class MouseForCollision implements InputProcessor {
         if(gameScreen.getPhase() == 0) {
             int nbr = gameScreen.getColliding(screenX, screenY);
             if(nbr >= 0 && gameScreen.getSelected() == -1) {
-                gameScreen.setPhase(3);
+                gameScreen.setPhase((GameStateEnum.SELECTED));
                 gameScreen.setSelected(nbr);
                 return true;
             }
             else if(nbr >= 0 && gameScreen.getSelected() >= 0) {
-                gameScreen.setPhase(0);
+                gameScreen.setPhase(GameStateEnum.BUILDING);
                 gameScreen.setSelected(-1);
             }
 
@@ -88,7 +88,7 @@ public class MouseForCollision implements InputProcessor {
                     break;
             }
             if (gameScreen.getPlayer().getSpice() - t.getCost() >= 0) {
-                gameScreen.setPhase(0);
+                gameScreen.setPhase(GameStateEnum.BUILDING);
                 gameScreen.setSelected(-1);
                     if (gameScreen.placeTower(t)) {
 
@@ -102,7 +102,7 @@ public class MouseForCollision implements InputProcessor {
                                 @Override
                                 public void run() {
                                     countdown = 0;
-                                    gameScreen.setPhase(1);
+                                    gameScreen.setPhase(GameStateEnum.WAVE);
                                     if (gameScreen.getSelected() < 3) {
                                         gameScreen.setSelected(-1);
                                     }
@@ -114,7 +114,7 @@ public class MouseForCollision implements InputProcessor {
                         return true;
                     } else {
                         System.out.println("Tower setzen fehlgeschlagen :/");
-                        gameScreen.setPhase(0);
+                        gameScreen.setPhase(GameStateEnum.BUILDING);
                         gameScreen.setSelected(-1);
                     }
 
@@ -122,7 +122,7 @@ public class MouseForCollision implements InputProcessor {
             else {
                 System.out.println("Not enough Spice");
                 //Unselect selected Tower
-                gameScreen.setPhase(0);
+                gameScreen.setPhase(GameStateEnum.BUILDING);
                 gameScreen.setSelected(-1);
             }
         }
