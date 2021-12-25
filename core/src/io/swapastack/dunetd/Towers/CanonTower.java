@@ -108,7 +108,7 @@ public class CanonTower extends Tower {
         }
         //This might be odd
         if(currentAngle + 0.05f > Math.PI && rotation - 0.05f < -Math.PI) {
-            toRotate = (float) (rotation + Math.PI+0.06f);
+            toRotate = (float) (rotation - Math.PI - 0.07f);
             System.out.println("Critical code in CanonTower triggered. Check for interferences!");
         }
 

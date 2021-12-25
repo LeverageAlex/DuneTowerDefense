@@ -96,13 +96,13 @@ public class BombTower extends Tower{
             toRotate = rotation - currentAngle;
         }
         if(currentAngle - 0.05f < -Math.PI && rotation + 0.05f > Math.PI) {
-            toRotate = (float) (rotation + Math.PI);
-            System.out.println("Critical code in BombTower triggered. Check for interferences!");
+            toRotate = (float) (rotation + Math.PI + 0.07f );
+            System.out.println("Critical code 1 in BombTower triggered. Check for interferences!");
         }
         //This might be odd
         if(currentAngle + 0.05f > Math.PI && rotation - 0.05f < -Math.PI) {
-            toRotate = (float) (rotation + Math.PI+0.06f);
-            System.out.println("Critical code in BombTower triggered. Check for interferences!");
+            toRotate = (float) (rotation - Math.PI - 0.07f);
+            System.out.println("Critical code 2 in BombTower triggered. Check for interferences!");
         }
 
      //   System.out.println("Angle: " + currentAngle + " || wanted: " +rotation);

@@ -17,6 +17,10 @@ public class HarvestMachine extends Enemy{
         damageOnEndPortal = ConfigMgr.harvDmgOnEndPortal;
         storedSpice = ConfigMgr.harvStoredSpice;
         highscorePoints = ConfigMgr.harvHSPoints;
+
+        for (int i = 0; i < ConfigMgr.levelStrength; i++) {
+            health *= ConfigMgr.infLevelUpCoeff;
+        }
     }
 
     /**

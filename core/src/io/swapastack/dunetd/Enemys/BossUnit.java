@@ -22,6 +22,10 @@ public class BossUnit extends Enemy{
         storedSpice = ConfigMgr.bossStoredSpice;
         highscorePoints = ConfigMgr.bossHSPoints;
 
+
+        for (int i = 0; i < ConfigMgr.levelStrength; i++) {
+            health *= ConfigMgr.infLevelUpCoeff;
+        }
     }
 
     /**

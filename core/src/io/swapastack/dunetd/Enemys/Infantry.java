@@ -22,6 +22,10 @@ public class Infantry extends Enemy {
         damageOnEndPortal = ConfigMgr.infDmgOnEndPortal;
         storedSpice = ConfigMgr.infStoredSpice;
         highscorePoints = ConfigMgr.infHSPoints;
+
+        for (int i = 0; i < ConfigMgr.levelStrength; i++) {
+            health *= ConfigMgr.infLevelUpCoeff;
+        }
     }
 
     @Override

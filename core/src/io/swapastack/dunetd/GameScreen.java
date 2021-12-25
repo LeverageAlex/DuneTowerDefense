@@ -694,6 +694,7 @@ public class GameScreen implements Screen {
             phase = GameStateEnum.gameState(GameStateEnum.BUILDING);
             //wave = new Wave(this, player);
             wave.reset();
+            ConfigMgr.levelStrength++;
             wave.initEnemies(ConfigMgr.waves[waveCounter]);
             waveCounter++;
         }
@@ -707,5 +708,7 @@ public class GameScreen implements Screen {
     public void setCountdown(int countdown) {
         this.countdown = countdown;
     }
+
+
 
 }
