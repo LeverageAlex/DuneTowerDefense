@@ -30,12 +30,6 @@ public class Player {
     public void addSpice(int inc) {
         spice += inc;
     }
-    public boolean isGameWon() {
-        return false;
-    }
-    public void endGame() {
-
-    }
 
     public int getEnemiesKilled() {
         return enemiesKilled;

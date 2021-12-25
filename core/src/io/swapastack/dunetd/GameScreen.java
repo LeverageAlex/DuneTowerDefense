@@ -38,7 +38,7 @@ public class GameScreen implements Screen {
 
     private final DuneTD parent;
 
-    private ArrayList<Enemy> attackers;
+    protected ArrayList<Enemy> attackers;
 
     // GDX GLTF
     private SceneManager sceneManager;
@@ -71,16 +71,16 @@ public class GameScreen implements Screen {
     //Custom
     MouseForCollision mouseForCollision;
     Scene beam;
-    Scene[][] mapTiles;
+    private Scene[][] mapTiles;
     BoundingBox[][] mapBoxes;
     Player player;
-    Startportal startPortal;
-    Endportal endPortal;
+    private Startportal startPortal;
+    private Endportal endPortal;
     Wave wave;
-    MapIterable[][] mapTowers;
+    private MapIterable[][] mapTowers;
     private int[][] shortestPath = new int[0][0];
     Stage towerBuilding, HUD, placeKnockerHUD;
-    Skin skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
+    Skin skin;
     int phase = 0;
     HUD_Drawer[] huds;
     Label health;
@@ -107,6 +107,7 @@ public class GameScreen implements Screen {
      */
     @Override
     public void show() {
+        skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
         ConfigMgr.readCfg();
         this.rows = ConfigMgr.rows;
         this.cols = ConfigMgr.cols;
@@ -446,6 +447,7 @@ public class GameScreen implements Screen {
 
         brdfLUT.dispose();
         skybox.dispose();
+        System.out.println("disposed");
     }
 
     /**

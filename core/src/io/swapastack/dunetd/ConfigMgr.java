@@ -82,7 +82,7 @@ public class ConfigMgr {
             for (int i = 0; i < nbrWaves; i++) {
                 waves[i] = in.readLine().split("=")[1];
             }
-            System.out.println("Waves" + Arrays.toString(waves));
+          //  System.out.println("Waves" + Arrays.toString(waves));
             in.close();
 
 
@@ -212,6 +212,11 @@ public class ConfigMgr {
     public static void main(String[] args) {
         ConfigMgr cfg = new ConfigMgr();
      //   cfg.writeCfg();
+    }
+
+    public static void readCfg(String path) {
+        file = new File(path);
+        readCfg();
     }
 
 }
