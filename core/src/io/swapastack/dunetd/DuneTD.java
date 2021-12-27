@@ -79,6 +79,7 @@ public class DuneTD extends Game {
 		}
 		// free all resources allocated by the AssetManager
 		assetManager.dispose();
+		System.exit(0);
 	}
 
 	public void setWinScreen(WinScreen winScreen) {

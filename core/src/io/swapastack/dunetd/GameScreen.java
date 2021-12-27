@@ -291,7 +291,7 @@ public class GameScreen implements Screen {
         }
         //To make this work, every Enemy needs to be part of a wave
         if(wave.waveKilled()) {
-            onWaveSwap(); System.out.println("waveSwap");
+            onWaveSwap();
         }
 
         if(player.getHealth() <= 0) {
@@ -435,8 +435,7 @@ public class GameScreen implements Screen {
 
         brdfLUT.dispose();
         skybox.dispose();
-        System.out.println("disposed");
-    }
+      }
 
 
     /** Converts MouseClick to Coordinate on the x-z plane (y=0)
