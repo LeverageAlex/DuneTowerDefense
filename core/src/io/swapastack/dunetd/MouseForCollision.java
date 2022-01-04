@@ -71,7 +71,7 @@ public class MouseForCollision implements InputProcessor {
 
         }
         //If tower selected, then arrange placement, if selected point valid
-        else if(gameScreen.getSelected() >= 0 && gameScreen.getPhase() == 3) {
+        else if(gameScreen.getSelected() >= 0 && gameScreen.getSelected() != 3 && gameScreen.getPhase() == 3) {
             Tower t = null;
             switch (gameScreen.getSelected()) {
                 case 0:
@@ -123,13 +123,20 @@ public class MouseForCollision implements InputProcessor {
                 gameScreen.setSelected(-1);
             }
         }
+        else if(gameScreen.getPhase() == 3){
+            //removeOption selected.
+        //    System.out.println("removeCall");
+            gameScreen.removeTower();
+            gameScreen.setSelected(-1);
+            gameScreen.setPhase(GameStateEnum.BUILDING);
+        }
 
         if(gameScreen.getCollidingKnocker(screenX, screenY)) {
             if (gameScreen.getSelected() == -1) {
-                gameScreen.setSelected(3);
+                gameScreen.setSelected(4);
             }
         }
-            else if(gameScreen.getSelected() == 3) {
+            else if(gameScreen.getSelected() == 4) {
                 gameScreen.setSelected(-1);
                 Knocker knocker = new Knocker(gameScreen);
                 if(gameScreen.placeKnocker(knocker)) {

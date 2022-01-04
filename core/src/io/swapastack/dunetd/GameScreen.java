@@ -413,14 +413,17 @@ public class GameScreen implements Screen {
 
         towerBuilding = new Stage();
 
-        huds = new HUD_Drawer[3];
+        huds = new HUD_Drawer[4];
         huds[0] = new HUD_Drawer(this,skin, "hud/bombTower.png", "hud/bombTower_selected.png", 0,ConfigMgr.bombTowCost,Gdx.graphics.getWidth()/2-166, 20, 100, 100);;
         huds[1] = new HUD_Drawer(this, skin, "hud/canonTower.png", "hud/canonTower_selected.png", 1,ConfigMgr.canonTowCost,Gdx.graphics.getWidth()/2 - 64, 20, 100, 100);
         huds[2] = new HUD_Drawer(this, skin, "hud/sonicTower.png", "hud/sonicTower_selected.png", 2,ConfigMgr.sonicTowCost,Gdx.graphics.getWidth()/2 + 38, 20, 100, 100);
+        huds[3] = new HUD_Drawer(this, skin, "hud/removeTower.png", "hud/removeTower_selected.png", 3,"",Gdx.graphics.getWidth()/2 + 160, 20, 100, 100);
 
        for (HUD_Drawer h: huds) {
             towerBuilding.addActor(h);
         }
+
+
 
         HUD = new Stage();
         health = new Label("Health:    " + player.getHealth(),skin, "black");
@@ -440,7 +443,7 @@ public class GameScreen implements Screen {
         HUD.addActor(remainingWaves);
 
         placeKnockerHUD = new Stage();
-        HUD_Drawer placeKnocker = new HUD_Drawer(this, skin, "hud/sandWorm.png", "hud/sandWorm_selected.png", 3,"FREE",Gdx.graphics.getWidth() - 138, 20, 100, 100);
+        HUD_Drawer placeKnocker = new HUD_Drawer(this, skin, "hud/sandWorm.png", "hud/sandWorm_selected.png", 4,"FREE",Gdx.graphics.getWidth() - 138, 20, 100, 100);
         placeKnockerHUD.addActor(placeKnocker);
 
 
@@ -721,6 +724,17 @@ public class GameScreen implements Screen {
 
     public void setCountdown(int countdown) {
         this.countdown = countdown;
+    }
+
+    public void removeTower() {
+        Vector3 vec = getClickOnField();
+        if(inRangeofField(vec) && mapTowers[Math.round(vec.x)][Math.round(vec.z)] instanceof Tower && !(mapTowers[Math.round(vec.x)][Math.round(vec.z)] instanceof Startportal)) {
+            int cost = ((Tower) mapTowers[Math.round(vec.x)][Math.round(vec.z)]).getCost();
+            ((Tower) mapTowers[Math.round(vec.x)][Math.round(vec.z)]).removeTower(sceneManager,mapTowers);
+            player.addSpice(Math.round(cost*ConfigMgr.sellGain));
+            pathFinder();
+        }
+
     }
 
 

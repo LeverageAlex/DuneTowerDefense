@@ -9,7 +9,7 @@ public class ConfigMgr {
     public static int rows, cols, stPortalX, stPortalY, stPortalZ, endPortalX, endPortalY, endPortalZ, playerHealth, playerStartSpice, canonTowCost, bombTowCost, sonicTowCost, bombTowDmg,
     canonTowDmg, knockerCost,bossDmgOnEndPortal, infDmgOnEndPortal, harvDmgOnEndPortal, bossStoredSpice, infStoredSpice, harvStoredSpice, bossHSPoints, infHSPoints
             , harvHSPoints, levelStrength;
-    public static float bombTowExplosRange, waveStartdelay, sonicTowDmg, canonTowRot, bombTowRot, canonTowRange, bombTowRange, sonicTowRange, sandWormSpeed,bossMovSpeed, infMovSpeed, harvMovSpeed, bossHealth, harvHealth, infHealth, bossLevelUpCoeff, infLevelUpCoeff, harvLevelUpCoeff, waveSpawnDelayIntervall, canonTowIntervall, bombTowIntervall, sonicTowIntervall;
+    public static float sellGain, bombTowExplosRange, waveStartdelay, sonicTowDmg, canonTowRot, bombTowRot, canonTowRange, bombTowRange, sonicTowRange, sandWormSpeed,bossMovSpeed, infMovSpeed, harvMovSpeed, bossHealth, harvHealth, infHealth, bossLevelUpCoeff, infLevelUpCoeff, harvLevelUpCoeff, waveSpawnDelayIntervall, canonTowIntervall, bombTowIntervall, sonicTowIntervall;
     public static String[] waves;
     private static BufferedReader in;
 
@@ -74,6 +74,8 @@ public class ConfigMgr {
             harvDmgOnEndPortal = readInt();
             harvStoredSpice = readInt();
             harvLevelUpCoeff = readFloat();
+
+            sellGain = readFloat();
 
             int nbrWaves = readInt();
             waveSpawnDelayIntervall = readFloat();
