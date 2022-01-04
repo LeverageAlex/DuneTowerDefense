@@ -82,7 +82,7 @@ public class HUD_Drawer extends Actor {
         //Stage starts in lower left corner, so need to fix that
         y = Gdx.graphics.getHeight() - y;
         if(img.getX() + img.getWidth() > x && x > img.getX() && img.getY() + img.getHeight() > y && img.getY() < y) {
-            System.out.println("Hit!");
+          //  System.out.println("Hit!");
 
             return true;
         }

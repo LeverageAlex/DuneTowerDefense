@@ -130,7 +130,8 @@ public class MainMenuScreen implements Screen {
         //       but you must have the right license for the music file
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("piano/piano_loop.wav"));
         backgroundMusic.setLooping(true);
-       // backgroundMusic.play(); // TODO: reactivate
+        backgroundMusic.setVolume(0.03f);
+        backgroundMusic.play(); // TODO: reactivate
 
         // create switch to GameScreen button
         Button gameScreenButton = new TextButton("GAME SCREEN", skin, "small");

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
@@ -94,10 +95,34 @@ public class GameScreen implements Screen {
     private ArrayList<Bullet> bullets = new ArrayList<>();
     Stage waveCountdown;
     int countdown;
+    private final Music backgroundMusic;
+    private final Music shotEffect;
+    private final Music enemyPortalEffect;
+    private final Music enemyDeathEffect;
+    private final Music sandwormEffect;
 
 
     public GameScreen(DuneTD parent) {
         this.parent = parent;
+
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/xanco123__dark-ambient-music-1-the-original.mp3"));
+        backgroundMusic.setLooping(true);
+         backgroundMusic.play();
+         backgroundMusic.setVolume(0.05f);
+
+         shotEffect = Gdx.audio.newMusic(Gdx.files.internal("sounds/laserGunShot.mp3"));
+         shotEffect.setVolume(0.0175f);
+
+         enemyPortalEffect = Gdx.audio.newMusic(Gdx.files.internal("sounds/klankbeeld_horror-laugh.mp3"));
+         enemyPortalEffect.setVolume(0.25f);
+
+
+        enemyDeathEffect = Gdx.audio.newMusic(Gdx.files.internal("sounds/onderwish__ghost-scream.mp3"));
+        enemyDeathEffect.setVolume(0.0175f);
+
+        sandwormEffect = Gdx.audio.newMusic(Gdx.files.internal("sounds/space_ship-damaged-explosions-sparks.mp3"));
+        sandwormEffect.setVolume(0.036f);
+
     }
 
     /**
@@ -257,6 +282,8 @@ public class GameScreen implements Screen {
                 //ToDo activate shot sound
                     Vector3 currentCord = t.getScene().modelInstance.transform.getTranslation(new Vector3());
                     new Bullet(sceneManager, sceneAssetHashMap, attackers, bullets, currentCord.x, 0.29f, currentCord.z, locEnemy, t);
+                    shotEffect.stop();
+                    shotEffect.play();
             }
         }
 
@@ -597,6 +624,8 @@ public class GameScreen implements Screen {
 
                 if( attackers.get(i).movingAlongShortestPath()) {
                     //EndPortal arrived
+                  //  enemyPortalEffect.stop();
+                    enemyPortalEffect.play();
                     wave.arrivedAtEndPortal(attackers.get(i));
                //     System.out.println(attackers.get(i).getClass().toString() + " arrived at EndPortal and got deleted");
                     attackers.get(i).removeEnemy(sceneManager, attackers);
@@ -604,6 +633,7 @@ public class GameScreen implements Screen {
             }
             else {
                 wave.enemyKilled(attackers.get(i));
+                enemyDeathEffect.play();
               //  System.out.println(attackers.get(i).getClass().toString() + " went out of live and got deleted");
                 attackers.get(i).removeEnemy(sceneManager, attackers);
             }
@@ -665,6 +695,8 @@ public class GameScreen implements Screen {
     public void launchSandwormAttack() {
         sand = new Sandworm(sceneManager, sceneAssetHashMap, attackers, mapTowers, wave,this, rows, cols);
         sand.removeLane(mapTowers, attackers);
+        sandwormEffect.play();
+        sandwormEffect.setPosition(4.f);
     }
 
 
