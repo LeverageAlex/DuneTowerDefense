@@ -131,6 +131,9 @@ public class Tester {
         Assertions.assertEquals(GameStateEnum.gameState(GameStateEnum.SELECTED), 3);
     }
 
+    /**
+     * Tests, if the authorisation-check before placement of tower works
+     */
     @Test
     public void towerEligibleToPlace() {
         //Init
@@ -168,6 +171,9 @@ public class Tester {
 
     }
 
+    /**
+     * Tests Dijkstra
+     */
     @Test
     public void dijkstraTest() {
         MapIterable[][] mapTowers = new MapIterable[5][5];
@@ -203,6 +209,15 @@ public class Tester {
         Assertions.assertNull(path);
     }
 
+    /**
+     * Tests if Enemy.collision() works properly
+     */
+    @Test
+    public void bulletCollision() {
+        Assertions.assertTrue(boss.collides(new Vector3(2.8f, 2, 3.2f), 1.0f));
+        Assertions.assertFalse(boss.collides(new Vector3(1.8f, 2, 3.2f), 1.0f));
 
+
+    }
 
 }
