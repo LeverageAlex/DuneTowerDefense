@@ -11,6 +11,7 @@ import net.mgsx.gltf.scene3d.scene.SceneManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
 
 public abstract class Tower implements MapIterable {
     protected int type;
@@ -122,6 +123,11 @@ public abstract class Tower implements MapIterable {
      */
     public boolean isInRange(Vector3 pos) {
         Vector3 towerPos = getScene().modelInstance.transform.getTranslation(new Vector3());
+        return isInRange(pos, towerPos);
+    }
+
+    //How to split up for testing
+    public boolean isInRange(Vector3 pos, Vector3 towerPos) {
         return ((pos.x-towerPos.x)*(pos.x-towerPos.x) + (pos.z-towerPos.z)*(pos.z-towerPos.z) <= range*range );
     }
 
