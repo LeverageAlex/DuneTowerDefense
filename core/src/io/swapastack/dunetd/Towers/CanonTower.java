@@ -48,7 +48,7 @@ public class CanonTower extends Tower {
     public Enemy fire(ArrayList<Enemy> enemiesList) {
         canonTowCounter++;
         for (Enemy enemy : enemiesList) {
-            if (isInRange(enemy.getCoords())) {
+            if (isInRange(enemy.getCoords(),  this.getCoords())) {
                 boolean fire = rotateTowardsVectorSmooth(enemy.getCoords());
                 //Beeing able to shoot
                     if(fire) {

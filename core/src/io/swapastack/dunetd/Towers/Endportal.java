@@ -15,14 +15,17 @@ public class Endportal extends IterableOverMap implements MapIterable{
     private float x, y, z;
     private int type = 4, length = Integer.MAX_VALUE, color = 0;
 
-    public Endportal(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] map, float x, float y, float z) {
-        this.scene = createScene(sceneAssetHashMap);
-        sceneManager.addScene(scene);
-        this.scene.modelInstance.transform.setToTranslation(x, y, z).scale(1.f, 0.1f, 1.f);
+    public Endportal( float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
-        map[Math.round(x)][Math.round(z)] = this;
+        }
+
+        public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] map) {
+            this.scene = createScene(sceneAssetHashMap);
+            sceneManager.addScene(scene);
+            this.scene.modelInstance.transform.setToTranslation(x, y, z).scale(1.f, 0.1f, 1.f);
+            map[Math.round(x)][Math.round(z)] = this;
         }
 
     public void setPos(Vector3 pos) {

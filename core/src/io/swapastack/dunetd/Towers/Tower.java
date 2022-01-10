@@ -121,15 +121,10 @@ public abstract class Tower implements MapIterable {
      * @param pos
      * @return
      */
-    public boolean isInRange(Vector3 pos) {
-        Vector3 towerPos = getScene().modelInstance.transform.getTranslation(new Vector3());
-        return isInRange(pos, towerPos);
-    }
-
-    //How to split up for testing
     public boolean isInRange(Vector3 pos, Vector3 towerPos) {
         return ((pos.x-towerPos.x)*(pos.x-towerPos.x) + (pos.z-towerPos.z)*(pos.z-towerPos.z) <= range*range );
     }
+
 
     /**
      * Deletes the Scene of tower from sceneManger and removes its references in mapTowers
@@ -142,6 +137,10 @@ public abstract class Tower implements MapIterable {
         sceneManager.removeScene(this.getScene());
         this.towerList.remove(this);
 
+    }
+
+    public Vector3 getCoords() {
+        return getScene().modelInstance.transform.getTranslation(new Vector3());
     }
 
 

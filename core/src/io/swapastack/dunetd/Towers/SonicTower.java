@@ -34,7 +34,7 @@ public class SonicTower extends Tower{
     @Override
     public Enemy fire(ArrayList<Enemy> enemiesList) {
         for (Enemy enemy : enemiesList) {
-            if (isInRange(enemy.getCoords())) {
+            if (isInRange(enemy.getCoords(), this.getCoords())) {
                 enemy.gainDamage(towerDmg);
                 //to fire
              //   System.out.println("SonicTower shooting at: " + enemy.name );

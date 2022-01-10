@@ -14,10 +14,12 @@ import java.util.ArrayList;
 public class Tester {
     static GameScreen screen;
     CanonTower canon = new CanonTower(null) {
+        //This is needed to prevent tests from accessing LibGdx
         @Override
-        public boolean isInRange(Vector3 pos) {
-            return ((pos.x-3.f)*(pos.x-3.f) + (pos.z-3.f)*(pos.z-3.f) <= range*range );
+        public Vector3 getCoords() {
+            return new Vector3(3.0f, 0, 3.0f);
         }
+
         @Override
         public boolean rotateTowardsVectorSmooth(Vector3 pointToRotate) {
             return true;
@@ -128,6 +130,41 @@ public class Tester {
         Assertions.assertEquals(GameStateEnum.gameState(GameStateEnum.SELECTED), 3);
     }
 
+    @Test
+    public void towerEligibleToPlace() {
+        //Init
+        MapIterable[][] mapTowers = new MapIterable[5][5];
+        for (int i = 0; i < mapTowers.length; i++) {
+            for (int j = 0; j < mapTowers.length; j++) {
+                mapTowers[i][j] = new IterableOverMap();
+            }
+        }
+        Startportal x = new Startportal(0, 0, 0);
+        Endportal y = new Endportal(4, 0, 4);
+        mapTowers[0][0] = x;
+        mapTowers[4][4] = y;
+        screen = new GameScreen(new DuneTD()) {
+            @Override
+            public void dijkstraAddTile(int i, int[][] walkway){};
 
+            @Override
+            public void dijkstraRemoveTile() {};
+        };
+        screen.setMapTowers(mapTowers);
+        screen.startPortal = x;
+        screen.endPortal = y;
+
+
+       Assertions.assertTrue(canon.isEligibleToPlace(mapTowers, screen, 3, 3));
+
+       //Test if place fails on start & endportal
+       Assertions.assertFalse(canon.isEligibleToPlace(mapTowers, screen, 4, 4));
+       Assertions.assertFalse(canon.isEligibleToPlace(mapTowers, screen, 0, 0));
+
+       //Place Tower on Field and then try to place another
+       mapTowers[2][2] = new CanonTower(screen);
+        Assertions.assertFalse(canon.isEligibleToPlace(mapTowers, screen, 2, 2));
+
+    }
 
 }

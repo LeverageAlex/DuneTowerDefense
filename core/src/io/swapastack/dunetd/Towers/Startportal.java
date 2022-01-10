@@ -17,13 +17,16 @@ public class Startportal extends IterableOverMap implements MapIterable {
 
 
 
-    public Startportal(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] map, float x, float y, float z) {
-        this.scene = createScene(sceneAssetHashMap);
-        sceneManager.addScene(scene);
-        this.scene.modelInstance.transform.setToTranslation(x, y, z).scale(1.f, 0.001f, 1.f);
+    public Startportal(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public void init(SceneManager sceneManager, HashMap<String, SceneAsset> sceneAssetHashMap, MapIterable[][] map) {
+        this.scene = createScene(sceneAssetHashMap);
+        sceneManager.addScene(scene);
+        this.scene.modelInstance.transform.setToTranslation(x, y, z).scale(1.f, 0.001f, 1.f);
         map[Math.round(x)][Math.round(z)] = this;
     }
 

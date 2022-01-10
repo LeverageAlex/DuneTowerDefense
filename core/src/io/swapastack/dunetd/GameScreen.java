@@ -72,10 +72,10 @@ public class GameScreen implements Screen {
     //Custom
     MouseForCollision mouseForCollision;
     private Scene[][] mapTiles;
-    BoundingBox[][] mapBoxes;
+   // BoundingBox[][] mapBoxes;
     Player player;
-    private Startportal startPortal;
-    private Endportal endPortal;
+    public Startportal startPortal;
+    public Endportal endPortal;
     Wave wave;
     private MapIterable[][] mapTowers;
     private int[][] shortestPath = new int[0][0];
@@ -95,33 +95,15 @@ public class GameScreen implements Screen {
     private ArrayList<Bullet> bullets = new ArrayList<>();
     Stage waveCountdown;
     int countdown;
-    private final Music backgroundMusic;
-    private final Music shotEffect;
-    private final Music enemyPortalEffect;
-    private final Music enemyDeathEffect;
-    private final Music sandwormEffect;
+    private Music backgroundMusic;
+    private Music shotEffect;
+    private Music enemyPortalEffect;
+    private Music enemyDeathEffect;
+    private Music sandwormEffect;
 
 
     public GameScreen(DuneTD parent) {
         this.parent = parent;
-
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/xanco123__dark-ambient-music-1-the-original.mp3"));
-        backgroundMusic.setLooping(true);
-         backgroundMusic.play();
-         backgroundMusic.setVolume(0.05f);
-
-         shotEffect = Gdx.audio.newMusic(Gdx.files.internal("sounds/laserGunShot.mp3"));
-         shotEffect.setVolume(0.0175f);
-
-         enemyPortalEffect = Gdx.audio.newMusic(Gdx.files.internal("sounds/klankbeeld_horror-laugh.mp3"));
-         enemyPortalEffect.setVolume(0.25f);
-
-
-        enemyDeathEffect = Gdx.audio.newMusic(Gdx.files.internal("sounds/onderwish__ghost-scream.mp3"));
-        enemyDeathEffect.setVolume(0.0175f);
-
-        sandwormEffect = Gdx.audio.newMusic(Gdx.files.internal("sounds/space_ship-damaged-explosions-sparks.mp3"));
-        sandwormEffect.setVolume(0.036f);
 
     }
 
@@ -131,6 +113,25 @@ public class GameScreen implements Screen {
      */
     @Override
     public void show() {
+
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/xanco123__dark-ambient-music-1-the-original.mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.play();
+        backgroundMusic.setVolume(0.05f);
+
+        shotEffect = Gdx.audio.newMusic(Gdx.files.internal("sounds/laserGunShot.mp3"));
+        shotEffect.setVolume(0.0175f);
+
+        enemyPortalEffect = Gdx.audio.newMusic(Gdx.files.internal("sounds/klankbeeld_horror-laugh.mp3"));
+        enemyPortalEffect.setVolume(0.25f);
+
+
+        enemyDeathEffect = Gdx.audio.newMusic(Gdx.files.internal("sounds/onderwish__ghost-scream.mp3"));
+        enemyDeathEffect.setVolume(0.0175f);
+
+        sandwormEffect = Gdx.audio.newMusic(Gdx.files.internal("sounds/space_ship-damaged-explosions-sparks.mp3"));
+        sandwormEffect.setVolume(0.036f);
+
         skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
         ConfigMgr.readCfg();
         this.rows = ConfigMgr.rows;
@@ -361,7 +362,7 @@ public class GameScreen implements Screen {
 
         Vector3 groundTileDimensions = new Vector3();
         mapTiles = new Scene[rows][cols];
-        mapBoxes = new BoundingBox[rows][cols];
+       // mapBoxes = new BoundingBox[rows][cols];
         attackers = new ArrayList<Enemy>();
         mapTowers = new MapIterable[rows][cols];
 
@@ -400,8 +401,10 @@ public class GameScreen implements Screen {
         }
         player = new Player();
         // place example sonicTower
-        startPortal = new Startportal(sceneManager, sceneAssetHashMap, mapTowers,ConfigMgr.stPortalX, 0.12f, ConfigMgr.stPortalZ);
-        endPortal = new Endportal(sceneManager, sceneAssetHashMap, mapTowers,ConfigMgr.endPortalX, 0.10f, ConfigMgr.endPortalZ);
+        startPortal = new Startportal(ConfigMgr.stPortalX, 0.12f, ConfigMgr.stPortalZ);
+        startPortal.init(sceneManager, sceneAssetHashMap, mapTowers);
+        endPortal = new Endportal(ConfigMgr.endPortalX, 0.10f, ConfigMgr.endPortalZ);
+        endPortal.init(sceneManager, sceneAssetHashMap, mapTowers);
 
         pathFinder();
 
@@ -559,13 +562,7 @@ public class GameScreen implements Screen {
 
             //Draw the Path
             //First removes the graphics of last way and replaces them by gras
-            for(int i = 0; i < shortestPath.length; i++) {
-                sceneManager.removeScene(mapTiles[shortestPath[i][1]][shortestPath[i][0]]);
-                    Scene gridTile = new Scene(sceneAssetHashMap.get("tile.glb").scene);
-                mapTiles[shortestPath[i][1]][shortestPath[i][0]] = gridTile;
-                gridTile.modelInstance.transform.setToTranslation(shortestPath[i][0], 0.0f,shortestPath[i][1]).scale(1, 0.6f, 1);
-                sceneManager.addScene(gridTile);
-            }
+            dijkstraRemoveTile();
 
             int[] pos = endPortal.getPosition();
             walkWay = new int[endPortal.getPathLength()+1][2];
@@ -573,14 +570,9 @@ public class GameScreen implements Screen {
             for (int i = walkWay.length - 1; i >= 0; i--) {
 
                 walkWay[i] = ((IterableOverMap) mapTowers[pos[0]][pos[1]]).getPosition();
-                sceneManager.removeScene(mapTiles[walkWay[i][1]][walkWay[i][0]]);
                 pos = ((IterableOverMap) mapTowers[pos[0]][pos[1]]).getVorgaenger();
-                Scene gridTile = new Scene(sceneAssetHashMap.get("tile_dirt.glb").scene);
 
-
-                gridTile.modelInstance.transform.setToTranslation(walkWay[i][0], 0.0f, walkWay[i][1]).scale(1, 1.1f, 1);
-                sceneManager.addScene(gridTile);
-                mapTiles[walkWay[i][1]][walkWay[i][0]] = gridTile;
+           dijkstraAddTile(i, walkWay);
             }
 
           //  System.out.println("Numbered Dijkstra: " + Arrays.deepToString(walkWay));
@@ -602,6 +594,26 @@ public class GameScreen implements Screen {
         }
         return walkWay;
 
+    }
+
+    public void dijkstraAddTile(int i, int[][] walkWay) {
+        sceneManager.removeScene(mapTiles[walkWay[i][1]][walkWay[i][0]]);
+        Scene gridTile = new Scene(sceneAssetHashMap.get("tile_dirt.glb").scene);
+
+
+        gridTile.modelInstance.transform.setToTranslation(walkWay[i][0], 0.0f, walkWay[i][1]).scale(1, 1.1f, 1);
+        sceneManager.addScene(gridTile);
+        mapTiles[walkWay[i][1]][walkWay[i][0]] = gridTile;
+    }
+
+    public void dijkstraRemoveTile() {
+        for(int i = 0; i < shortestPath.length; i++) {
+            sceneManager.removeScene(mapTiles[shortestPath[i][1]][shortestPath[i][0]]);
+            Scene gridTile = new Scene(sceneAssetHashMap.get("tile.glb").scene);
+            mapTiles[shortestPath[i][1]][shortestPath[i][0]] = gridTile;
+            gridTile.modelInstance.transform.setToTranslation(shortestPath[i][0], 0.0f,shortestPath[i][1]).scale(1, 0.6f, 1);
+            sceneManager.addScene(gridTile);
+        }
     }
 
     /**
@@ -735,6 +747,10 @@ public class GameScreen implements Screen {
             pathFinder();
         }
 
+    }
+
+    public void setMapTowers(MapIterable[][] mapTowers) {
+        this.mapTowers = mapTowers;
     }
 
 

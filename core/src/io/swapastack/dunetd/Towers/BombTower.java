@@ -47,7 +47,7 @@ public class BombTower extends Tower{
     public Enemy fire(ArrayList<Enemy> enemiesList) {
         for (Enemy enemy : enemiesList) {
 
-            if (isInRange(enemy.getCoords())) {
+            if (isInRange(enemy.getCoords(), this.getCoords())) {
              //   System.out.println("Die Koord: " + enemy.getCoords());
                 boolean fire = rotateTowardsVectorSmooth(enemy.getCoords());
                 //Beeing able to shoot
