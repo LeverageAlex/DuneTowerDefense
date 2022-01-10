@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Tester {
     static GameScreen screen;
@@ -163,8 +164,43 @@ public class Tester {
 
        //Place Tower on Field and then try to place another
        mapTowers[2][2] = new CanonTower(screen);
-        Assertions.assertFalse(canon.isEligibleToPlace(mapTowers, screen, 2, 2));
+       Assertions.assertFalse(canon.isEligibleToPlace(mapTowers, screen, 2, 2));
 
+    }
+
+    @Test
+    public void dijkstraTest() {
+        MapIterable[][] mapTowers = new MapIterable[5][5];
+        for (int i = 0; i < mapTowers.length; i++) {
+            for (int j = 0; j < mapTowers.length; j++) {
+                mapTowers[i][j] = new IterableOverMap();
+            }
+        }
+        Startportal x = new Startportal(0, 0, 0);
+        Endportal y = new Endportal(2, 0, 2);
+        mapTowers[0][0] = x;
+        mapTowers[2][2] = y;
+        screen = new GameScreen(new DuneTD()) {
+            @Override
+            public void dijkstraAddTile(int i, int[][] walkway){};
+
+            @Override
+            public void dijkstraRemoveTile() {};
+        };
+        screen.setMapTowers(mapTowers);
+        screen.startPortal = x;
+        screen.endPortal = y;
+        int[][] path = screen.pathFinder();
+
+        Assertions.assertArrayEquals(new int[][] {{0,0},{1,0}, {2,0}, {2,1},{2,2}}, path);
+        mapTowers[1][0] = new CanonTower(screen);
+        path = screen.pathFinder();
+        Assertions.assertArrayEquals(new int[][] {{0,0},{0,1}, {1,1}, {2,1},{2,2}}, path);
+
+        //Blocking last availablePath
+        mapTowers[0][1] = new CanonTower(screen);
+        path = screen.pathFinder();
+        Assertions.assertNull(path);
     }
 
 
