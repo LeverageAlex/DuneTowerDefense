@@ -279,7 +279,7 @@ public class GameScreen implements Screen {
         //Rotates the towers towards enemies and shoots new bullets, if timer is ready
         for (Tower t : towers) {
             Enemy locEnemy = t.fire(attackers);
-            if(locEnemy != null) {
+            if(!(t instanceof SonicTower) && locEnemy != null) {
                 //ToDo activate shot sound
                     Vector3 currentCord = t.getScene().modelInstance.transform.getTranslation(new Vector3());
                     new Bullet(sceneManager, sceneAssetHashMap, attackers, bullets, currentCord.x, 0.29f, currentCord.z, locEnemy, t);

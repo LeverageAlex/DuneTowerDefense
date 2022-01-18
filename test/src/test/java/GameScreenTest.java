@@ -10,31 +10,6 @@ import org.junit.jupiter.api.Test;
 
 public class GameScreenTest {
     static GameScreen screen;
-/*    CanonTower canon = new CanonTower(null) {
-        //This is needed to prevent tests from accessing LibGdx
-        @Override
-        public Vector3 getCoords() {
-            return new Vector3(3.0f, 0, 3.0f);
-        }
-
-        @Override
-        public boolean rotateTowardsVectorSmooth(Vector3 pointToRotate) {
-            return true;
-        }
-    };*/
-
-    BossUnit boss = new BossUnit() {
-        @Override
-        public Vector3 getCoords() {
-            return new Vector3(2.8f, 2, 3.2f);
-        }
-    };
-
-    Infantry infantry = new Infantry() {
-        public Vector3 getCoords() {
-            return new Vector3(1f, 2, 0f);
-        }
-    };
 
 
     @BeforeAll

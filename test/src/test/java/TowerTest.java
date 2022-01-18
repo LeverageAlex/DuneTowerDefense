@@ -15,6 +15,13 @@ import java.util.ArrayList;
 public class TowerTest {
     static GameScreen screen;
         //ToDo Test SonicTower
+    SonicTower sonic = new SonicTower(null) {
+            @Override
+            public Vector3 getCoords() {
+                return new Vector3(3.0f, 0, 3.0f);
+            }
+        };
+
     CanonTower canon = new CanonTower(null) {
         //This is needed to prevent tests from accessing LibGdx
         @Override
@@ -94,10 +101,13 @@ public class TowerTest {
         ArrayList<Enemy> arr = new ArrayList<>();
         arr.add(boss);
         Assertions.assertTrue(canon.fire(arr) != null);
+        Assertions.assertTrue(sonic.fire(arr) != null);
         arr.remove(boss);
 
         arr.add(infantry);
         Assertions.assertFalse(canon.fire(arr) != null);
+        Assertions.assertFalse(sonic.fire(arr) != null);
+
     }
 
 }
