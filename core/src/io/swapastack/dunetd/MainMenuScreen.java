@@ -134,7 +134,7 @@ public class MainMenuScreen implements Screen {
         backgroundMusic.play(); // TODO: reactivate
 
         // create switch to GameScreen button
-        Button gameScreenButton = new TextButton("GAME SCREEN", skin, "small");
+        Button gameScreenButton = new TextButton("PLAY", skin, "small");
         gameScreenButton.setPosition(
                 (float)Gdx.graphics.getWidth() / 2.f - gameScreenButton.getWidth() / 2.f
                 , (float)Gdx.graphics.getHeight() / 2.f - 125.f
@@ -155,13 +155,13 @@ public class MainMenuScreen implements Screen {
         stage.addActor(gameScreenButton);
 
         // create switch to GameScreen button
-        Button showcaseButton = new TextButton("SHOWCASE", skin, "small");
-        showcaseButton.setPosition(
+     //   Button showcaseButton = new TextButton("SHOWCASE", skin, "small");
+       /* showcaseButton.setPosition(
                 (float)Gdx.graphics.getWidth() / 2.f - showcaseButton.getWidth() / 2.f
                 , (float)Gdx.graphics.getHeight() / 2.f - 200.f
-        );
+        );*/
         // add InputListener to Button, and close app if Button is clicked
-        showcaseButton.addListener(new InputListener(){
+      /*  showcaseButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -173,7 +173,7 @@ public class MainMenuScreen implements Screen {
         });
 
         // add exit button to Stage
-        stage.addActor(showcaseButton);
+        stage.addActor(showcaseButton);*/
 
         // create exit application button
         Button exitButton = new TextButton("EXIT", skin, "small");
